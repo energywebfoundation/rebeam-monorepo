@@ -3,11 +3,16 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "build": "lerna run --stream build",
     "start-backend": "lerna run --scope=rebeam-backend --stream start",
     "lint": "lerna run --stream lint",
     "test": "lerna run --stream test"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "engines": {
+    "node": "^14.8.3",
+    "npm": "^8.3.2"
   }
 }

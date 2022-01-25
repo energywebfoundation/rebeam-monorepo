@@ -3,29 +3,30 @@
 </p>
 
 
-# PACKAGE NAME
+# Elia ReBeam Project Monorepo
+
+Supplier switching for EV Drivers
 
 ## Description
-Overview of package. 
-{Package} is a module-based library built with xxx. 
+Contains the following packages:
 
-//Purpose of package, sdk, etc. 
-
-{Package} is a component of the [Energy Web Decentralized Operating System](#ew-dos)
-
-See {PACKAGE} deployed [here](link to Switchboard, Zero if applicable)
+| Name | Description |
+|------|-------------|
+| rebeam-backend | NestJS server that manages EV Driver charging sessions over the OCN |
 
 ## Installation
-This is a Node.js module available through the npm registry.
-
 ### Requirements
 
-Before installing, download and install Node.js. Node.js xxx or higher is required.
+Before installing, download and install Node.js. Node.js 14 (LTS) or higher is required.
+NPM 8.3.2 or higher is also required.
+
+This monorepo uses [lerna](https://github.com/lerna/lerna).
 
 Installation is done using the following commands:
 
 ``` sh
 $ npm install
+$ npm run bootstrap
 ```
 
 ## Build
@@ -35,17 +36,11 @@ $ npm run build
 
 ## Run
 ``` sh
-$ npm run start
+$ npm run start-backend
 ```
-## Testing (delete if not needed)
-Testing Strategy
+## Testing
 
-### Integration Tests (delete if not needed)
-``` sh
-$ npm run test
-```
-
-### Unit Tests (delete if not needed)
+### Combined Unit & Integration Tests
 ``` sh
 $ npm run test
 ```
@@ -55,32 +50,28 @@ For more details, visit the [installation guide](//LINK TO READ THE DOCS INSTALL
 ## Documentation
 - [ReadTheDocs](https://origins.readthedocs.io/en/latest/)
 
-## Who is Using {Package}?
-//For origin, 24/7, Zero might be good to have a few examples of implementations to give context of how its used
-
-## Contributing Guidelines 
+## Contributing Guidelines
 See [contributing.md](./contributing.md)
 
 
 ## Questions and Support
-For questions and support please use Energy Web's [Discord channel](https://discord.com/channels/706103009205288990/843970822254362664) 
+For questions and support please use Energy Web's [Discord channel](https://discord.com/channels/706103009205288990/843970822254362664)
 
 Or reach out to our contributing team members
 
-- TeamMember: email address@energyweb.org
+- Adam Staveley: adam.staveley@energyweb.org
 
 
 # EW-DOS
-//This should be the same in every repo. 
-The Energy Web Decentralized Operating System is a blockchain-based, multi-layer digital infrastructure. 
+The Energy Web Decentralized Operating System is a blockchain-based, multi-layer digital infrastructure.
 
-The purpose of EW-DOS is to develop and deploy an open and decentralized digital operating system for the energy sector in support of a low-carbon, customer-centric energy future. 
+The purpose of EW-DOS is to develop and deploy an open and decentralized digital operating system for the energy sector in support of a low-carbon, customer-centric energy future.
 
 We develop blockchain technology, full-stack applications and middleware packages that facilitate participation of Distributed Energy Resources on the grid and create open market places for transparent and efficient renewable energy trading.
 
-- To learn about more about the EW-DOS tech stack, see our [documentation](https://app.gitbook.com/@energy-web-foundation/s/energy-web/).  
+- To learn about more about the EW-DOS tech stack, see our [documentation](https://app.gitbook.com/@energy-web-foundation/s/energy-web/).
 
-- For an overview of the energy-sector challenges our use cases address, go [here](https://app.gitbook.com/@energy-web-foundation/s/energy-web/our-mission). 
+- For an overview of the energy-sector challenges our use cases address, go [here](https://app.gitbook.com/@energy-web-foundation/s/energy-web/our-mission).
 
 For a deep-dive into the motivation and methodology behind our technical solutions, we encourage you to read our White Papers:
 
@@ -96,4 +87,3 @@ For a deep-dive into the motivation and methodology behind our technical solutio
 ## License
 
 This project is licensed under the GNU General Public License v3.0 or later - see the [LICENSE](LICENSE) file for details
-
