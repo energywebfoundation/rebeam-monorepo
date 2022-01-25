@@ -5,7 +5,8 @@
     "bootstrap": "lerna bootstrap && npm run init",
     "init": "lerna run --stream init",
     "build": "lerna run --stream build",
-    "start-backend": "lerna run --scope=rebeam-backend --stream start",
+    "start:dev": "docker-compose up",
+    "stop:dev": "docker-compose down",
     "lint": "lerna run --stream lint",
     "test": "lerna run --stream test"
   },

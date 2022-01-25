@@ -8,6 +8,8 @@ Built using the [Nest](https://github.com/nestjs/nest) framework TypeScript star
 
 The server reads from `.env` or the shell.
 
+> Warning: `OCN_SIGNER` is pre-filled in `.env.defaults` for development purposes. Do not use it outside of this context.
+
 See [Environment Variables](./ENV.md).
 
 ## Installation

@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  rebeam-backend:
+    container_name: rebeam-backend
+    build:
+      context: ./packages/rebeam-backend
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./packages/rebeam-backend/:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      - rebeam-backend-db
+    environment:
+      - TYPEORM_CONNECTION=postgres
+      - TYPEORM_HOST=rebeam-backend-db
+      - TYPEORM_USERNAME=postgres
+      - TYPEORM_PASSWORD=postgres
+      - TYPEORM_DATABASE=postgres
+      - TYPEORM_PORT=5432
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=false
+
+  rebeam-backend-db:
+    image: postgres:latest
+    container_name: rebeam-backend-db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./storage/ev-dashboard/postgres:/var/lib/postgresql
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_PORT=5432

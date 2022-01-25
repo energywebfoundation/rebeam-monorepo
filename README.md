@@ -20,6 +20,8 @@ Contains the following packages:
 Before installing, download and install Node.js. Node.js 14 (LTS) or higher is required.
 NPM 8.3.2 or higher is also required.
 
+For development, we use Docker, including `docker-compose`.
+
 This monorepo uses [lerna](https://github.com/lerna/lerna).
 
 Installation is done using the following commands:
@@ -36,7 +38,8 @@ $ npm run build
 
 ## Run
 ``` sh
-$ npm run start-backend
+$ npm run start:dev # requires docker-compose
+$ npm run stop:dev
 ```
 ## Testing
 

@@ -1,2 +1,3 @@
-//This should mention EW-DOS dependents and dependencies
-//Overview of modules/packages and how they interact (i.e. organization/application/role OR Traceability/Trade/Device Registry/Organizations)
+# Architecture
+
+See [Architecture and Flow](https://energyweb.atlassian.net/wiki/spaces/REB/pages/2925953053/Architecture+and+Flow).
