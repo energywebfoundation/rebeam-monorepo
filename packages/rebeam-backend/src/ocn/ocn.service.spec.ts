@@ -14,11 +14,13 @@ describe('OcnService', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: (key: string) => ({
-              'ocn.signer': '49b2e2b48cfc25fda1d1cbdb2197b83902142c6da502dcf1871c628ea524f11b'
-            }[key])
-          }
-        }
+            get: (key: string) =>
+              ({
+                'ocn.signer':
+                  '49b2e2b48cfc25fda1d1cbdb2197b83902142c6da502dcf1871c628ea524f11b',
+              }[key]),
+          },
+        },
       ],
     }).compile();
 
