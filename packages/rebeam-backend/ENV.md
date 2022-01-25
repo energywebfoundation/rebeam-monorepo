@@ -6,11 +6,11 @@ The OCN Component uses the [OCN Bridge](https://github.com/energywebfoundation/o
 
 Registration to the OCN should be done once, manually.
 
-### OCN_OCPI_SERVER_PORT
+### `OCN_OCPI_SERVER_PORT`
 
 Dictates which port the embedded OCPI server will run on.
 
-### OCN_SIGNER
+### `OCN_SIGNER`
 
 The secp256k1 private key used to sign OCPI messages on the OCN. This should
 match the same key used to register on the OCN.

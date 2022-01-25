@@ -6,6 +6,8 @@ Built using the [Nest](https://github.com/nestjs/nest) framework TypeScript star
 
 ## Config
 
+The server reads from `.env` or the shell.
+
 See [Environment Variables](./ENV.md).
 
 ## Installation
