@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: ev-dashboard-db
+    restart: always
+    ports:
+      - ${TYPEORM_PORT}:5432
+    volumes:
+      - ./storage/ev-dashboard/postgres:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=${TYPEORM_USERNAME}
+      - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
+      - POSTGRES_DB=${TYPEORM_DATABASE}
+      - POSTGRES_HOST=${TYPEORM_HOST}
