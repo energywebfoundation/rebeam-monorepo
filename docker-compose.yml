@@ -2,13 +2,13 @@ version: '3'
 
 services:
 
-  rebeam-backend:
-    container_name: rebeam-backend
+  emsp-backend:
+    container_name: emsp-backend
     build:
-      context: ./packages/rebeam-backend
+      context: ./packages/emsp-backend
       dockerfile: ./Dockerfile.dev
     volumes:
-      - ./packages/rebeam-backend/:/app
+      - ./packages/emsp-backend/:/app
       - /app/node_modules
     ports:
       - 3000:3000
@@ -24,9 +24,9 @@ services:
       - TYPEORM_SYNCHRONIZE=true
       - TYPEORM_LOGGING=false
 
-  rebeam-backend-db:
+  emsp-backend-db:
     image: postgres:latest
-    container_name: rebeam-backend-db
+    container_name: emsp-backend-db
     restart: always
     ports:
       - 5432:5432
