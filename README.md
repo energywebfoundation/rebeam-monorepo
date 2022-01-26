@@ -53,10 +53,15 @@ $ npm run stop:dev
 $ npm run test
 ```
 
-For more details, visit the [installation guide](//LINK TO READ THE DOCS INSTALL PAGE)
+## Deployment
 
-## Documentation
-- [ReadTheDocs](https://origins.readthedocs.io/en/latest/)
+To build the EMSP Backend:
+```bash
+$ cd packages/emsp-backend
+$ docker build -t emsp-backend .
+```
+
+When running the container, please refer to the required [environment variables](./packages/emsp-backend/ENV.md).
 
 ## Contributing Guidelines
 See [contributing.md](./contributing.md)
