@@ -5,10 +5,10 @@ import { LoggerService } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const logger = app.get(LoggerService)
+  const logger = app.get(LoggerService);
   const config = app.get(ConfigService);
   const port = +config.get('server.port');
   await app.listen(port);
-  logger.log(`Listening on port ${port}`, 'NestApplication')
+  logger.log(`Listening on port ${port}`, 'NestApplication');
 }
 bootstrap();
