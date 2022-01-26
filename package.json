@@ -2,8 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap && npm run init",
-    "init": "lerna run --stream init",
+    "bootstrap": "lerna bootstrap && lerna run --stream init",
     "build": "lerna run --stream build",
     "start:dev": "docker-compose up",
     "stop:dev": "docker-compose down",
