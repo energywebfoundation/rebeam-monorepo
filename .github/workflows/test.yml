@@ -69,11 +69,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ needs.build-install.outputs.matrix.node-version }}
-      # - uses: actions/cache@v2
-      #   id: restore-build
-      #   with:
-      #     path: ./*
-      #     key: ${{ github.sha }}
+      - uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
       # - name: Start containers
       #   run: docker-compose up -d --build
 
