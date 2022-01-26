@@ -12,7 +12,7 @@ Contains the following packages:
 
 | Name | Description |
 |------|-------------|
-| rebeam-backend | NestJS server that manages EV Driver charging sessions over the OCN |
+| emsp-backend | NestJS server that manages EV Driver charging sessions over the OCN |
 
 ## Installation
 ### Requirements
@@ -28,12 +28,17 @@ Installation is done using the following commands:
 
 ``` sh
 $ npm install
-$ npm run bootstrap
+$ npm run init
 ```
 
 ## Build
 ``` sh
 $ npm run build
+```
+
+## Update dependencies
+```
+$ npm run update
 ```
 
 ## Run
