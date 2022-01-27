@@ -22,6 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@energyweb/ocn-bridge": "git://github.com/energywebfoundation/ocn-bridge.git#v4",
     "@ethersproject/wallet": "^5.5.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",
