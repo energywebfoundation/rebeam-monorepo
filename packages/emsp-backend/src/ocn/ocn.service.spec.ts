@@ -29,14 +29,11 @@ describe('OcnService', () => {
         },
         {
           provide: Providers.OCN_BRIDGE,
-          inject: [
-            LoggerService,
-            ConfigService,
-            OcnApiService,
-            OcnDbService,
-          ],
-          useFactory: () => { return },
-        }
+          inject: [LoggerService, ConfigService, OcnApiService, OcnDbService],
+          useFactory: () => {
+            return;
+          },
+        },
       ],
     }).compile();
 
