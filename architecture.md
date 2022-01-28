@@ -11,7 +11,8 @@ over the Open Charging Network (OCN).
 The main differences are:
 - This component acts as an eMobility Service Provider (eMSP). We wish to send
 messages directly to the CPO on behalf of our EV Drivers. The "EV Dashboard" is
-an OCN "App" which has been granted permissions to read certain messages the CPO is sending to a separate eMSP.
+an OCN "App" which has been granted permissions to read certain messages the CPO
+is sending to a separate eMSP.
 - The ReBeam frontend component is used by EV Drivers (customers of a supplier).
 They use the frontend to remotely request the start (and stop) of a charging
 session. The EV Dashboard frontend component is used by companies (TSO, DSO,
@@ -26,5 +27,7 @@ eMSP and CPO) to manage devices (Vehicles and Charge Points).
 
 ### OCN Components
 
-- [OCN Bridge](https://github.com/energywebfoundation/ocn-bridge/tree/v4) - this is an embedded OCPI Server used
-to aid OCN integration.
+- [OCN Bridge](https://github.com/energywebfoundation/ocn-bridge/tree/v4) - an
+embedded OCPI Server used to aid OCN integration.
+- [OCN Tools](https://github.com/energywebfoundation/ocn-tools) - eMSP and CPO
+mock (simulation) servers.
