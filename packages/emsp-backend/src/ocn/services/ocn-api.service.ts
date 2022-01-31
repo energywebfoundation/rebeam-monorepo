@@ -5,7 +5,7 @@ import {
   IPluggableAPI,
   ISession,
 } from '@energyweb/ocn-bridge';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '../../logger/logger.service';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {

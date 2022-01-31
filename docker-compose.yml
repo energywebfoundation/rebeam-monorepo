@@ -13,10 +13,10 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - rebeam-backend-db
+      - emsp-backend-db
     environment:
       - TYPEORM_CONNECTION=postgres
-      - TYPEORM_HOST=rebeam-backend-db
+      - TYPEORM_HOST=emsp-backend-db
       - TYPEORM_USERNAME=postgres
       - TYPEORM_PASSWORD=postgres
       - TYPEORM_DATABASE=postgres

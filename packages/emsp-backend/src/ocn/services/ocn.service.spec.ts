@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Providers } from '../types/symbols';
-import { LoggerService } from '../logger/logger.service';
+import { Providers } from '../../types/symbols';
+import { LoggerService } from '../../logger/logger.service';
 import { OcnApiService } from './ocn-api.service';
 import { OcnDbService } from './ocn-db.service';
 import { OcnService } from './ocn.service';

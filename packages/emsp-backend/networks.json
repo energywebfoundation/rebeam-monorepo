@@ -1,0 +1,6 @@
+{
+  "provider": {
+    "host": "ganache",
+    "port": 8545
+  }
+}
