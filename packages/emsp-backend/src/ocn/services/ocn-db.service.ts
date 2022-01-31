@@ -15,7 +15,7 @@ export class OcnDbService implements IPluggableDB {
     @InjectRepository(Auth)
     private readonly authRepository: Repository<Auth>,
     @InjectRepository(Endpoint)
-    private readonly endpointRepository: Repository<Endpoint>,
+    private readonly endpointRepository: Repository<Endpoint>
   ) {}
 
   async getTokenB(): Promise<string> {
@@ -51,7 +51,7 @@ export class OcnDbService implements IPluggableDB {
       identifier,
       role,
     });
-    return found?.url ?? ''
+    return found?.url ?? '';
   }
 
   private async updateAuth(update: Partial<Auth>) {

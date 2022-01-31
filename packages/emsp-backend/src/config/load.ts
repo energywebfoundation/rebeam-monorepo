@@ -1,8 +1,8 @@
-import { OcnConfig, OcnEnvironmentName, ServerConfig } from "./types";
+import { OcnConfig, OcnEnvironmentName, ServerConfig } from './types';
 
 export default (): {
-  server: ServerConfig,
-  ocn: OcnConfig,
+  server: ServerConfig;
+  ocn: OcnConfig;
 } => ({
   server: {
     port: process.env.SERVER_PORT,

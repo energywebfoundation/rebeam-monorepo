@@ -18,9 +18,7 @@ import { Auth } from './schemas/auth.schema';
 import { Endpoint } from './schemas/endpoint.schema';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Auth, Endpoint]),
-  ],
+  imports: [TypeOrmModule.forFeature([Auth, Endpoint])],
   providers: [
     OcnApiService,
     OcnDbService,
