@@ -2,6 +2,48 @@ version: '3'
 
 services:
 
+  ganache:
+    container_name: ganache
+    image: 'trufflesuite/ganache-cli'
+    ports:
+      - '8545:8545'
+    volumes:
+      - ./storage/ganache:/app/storage
+    command: [
+      "-m",
+      "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat",
+      "--accounts",
+      "20",
+      "--networkId=9",
+      "--gasPrice=1",
+      "--gasLimit=10000000",
+      "--db=/app/storage"
+    ]
+
+  ocn-node:
+    container_name: ocn-node
+    build:
+      context: ./docker/ocn-node
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - ocn-node-db
+
+  ocn-node-db:
+    image: postgres:latest
+    container_name: ocn-node-db
+    restart: always
+    ports:
+      - 5435:5432
+    volumes:
+      - ./storage/ocn-node/postgres:/var/lib/postgresql
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_PORT=5432
+
   emsp-backend:
     container_name: emsp-backend
     build:
@@ -31,7 +73,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./storage/ev-dashboard/postgres:/var/lib/postgresql
+      - ./storage/emsp-backend/postgres:/var/lib/postgresql
     environment:
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=postgres

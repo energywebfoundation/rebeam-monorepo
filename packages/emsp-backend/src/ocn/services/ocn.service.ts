@@ -10,6 +10,16 @@ export class OcnService {
     private readonly logger: LoggerService
   ) {}
 
+  async getConnectionStatus() {
+    return {
+      connected: await this.bridge.registry.isConnectedToNode(),
+    };
+  }
+
+  async register(nodeURL: string, tokenA: string) {
+    await this.bridge.registry.register(nodeURL, tokenA);
+  }
+
   /**
    * Here we can define methods to send requests to the CPO using the OCN Bridge
    */

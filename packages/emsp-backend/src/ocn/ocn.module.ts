@@ -16,6 +16,7 @@ import { OcnService } from './services/ocn.service';
 import { OcnConfig } from '../config/types';
 import { Auth } from './schemas/auth.schema';
 import { Endpoint } from './schemas/endpoint.schema';
+import { OcnController } from './ocn.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Auth, Endpoint])],
@@ -87,5 +88,6 @@ import { Endpoint } from './schemas/endpoint.schema';
     },
     OcnService,
   ],
+  controllers: [OcnController],
 })
 export class OcnModule {}
