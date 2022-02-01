@@ -14,7 +14,8 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0",
-    "husky": "^7.0.4"
+    "husky": "^7.0.4",
+    "ethers": "^5.5.4"
   },
   "engines": {
     "node": "^14.8.3",
