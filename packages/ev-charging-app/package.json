@@ -46,8 +46,8 @@
     "test": "react-scripts test --watchAll=false --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "test:watch": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "format": "echo 'no formatter configured'",
-    "lint": "echo 'no linter configured'"
+    "format": "prettier --write \"src/**/*.tsx\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.tsx\" --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -68,7 +68,16 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.4.0"
+    "@capacitor/cli": "3.4.0",
+    "@energyweb/eslint-config": "^0.0.0",
+    "@energyweb/prettier-config": "^0.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "prettier": "^2.3.2"
   },
   "description": "An Ionic project"
 }
