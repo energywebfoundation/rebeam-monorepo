@@ -58,7 +58,8 @@ export class OcnController {
       );
     }
     try {
-      await this.ocnService.register(body.nodeURL, body.tokenA);
+      const bs64TokenA = Buffer.from(body.tokenA).toString('base64')
+      await this.ocnService.register(body.nodeURL, bs64TokenA);
     } catch (err) {
       this.logger.error(
         `Cannot register on OCN: ${JSON.stringify(err)}`,
