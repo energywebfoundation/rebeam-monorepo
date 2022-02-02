@@ -10,12 +10,7 @@ import { OcnBridgeProvider } from './providers/ocn-bridge.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Auth, Endpoint])],
-  providers: [
-    OcnApiService,
-    OcnDbService,
-    OcnBridgeProvider,
-    OcnService,
-  ],
+  providers: [OcnApiService, OcnDbService, OcnBridgeProvider, OcnService],
   controllers: [OcnController],
 })
 export class OcnModule {}

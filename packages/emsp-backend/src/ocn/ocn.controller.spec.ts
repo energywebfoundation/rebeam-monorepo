@@ -22,32 +22,32 @@ describe('OcnController', () => {
       providers: [
         {
           provide: getRepositoryToken(Auth),
-          useClass: Repository
+          useClass: Repository,
         },
         {
           provide: getRepositoryToken(Endpoint),
-          useClass: Repository
+          useClass: Repository,
         },
         {
           provide: ConfigService,
           useValue: {
             get: (key: string) =>
-            ({
-              ocn: {
-                ocpiServerBaseUrl: 'http://localhost:8080',
-                ocpiServerPort: '8080',
-                signer:
-                  '49b2e2b48cfc25fda1d1cbdb2197b83902142c6da502dcf1871c628ea524f11b',
-                environment: 'volta'
-              }
-            }[key]),
+              ({
+                ocn: {
+                  ocpiServerBaseUrl: 'http://localhost:8080',
+                  ocpiServerPort: '8080',
+                  signer:
+                    '49b2e2b48cfc25fda1d1cbdb2197b83902142c6da502dcf1871c628ea524f11b',
+                  environment: 'volta',
+                },
+              }[key]),
           },
         },
         LoggerService,
         OcnDbService,
         OcnApiService,
         OcnBridgeProvider,
-        OcnService
+        OcnService,
       ],
       controllers: [OcnController],
     }).compile();

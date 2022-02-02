@@ -1,12 +1,17 @@
-import { DefaultRegistry, IBridge, ModuleImplementation, startBridge } from "@energyweb/ocn-bridge";
-import { Wallet } from "@ethersproject/wallet";
-import { FactoryProvider } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { OcnConfig } from "../../config/types";
-import { LoggerService } from "../../logger/logger.service";
-import { Providers } from "../../types/symbols";
-import { OcnApiService } from "../services/ocn-api.service";
-import { OcnDbService } from "../services/ocn-db.service";
+import {
+  DefaultRegistry,
+  IBridge,
+  ModuleImplementation,
+  startBridge,
+} from '@energyweb/ocn-bridge';
+import { Wallet } from '@ethersproject/wallet';
+import { FactoryProvider } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { OcnConfig } from '../../config/types';
+import { LoggerService } from '../../logger/logger.service';
+import { Providers } from '../../types/symbols';
+import { OcnApiService } from '../services/ocn-api.service';
+import { OcnDbService } from '../services/ocn-db.service';
 
 export const OcnBridgeProvider: FactoryProvider<Promise<IBridge>> = {
   provide: Providers.OCN_BRIDGE,
