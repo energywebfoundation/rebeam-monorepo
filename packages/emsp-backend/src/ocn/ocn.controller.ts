@@ -9,8 +9,8 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoggerService } from 'src/logger/logger.service';
-import { ApiError, ApiErrorCode } from 'src/types/types';
+import { LoggerService } from '../logger/logger.service';
+import { ApiError, ApiErrorCode } from '../types/types';
 import { ConnectionDto } from './dtos/connection.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { OcnService } from './services/ocn.service';
