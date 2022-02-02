@@ -52,9 +52,9 @@ backend with the OCN Node:
 node scripts/setup.js
 ```
 
-The docker network persists data in the `storage` directory (ganache state,
-OCN Node DB, eMSP Backend DB). Running `docker-compose down` or deleting this
-directory will reset the state on future restarts.
+The docker network persists data in volumes (ganache state, OCN Node DB, eMSP
+Backend DB). Running `docker-compose down` will reset the state on future
+restarts.
 
 ## Testing
 
