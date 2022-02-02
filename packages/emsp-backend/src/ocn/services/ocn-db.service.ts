@@ -24,7 +24,7 @@ export class OcnDbService implements IPluggableDB {
   }
 
   async setTokenB(tokenB: string): Promise<void> {
-    const bs64TokenB = Buffer.from(tokenB).toString('base64')
+    const bs64TokenB = Buffer.from(tokenB).toString('base64');
     await this.updateAuth({ tokenB: bs64TokenB });
     return;
   }
@@ -35,7 +35,7 @@ export class OcnDbService implements IPluggableDB {
   }
 
   async setTokenC(tokenC: string): Promise<void> {
-    const bs64TokenC = Buffer.from(tokenC).toString('base64')
+    const bs64TokenC = Buffer.from(tokenC).toString('base64');
     await this.updateAuth({ tokenC: bs64TokenC });
     return;
   }

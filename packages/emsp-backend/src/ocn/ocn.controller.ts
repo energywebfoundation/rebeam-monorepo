@@ -58,7 +58,7 @@ export class OcnController {
       );
     }
     try {
-      const bs64TokenA = Buffer.from(body.tokenA).toString('base64')
+      const bs64TokenA = Buffer.from(body.tokenA).toString('base64');
       await this.ocnService.register(body.nodeURL, bs64TokenA);
     } catch (err) {
       this.logger.error(
