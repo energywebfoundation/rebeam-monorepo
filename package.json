@@ -7,8 +7,8 @@
     "build": "lerna run --stream --parallel build",
     "start:dev": "docker-compose up",
     "stop:dev": "docker-compose down",
-    "format": "lerna run --stream format",
-    "lint": "lerna run --stream lint",
+    "format": "lerna run --stream  --parallel format",
+    "lint": "lerna run --stream --parallel lint",
     "test": "lerna run --stream --parallel test",
     "prepare": "husky install"
   },
