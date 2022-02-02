@@ -58,7 +58,22 @@ describe('OcnService', () => {
     await stopBridge(bridge);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should return connected status', async () => {
+    jest.spyOn(bridge.registry, 'isConnectedToNode').mockResolvedValue(true);
+    const { connected } = await service.getConnectionStatus();
+    expect(connected).toBe(true);
+  });
+
+  it('should register the OCPI party', async () => {
+    const actualUrl = 'http://localhost:8080';
+    const actualToken = 'abcde-12345';
+    jest
+      .spyOn(bridge.registry, 'register')
+      .mockImplementation(async (url, token) => {
+        expect(url).toBe(actualUrl);
+        expect(token).toBe(actualToken);
+        return;
+      });
+    await service.register(actualUrl, actualToken);
   });
 });

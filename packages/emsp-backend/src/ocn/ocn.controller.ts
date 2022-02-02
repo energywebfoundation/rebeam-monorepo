@@ -4,7 +4,6 @@ import {
   Controller,
   Get,
   HttpCode,
-  InternalServerErrorException,
   Post,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -27,16 +26,23 @@ export class OcnController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Determine connection status of OCN Bridge' })
   @ApiResponse({ status: 200, type: ConnectionDto })
-  async getConnection(): Promise<ConnectionDto> {
+  async getConnection() {
     // TODO: authenticate
     try {
-      return this.ocnService.getConnectionStatus();
+      const status = await this.ocnService.getConnectionStatus();
+      return status;
     } catch (err) {
       this.logger.error(
-        `Cannot fetch OCN connection status: ${JSON.stringify(err)}`,
+        `Cannot fetch OCN connection status: ${err.message}`,
         OcnController.name
       );
-      throw new InternalServerErrorException(err);
+      throw new BadGatewayException(
+        new ApiError(
+          ApiErrorCode.OCN_BRIDGE,
+          'The OCN Bridge failed to fetch the status. Are the desired RPC and OCN Nodes available?',
+          err.message
+        )
+      );
     }
   }
 
@@ -62,14 +68,14 @@ export class OcnController {
       await this.ocnService.register(body.nodeURL, bs64TokenA);
     } catch (err) {
       this.logger.error(
-        `Cannot register on OCN: ${JSON.stringify(err)}`,
+        `Cannot register on OCN: ${err.message}`,
         OcnController.name
       );
       throw new BadGatewayException(
         new ApiError(
           ApiErrorCode.OCN_BRIDGE,
           'The OCN Bridge failed to register. Are the desired RPC and OCN Nodes available?',
-          err
+          err.message
         )
       );
     }
