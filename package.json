@@ -4,12 +4,12 @@
   "scripts": {
     "init": "lerna bootstrap && lerna run --stream init",
     "update": "lerna bootstrap",
-    "build": "lerna run --stream build",
+    "build": "lerna run --stream --parallel build",
     "start:dev": "docker-compose up",
     "stop:dev": "docker-compose down",
     "format": "lerna run --stream format",
     "lint": "lerna run --stream lint",
-    "test": "lerna run --stream test",
+    "test": "lerna run --stream --parallel test",
     "prepare": "husky install"
   },
   "devDependencies": {
