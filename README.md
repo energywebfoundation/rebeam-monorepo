@@ -43,9 +43,19 @@ $ npm run update
 
 ## Run
 ``` sh
-$ npm run start:dev # requires docker-compose
-$ npm run stop:dev
+$ docker-compose up # requires docker-compose
 ```
+
+Next, run the setup script to create your local OCN and register the eMSP
+backend with the OCN Node:
+```
+node scripts/setup.js
+```
+
+The docker network persists data in the `storage` directory (ganache state,
+OCN Node DB, eMSP Backend DB). Running `docker-compose down` or deleting this
+directory will reset the state on future restarts.
+
 ## Testing
 
 ### Combined Unit & Integration Tests
