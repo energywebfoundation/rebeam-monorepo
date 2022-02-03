@@ -1,4 +1,4 @@
-export   const mockData = {
+export const mockData = {
     type: "FeatureCollection",
     features: [{
         type: "Feature",
