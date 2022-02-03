@@ -13,7 +13,6 @@ interface ChargePointDetailProps
 }
 const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointDetailProps) => {
   const {match} = props;
-  console.log(match, "IS THERE A MATCH? ")
   const { chargePoint } = props;
   const {id, stationName} = chargePoint;
   return (
