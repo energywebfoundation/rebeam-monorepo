@@ -3,18 +3,19 @@ import MetaMaskIcon from "../assets/login-icons/metamask-icon.svg";
 import WalletConnectIcon from "../assets/login-icons/wallet-connect-icon.svg";
 import { IonModal, IonContent, IonPage, IonCard, IonButton, IonTitle, IonCardContent, IonMenuButton, IonGrid, IonRow, IonCol, IonHeader } from '@ionic/react';
 import Login from "../pages/Login";
-import { ProviderType } from "iam-client-lib";
+// import { ProviderType } from "iam-client-lib";
 interface LoginOptionsProps {
-    login: any
+    loginMethod: any
 }
 
 
 const LoginOptions = (props: LoginOptionsProps) => {
-    const {login} = props;
+    const {loginMethod} = props;
     const handleSelectMetamask = async () => {
         console.log("selected Metamask")
-        const result = await login(ProviderType.MetaMask);
-        console.log(result, "THE RESULT!!!!!")
+        loginMethod();
+        // const result = await login(ProviderType.MetaMask);
+        // console.log(result, "THE RESULT!!!!!")
     }
     
     const handleSelectWalletConnect = async () => {

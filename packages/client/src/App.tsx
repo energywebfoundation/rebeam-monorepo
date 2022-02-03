@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import React, { useRef, useState, useEffect } from "react";
 import {
   IonApp,
@@ -16,6 +16,7 @@ import {
 import Map from "./components/Map";
 import Login from "./pages/Login";
 import ChargePointDetail from './pages/ChargePointDetail';
+import ChargePointNotSelected from './pages/ChargePointNotSelected';
 import { IonReactRouter } from '@ionic/react-router';
 
 
@@ -37,7 +38,6 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Modal from "./components/Modal";
 
 setupIonicReact();
 
@@ -49,20 +49,34 @@ const App: React.FC = () => {
   // const dismissSelectedChargePoint = () => {
   //   setSelectedChargePoint(undefined)
   // }
-  const [loggedIn, setIsLoggedIn] = useState<Boolean>(false);
   const [did, setDid] = useState<string>("")
+  console.log(did, "THE DID IS SET")
   return (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path="/login">
-            <Login setDid={setDid}/>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route
+            exact path="/login"
+            render={() => {
+              if (did) {
+                return <Redirect to="/map"/>
+              }
+              return <Login setDid={setDid} />;
+            }}
+          >
           </Route>
           <Route exact path="/map">
             <Map setSelectedChargePoint={setSelectedChargePoint} selectedChargePoint={selectedChargePoint}></Map>
           </Route>
-          <Route exact path="/detail">
-            <ChargePointDetail chargePoint={selectedChargePoint}/>
+          <Route
+            exact path="/detail/:id"
+            render={(props) => {
+              return selectedChargePoint ? <ChargePointDetail {...props} chargePoint={selectedChargePoint}/> :  <ChargePointNotSelected/>
+            }}
+          >
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

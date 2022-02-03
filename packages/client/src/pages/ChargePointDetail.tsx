@@ -1,21 +1,30 @@
 import { IonContent, IonHeader, IonCard, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-interface CardProps  {
-    chargePoint?: {
-        id?: number,
-        stationName?: string
-    }
+import { RouteComponentProps } from "react-router-dom";
+
+interface ChargePointDetailProps
+  extends RouteComponentProps<{
+    id: string;
+  }> {
+  chargePoint: {
+    id: number,
+    stationName: string
+  }
+
 }
-const ChargePointDetail: React.FC<CardProps> = (props: CardProps) => {
-    const {chargePoint} = props;
+const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointDetailProps) => {
+  const {match} = props;
+  console.log(match, "IS THERE A MATCH? ")
+  const { chargePoint } = props;
+  const {id, stationName} = chargePoint;
   return (
     <IonPage>
       <IonHeader>
-          <IonTitle>Charge Point Detail Page</IonTitle>
+        <IonTitle>Charge Point Detail Page</IonTitle>
       </IonHeader>
       <IonContent fullscreen>
         <IonCard>
-        <p>Station Id</p>
-        <p>Station Name</p>
+          <p>Station Id: {id}</p>
+          <p>Station Name {stationName}</p>
         </IonCard>
       </IonContent>
     </IonPage>

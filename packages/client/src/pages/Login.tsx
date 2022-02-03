@@ -29,6 +29,11 @@ const Login = (props: LoginProps) => {
     //     }
     // };
 
+    const loginMethod = async () => {
+        console.log("logging in!")
+        setDid("didstring")
+    }
+
     // const login = async function ({
     //     providerType,
     // }: {
@@ -71,13 +76,11 @@ const Login = (props: LoginProps) => {
     //     //setLoading(false);
     // };
 
-    const login = () => {
-        console.log(login)
-    }
+ 
 
     return (
         <IonPage>
-            <LoginOptions login={login} />
+            <LoginOptions loginMethod={loginMethod} />
         </IonPage>
     );
 };
