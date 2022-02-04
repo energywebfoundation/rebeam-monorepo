@@ -12,7 +12,8 @@ Contains the following packages:
 
 | Name | Description |
 |------|-------------|
-| emsp-backend | NestJS server that manages EV Driver charging sessions over the OCN |
+| `emsp-backend` | NestJS server that manages EV Driver charging sessions over the OCN |
+| `ev-charging-app` | Customer-facing mobile/web application for managing supplier credentials and initiating charging sessions |
 
 ## Installation
 ### Requirements
@@ -60,6 +61,13 @@ To build the EMSP Backend:
 $ cd packages/emsp-backend
 $ docker build -t emsp-backend .
 ```
+
+To build the EV Charging App:
+```bash
+$ cd packages/ev-charging-app
+$ npm run build
+```
+The static files in the `build` directory can then be served.
 
 When running the container, please refer to the required [environment variables](./packages/emsp-backend/ENV.md).
 
