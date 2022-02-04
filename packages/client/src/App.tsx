@@ -74,7 +74,10 @@ const App: React.FC = () => {
           <Route
             exact path="/detail/:id"
             render={(props) => {
-              return selectedChargePoint ? <ChargePointDetail {...props} chargePoint={selectedChargePoint}/> :  <ChargePointNotSelected/>
+              if (!selectedChargePoint) {
+                return <Redirect to="/map"/>
+              }
+              return  <ChargePointDetail {...props} chargePoint={selectedChargePoint}/>
             }}
           >
           </Route>

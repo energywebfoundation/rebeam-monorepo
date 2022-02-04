@@ -1,19 +1,25 @@
-import { IonContent, IonHeader, IonCard, IonIcon, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonCard, IonIcon, IonItemDivider, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 import { RouteComponentProps } from "react-router-dom";
 import React, { useState } from "react";
 import RetailerDropdown from "../components/RetailerDropdown";
 import { logoElectron } from "ionicons/icons";
 import useRetailers from "../hooks/getRetailers";
 import ChargingSession from "../components/ChargingSession";
+import StationHeader from "../components/StationHeader";
+import NavigationOptions from "../components/NavigationOptions";
+import styled from "styled-components";
 
+interface ChargePoint {
+  id: number,
+  stationName: string,
+  formattedAddress?: string,
+  img?: string
+}
 interface ChargePointDetailProps
   extends RouteComponentProps<{
     id: string;
   }> {
-  chargePoint: {
-    id: number,
-    stationName: string
-  }
+  chargePoint: ChargePoint
 
 }
 export interface Provider {
@@ -21,19 +27,28 @@ export interface Provider {
   id: number,
   logo?: string
 }
+
+const SectionBreak = styled.br`
+backgroundColor: "#B3BBC0"
+`
+
+const SessionButton = styled(IonButton)`
+color: orange
+
+`
+
 const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointDetailProps) => {
   const [isCharging, setIsCharging] = useState<number>();
   const [chargeStopTime, setChargeStopTime] = useState<number>()
   const [selectedProvider, setSelectedProvider] = useState<Provider>()
-  console.log(selectedProvider, "IS THERE A PROVIDER NOW")
+  console.log("State Selected Provider Set:", selectedProvider, )
   const { match } = props;
   const { chargePoint } = props;
   const { id, stationName } = chargePoint;
   const { retailers, loadingRetailers } = useRetailers();
-  console.log(retailers, "ARE THERE RETAILERS???")
+  console.log("State Retailers Set:", retailers)
   const handleCharge = () => {
     const timeNow = Date.now();
-    console.log(timeNow, "whats this")
     if (!isCharging) {
       setIsCharging(timeNow);
       setChargeStopTime(undefined)
@@ -42,34 +57,31 @@ const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointD
       setIsCharging(undefined)
     }
   }
-  console.log(selectedProvider, isCharging, "are all qualifications met")
   const hasRetailers = Object.keys(retailers).length > 0
-  console.log(hasRetailers, "IT DOES HAVE RETAILERS")
   return (
     <IonPage>
-      <IonHeader className="ion-padding" style={{
-        backgroundColor: "blue",
-        color: "white"
-      }}>
-        <IonTitle>Charge Point Detail Page</IonTitle>
-      </IonHeader>
       <IonContent>
-        <IonCard>
-          <p>Station Id: {id}</p>
-          <p>Station Name {stationName}</p>
-        </IonCard>
+      <StationHeader/>
+      <hr style={{
+        backgroundColor: "#B3BBC0"
+      }}></hr>
+      <NavigationOptions/>
+      <hr style={{
+        backgroundColor: "#B3BBC0"
+      }}></hr>
         {hasRetailers && (
           <RetailerDropdown retailers={retailers} loadingRetailers={loadingRetailers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} />
         )}
-        {selectedProvider && (
+          <hr style={{
+        backgroundColor: "#B3BBC0"
+      }}></hr>
+     
           <div className="ion-padding ion-text-center">
-            <p>Your selected provider: {selectedProvider!.name}</p>
-          <IonButton onClick={handleCharge}>
-            <IonIcon slot="start" icon={logoElectron}></IonIcon>
-            {!isCharging ? "Start Charge Session" : "Stop Charge Session"}
-          </IonButton>
+          <SessionButton expand="block" onClick={handleCharge}>
+            {!isCharging ? "Start Charging" : "Stop Charge Session"}
+          </SessionButton>
           </div>
-        )}
+       
         {isCharging && selectedProvider && (
           <ChargingSession chargeStartTime={isCharging} provider={selectedProvider} stopTime={chargeStopTime}/>
         )}

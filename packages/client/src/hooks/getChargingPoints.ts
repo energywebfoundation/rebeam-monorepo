@@ -11,7 +11,6 @@ const useChargePoints = () => {
     const [loadingChargePoints, setLoadingChargePoints] = useState(false);
     useEffect(() => {
         (async () => {
-            console.log("In map hook")
             try {
                 //uncomment this when we have loading treatement: 
                 setLoadingChargePoints(true);

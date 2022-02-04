@@ -1,5 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle } from '@ionic/react';
 import LoginOptions from '../components/LoginOptions';
+import styled from "styled-components";
+import "./login.css"
 // import {
 //     initWithEKC,
 //     initWithGnosis,
@@ -15,6 +17,7 @@ import LoginOptions from '../components/LoginOptions';
 interface LoginProps {
     setDid: (did: string) => void
 }
+
 const Login = (props: LoginProps) => {
     const { setDid } = props;
 
@@ -33,6 +36,8 @@ const Login = (props: LoginProps) => {
         console.log("logging in!")
         setDid("didstring")
     }
+
+   
 
     // const login = async function ({
     //     providerType,
@@ -76,12 +81,17 @@ const Login = (props: LoginProps) => {
     //     //setLoading(false);
     // };
 
- 
+
 
     return (
         <IonPage>
-            <LoginOptions loginMethod={loginMethod} />
-        </IonPage>
+            <IonContent className="login-screen">
+                <div>
+                    <LoginOptions loginMethod={loginMethod} />
+                    </div>
+            </IonContent>
+            
+        </IonPage >
     );
 };
 

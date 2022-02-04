@@ -18,7 +18,6 @@ const useRetailers = () => {
                 // mock for return from call to backend to fetch charge points
                 //const retailers = await call to backend to fetch charge points
                 setRetailers(mockRetailers);
-                console.log(retailers, "THE RETAILERS HERE")
             } catch (error) {
                 console.error('Error while fetching charge points', error);
             } finally {
