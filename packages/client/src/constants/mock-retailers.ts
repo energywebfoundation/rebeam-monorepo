@@ -1,15 +1,15 @@
-import EnergyWebLogo from "../assets/energyweb-logo-black.svg";
-import LichBlickLogo from "../assets/LichtBlick-Logo-2020.svg.png"
+import EnergyWebIcon from "../assets/EnergyWebIcon.png";
+import LichBlickIcon from "../assets/LichtBlockIcon.png"
 
 export const mockRetailers = [
     {
         name: "Energy Web",
         id: 1,
-        logo: EnergyWebLogo
+        logo: EnergyWebIcon
     },
     {
         name: "LichtBlick",
         id: 1,
-        logo: LichBlickLogo
+        logo: LichBlickIcon
     }
 ]

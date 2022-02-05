@@ -4,7 +4,8 @@ import WalletConnectIcon from "../assets/login-icons/wallet-connect-icon.svg";
 import { IonModal, IonContent, IonPage, IonCard, IonButton, IonTitle, IonCardContent, IonMenuButton, IonGrid, IonRow, IonCol, IonHeader, IonImg } from '@ionic/react';
 import Login from "../pages/Login";
 import styled from "styled-components";
-import EliaLogo from "../assets/EliaVector.png"
+import EliaLogo from "../assets/EliaVector.png";
+import strings from "../constants/strings.json";
 import "./login-options.css"
 // import { ProviderType } from "iam-client-lib";
 interface LoginOptionsProps {
@@ -17,8 +18,6 @@ const LoginOptions = (props: LoginOptionsProps) => {
     const handleSelectMetamask = async () => {
         console.log("selected Metamask")
         loginMethod();
-        // const result = await login(ProviderType.MetaMask);
-        // console.log(result, "THE RESULT!!!!!")
     }
 
     const handleSelectWalletConnect = async () => {
@@ -28,6 +27,15 @@ const LoginOptions = (props: LoginOptionsProps) => {
     const MetaMaskLogin = styled(IonButton)`
         --background: white;
         --border-radius: 6px
+    `
+
+    const TitleHeader = styled.div`
+    color: white;
+    text-align: center;
+    font-size: 48px;
+    line-height: 58px;
+    text-align: center;
+    letter-spacing: 0.4px;
     `
 
     return (
@@ -42,14 +50,11 @@ const LoginOptions = (props: LoginOptionsProps) => {
                         </IonImg>
                     </IonCol>
                 </IonRow>
-                <IonRow class="ion-align-items-center">
-                    <IonCol>
-                        <div>
-                            <h1 className="login-header">
-                                Elia ReBeam
-                            </h1>
-
-                        </div>
+                <IonRow >
+                    <IonCol class="ion-align-items-center ion-align-self-center">
+                            <TitleHeader>
+                                {strings.eliaRebeam}
+                            </TitleHeader>
                     </IonCol>
                 </IonRow>
                 <IonRow>

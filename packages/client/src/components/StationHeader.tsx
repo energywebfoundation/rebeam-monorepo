@@ -1,5 +1,4 @@
 import { IonGrid, IonRow, IonCol, IonImg } from "@ionic/react";
-import { url } from "inspector";
 import React from "react";
 import styled from "styled-components";
 import ChargeStationImg from "../assets/BuildingImg.png"
@@ -16,7 +15,8 @@ font-weight: bold;
 font-size: 21px;
 color: #363636;
 margin: 2px 0;
-font-family: Arial
+font-family: Arial;
+text-align: left;
 `
 
 const Address = styled.p`
@@ -26,6 +26,7 @@ font-size: 12px;
 color: #363636;
 margin: 0;
 padding: 0;
+text-align: left;
 `
 const MapIcon = styled(IonImg)`
 `
@@ -37,7 +38,8 @@ font-size: 12px;
 color: #363636;
 margin: 0;
 padding: 0;
-color: #A466FF
+color: #A466FF;
+text-align: left;
 `
 
 // const PhotoContainer = styled.div`
@@ -56,7 +58,9 @@ color: #A466FF
 const StationHeader = () => {
     return (
         <div>
-            <IonGrid>
+            <IonGrid style={{
+                border: "1px solid yellow",
+            }}>
                 <IonRow>
                     <IonCol size="3" style={{
                         marginRight: "14px"
@@ -75,7 +79,6 @@ const StationHeader = () => {
                     <IonCol>
                         <IonGrid  style={{
                                 border: "1px solid green",
-                                height: "100%"
                             }}>
                             <IonRow>
                                 <IonCol>

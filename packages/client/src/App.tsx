@@ -1,5 +1,6 @@
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import React, { useRef, useState, useEffect } from "react";
+
 import {
   IonApp,
   IonContent,
@@ -16,9 +17,8 @@ import {
 import Map from "./components/Map";
 import Login from "./pages/Login";
 import ChargePointDetail from './pages/ChargePointDetail';
-import ChargePointNotSelected from './pages/ChargePointNotSelected';
 import { IonReactRouter } from '@ionic/react-router';
-
+import ChargingSession from "./pages/ChargingSession";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -80,6 +80,9 @@ const App: React.FC = () => {
               return  <ChargePointDetail {...props} chargePoint={selectedChargePoint}/>
             }}
           >
+          </Route>
+          <Route exact path="/charge">
+            <ChargingSession />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

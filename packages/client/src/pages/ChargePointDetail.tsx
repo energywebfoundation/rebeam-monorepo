@@ -8,6 +8,8 @@ import ChargingSession from "../components/ChargingSession";
 import StationHeader from "../components/StationHeader";
 import NavigationOptions from "../components/NavigationOptions";
 import styled from "styled-components";
+import strings from "../constants/strings.json";
+import {useHistory} from "react-router-dom";
 
 interface ChargePoint {
   id: number,
@@ -33,29 +35,26 @@ backgroundColor: "#B3BBC0"
 `
 
 const SessionButton = styled(IonButton)`
-color: orange
-
+font-size: 16px;
+line-height: 20px;
+text-align: center;
+letter-spacing: 0.4px;
+--color: white;
 `
 
 const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointDetailProps) => {
   const [isCharging, setIsCharging] = useState<number>();
-  const [chargeStopTime, setChargeStopTime] = useState<number>()
-  const [selectedProvider, setSelectedProvider] = useState<Provider>()
+  const [chargeStopTime, setChargeStopTime] = useState<number>();
+  const [selectedProvider, setSelectedProvider] = useState<Provider>();
+  const history = useHistory();
   console.log("State Selected Provider Set:", selectedProvider, )
   const { match } = props;
   const { chargePoint } = props;
   const { id, stationName } = chargePoint;
   const { retailers, loadingRetailers } = useRetailers();
   console.log("State Retailers Set:", retailers)
-  const handleCharge = () => {
-    const timeNow = Date.now();
-    if (!isCharging) {
-      setIsCharging(timeNow);
-      setChargeStopTime(undefined)
-    } else if (isCharging) {
-      setChargeStopTime(timeNow)
-      setIsCharging(undefined)
-    }
+  const handleStartCharge = () => {
+    history.push(`/charge`)
   }
   const hasRetailers = Object.keys(retailers).length > 0
   return (
@@ -63,7 +62,8 @@ const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointD
       <IonContent>
       <StationHeader/>
       <hr style={{
-        backgroundColor: "#B3BBC0"
+        backgroundColor: "#B3BBC0",
+        margin: "0"
       }}></hr>
       <NavigationOptions/>
       <hr style={{
@@ -73,12 +73,12 @@ const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointD
           <RetailerDropdown retailers={retailers} loadingRetailers={loadingRetailers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} />
         )}
           <hr style={{
-        backgroundColor: "#B3BBC0"
+        backgroundColor: "#B3BBC0",
+        margin: "0"
       }}></hr>
-     
           <div className="ion-padding ion-text-center">
-          <SessionButton expand="block" onClick={handleCharge}>
-            {!isCharging ? "Start Charging" : "Stop Charge Session"}
+          <SessionButton expand="block" onClick={handleStartCharge} disabled={!selectedProvider} color={selectedProvider ? "primary" : "warning"}>
+            {strings.startCharging}
           </SessionButton>
           </div>
        

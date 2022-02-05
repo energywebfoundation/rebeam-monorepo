@@ -5,6 +5,7 @@ import { Provider } from "../pages/ChargePointDetail";
 import strings from "../constants/strings.json";
 import { logoElectron } from "ionicons/icons";
 import styled from "styled-components";
+import Selected from "../assets/Selected.png";
 
 interface RetailerDropdownProps {
     retailers: any,
@@ -23,7 +24,7 @@ align-content: center
 
 
 const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdownProps) => {
-    const { retailers, loadingRetailers, setSelectedProvider } = props;
+    const { retailers, loadingRetailers, setSelectedProvider, selectedProvider } = props;
     const accordionGroupRef = useRef(null);
     // const logAccordionValue = () => {
     //     if (accordionGroupRef.current) {
@@ -46,7 +47,6 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
     margin: 0;
     padding: 0px;
     color: #363636;;
-    border: 1px solid red;
     `
 
     const SelectSupplierSubHeader = styled.p`
@@ -58,9 +58,12 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
     line-height: 18px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 0px;
-    border: 1px solid purple;
+    
+    `
 
+    const RetailerLabel = styled(IonLabel)`
+    margin: 2px;
+    padding: 5px 5px 5px 10px;
     `
 
 
@@ -68,28 +71,18 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
         <div className="ion-padding ion-text-center">
             <IonAccordionGroup value="retailers" ref={accordionGroupRef}>
                 <IonAccordion value="providers">
-                    <IonItem slot="header" style={{
-                        border: "1px solid red"
-                    }}>
+                    <IonItem slot="header">
                         <IonGrid>
                             <IonRow>
-                                <IonCol class="ion-align-self-center" size="1" style={{
-                                    border: "1px solid pink"
-                                }}>
-                                    <div>
-
-
+                                <IonCol class="ion-align-self-center" size="2">
                                         <IonIcon icon={logoElectron}></IonIcon>
-                                    </div>
                                 </IonCol>
-                                <IonCol style={{
-                                    border: "1px solid blue"
-                                }}>
+                                <IonCol>
                                     <IonGrid>
                                         <IonRow>
                                             <IonCol>
                                                 <SelectSupplierHeader>
-                                                    {strings.selectSupplier}
+                                                    {selectedProvider ? selectedProvider.name : strings.selectSupplier}
                                                 </SelectSupplierHeader>
                                             </IonCol>
                                         </IonRow>
@@ -115,7 +108,7 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                                         height: "20px"
                                     }}></IonImg>
                                 )}
-                                <IonLabel className="ion-padding">{retailer.name}</IonLabel>
+                                <RetailerLabel className="ion-padding">{retailer.name}</RetailerLabel>
                             </IonItem>
                         )
                         )}

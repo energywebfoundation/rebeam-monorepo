@@ -17,6 +17,7 @@ padding: 0;
 text-align: center;
 font-size: 10px;
 line-height: 18px;
+color: #727272;
 
 `
 
@@ -35,7 +36,7 @@ const NavigationOptions = () => {
                             </IonRow>
                             <IonRow>
                                 <IonCol>
-                                    <NavText>{strings["maps"]}</NavText>
+                                    <NavText>{strings.maps}</NavText>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
