@@ -3,8 +3,6 @@ name: Build and deploy
 on:
   push:
     branches: [develop, DOI-1680_*]
-  pull_request:
-    branches: [develop, DOI-1680_*]
   workflow_dispatch:
 
 jobs:
