@@ -18,10 +18,9 @@ export interface Provider {
 
 export interface DetailModalProps {
     selectedChargePoint?: ChargePoint;
-    setSelectedChargePoint: any
     isOpen: boolean;
     handleStartCharge: () => void;
-    dismiss: any
+    showModal: (x: boolean) => void;
 
 }
 
@@ -38,12 +37,13 @@ text-align: center;
 letter-spacing: 0.4px;
 --color: white;
 `
-    const {selectedChargePoint, isOpen, handleStartCharge, dismiss} = props;
+    const {selectedChargePoint, isOpen, handleStartCharge, showModal} = props;
     const [selectedProvider, setSelectedProvider] = useState<Provider>();
     const { retailers, loadingRetailers } = useRetailers();
     const hasRetailers = Object.keys(retailers).length > 0;
     const handleDismiss = () => {
-        dismiss(false)
+        showModal(false)
+        setSelectedProvider(undefined)
     }
     return (
         <div>
@@ -76,8 +76,3 @@ letter-spacing: 0.4px;
 export default ChargePointDetailModal;
 
 
-{/* <IonModal
-isOpen={isOpen}
-breakpoints={[0.1, 0.5, 1]}
-initialBreakpoint={0.5}
-> */}

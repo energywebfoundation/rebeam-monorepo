@@ -1,4 +1,4 @@
-import { IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonPage, IonImg, IonGrid } from '@ionic/react';
+import { IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonImg, IonGrid } from '@ionic/react';
 import { ReactChild, ReactFragment, ReactPortal, useRef } from 'react';
 import { Provider } from "./ChargeDetailModal";
 import strings from "../constants/strings.json";
@@ -25,16 +25,6 @@ align-content: center
 const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdownProps) => {
     const { retailers, loadingRetailers, setSelectedProvider, selectedProvider } = props;
     const accordionGroupRef = useRef(null);
-    // const logAccordionValue = () => {
-    //     if (accordionGroupRef.current) {
-    //       console.log(accordionGroupRef.current);
-    //     }
-    //   }
-    //   const closeAccordion = () => {
-    //     if (accordionGroupRef.current && accordionGroupRef.current.value) {
-    //       accordionGroupRef.current
-    //     }
-    //   }
     const handleSelectProvider = (provider: any) => {
         console.log(provider)
         setSelectedProvider(provider)
@@ -78,7 +68,7 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                         <IonGrid>
                             <IonRow>
                                 <IonCol class="ion-align-self-center" size="2">
-                                        <IonIcon icon={logoElectron}></IonIcon>
+                                    <IonIcon icon={logoElectron}></IonIcon>
                                 </IonCol>
                                 <IonCol>
                                     <IonGrid>
@@ -91,11 +81,11 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                                         </IonRow>
                                         <IonRow>
                                             <IonCol>
-                                            <SelectSupplierSubHeader>
-                                            {strings.supplier}
-                                            </SelectSupplierSubHeader>
-                                                
-                                                </IonCol>
+                                                <SelectSupplierSubHeader>
+                                                    {strings.supplier}
+                                                </SelectSupplierSubHeader>
+
+                                            </IonCol>
                                         </IonRow>
                                     </IonGrid>
                                 </IonCol>
@@ -103,15 +93,21 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                         </IonGrid>
                     </IonItem>
                     <IonList slot="content">
-                        {retailers?.map((retailer: { id: { toString: () => string | undefined; }; logo: string | undefined; name: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined; }, index: number) =>
-                        (
-                            <IonItem key={index} onClick={() => handleSelectProvider(retailer)}>
-                                {retailer.logo && (
-                                    <RetailerLogoImg src={retailer.logo}></RetailerLogoImg>
-                                )}
-                                <RetailerLabel className="ion-padding">{retailer.name}</RetailerLabel>
-                            </IonItem>
-                        )
+                        {retailers?.map((retailer: { id: { toString: () => string | undefined; }; logo: string | undefined; name: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined; }, index: number) => {
+                            const isSelected = retailer?.name === selectedProvider?.name
+                            return (
+                                <IonItem key={index} onClick={() => handleSelectProvider(retailer)}>
+                                    {retailer.logo && (
+                                        <RetailerLogoImg src={retailer.logo}></RetailerLogoImg>
+                                    )}
+                                    <RetailerLabel className="ion-padding">{retailer.name}</RetailerLabel>
+                                    {isSelected && (
+                                        <IonImg src={Selected}></IonImg>
+                                    )
+                                    }
+                                </IonItem>
+                            )
+                        }
                         )}
                     </IonList>
                 </IonAccordion>

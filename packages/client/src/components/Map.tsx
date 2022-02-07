@@ -131,7 +131,7 @@ const Map = (props: MapProps) => {
 
                     )}
                 </ReactMapGL>
-                    <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} setSelectedChargePoint={setSelectedChargePoint} handleStartCharge={handleStartCharge} dismiss={setShowModal} />
+                    <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} handleStartCharge={handleStartCharge} showModal={setShowModal} />
 
            
             </div>

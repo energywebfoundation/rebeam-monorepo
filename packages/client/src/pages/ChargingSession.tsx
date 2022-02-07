@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonNavLink, IonNav } from '@ionic/react';
+import { IonContent, IonPage, IonIcon, IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import styled from "styled-components";
 import strings from "../constants/strings.json";
 import { chevronBackOutline } from "ionicons/icons";
