@@ -77,6 +77,21 @@ export const mockData = {
         52.50698804138875
       ]
     }
+  },
+  {
+    type: "Feature",
+    properties: {
+      id: "478",
+      stationName: "Charge Point 6",
+      formattedAddress: "Heidestraße 2, 10557 Berlin, Germany"
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [
+        -346.58552169799805,
+          52.51355699542472
+      ]
+    }
   }
   ]
 }

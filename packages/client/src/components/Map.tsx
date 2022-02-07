@@ -40,8 +40,8 @@ const Map = (props: MapProps) => {
         setShowModal(false);
         history.push('/charge');
     }
-    console.log(!!selectedChargePoint, "CHECK THIS")
     const handleMapOnClick = (event: MapEvent) => {
+        console.log("in handle on click")
         event.preventDefault();
         const map = mapRef.current;
         const features = map!.queryRenderedFeatures(event.point)
@@ -49,9 +49,11 @@ const Map = (props: MapProps) => {
         const { layer } = selectedProperties;
         const { id } = layer;
         if (id !== CHG_POINTS_LAYER_ID) {
+            console.log("nothing")
             return
         }
         if (!selectedProperties) {
+            console.log("nothing")
             return
         } else {
             const { properties } = selectedProperties;
@@ -59,6 +61,8 @@ const Map = (props: MapProps) => {
             setShowModal(true)
         }
     }
+
+    console.log(showModal, "SHOW MODAL")
 
     const MapContainer = styled.div`
     display: flex;
@@ -115,7 +119,7 @@ const Map = (props: MapProps) => {
                                                 0.5, // on hover
                                                 0
                                             ],
-                                            "circle-color": "#007cbf",
+                                            "circle-color": "#A466FF",
                                             "circle-stroke-width": 2,
                                             "circle-stroke-color": "#fff",
                                         }}
@@ -127,8 +131,7 @@ const Map = (props: MapProps) => {
 
                     )}
                 </ReactMapGL>
-                
-                    <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} setSelectedChargePoint={setSelectedChargePoint} handleStartCharge={handleStartCharge} />
+                    <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} setSelectedChargePoint={setSelectedChargePoint} handleStartCharge={handleStartCharge} dismiss={setShowModal} />
 
            
             </div>

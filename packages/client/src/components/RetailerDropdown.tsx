@@ -1,11 +1,10 @@
-import { IonContent, IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonPage, IonImg, IonGrid } from '@ionic/react';
-import { arrowDownCircle } from 'ionicons/icons';
+import { IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonPage, IonImg, IonGrid } from '@ionic/react';
 import { ReactChild, ReactFragment, ReactPortal, useRef } from 'react';
 import { Provider } from "./ChargeDetailModal";
 import strings from "../constants/strings.json";
 import { logoElectron } from "ionicons/icons";
 import styled from "styled-components";
-import Selected from "../assets/Selected.png";
+import Selected from "../assets/svgs/selected-icon.svg";
 
 interface RetailerDropdownProps {
     retailers: any,
@@ -66,6 +65,10 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
     padding: 5px 5px 5px 10px;
     `
 
+    const RetailerLogoImg = styled(IonImg)`
+    height: 20px;
+    `
+
 
     return (
         <div className="ion-padding ion-text-center">
@@ -104,9 +107,7 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                         (
                             <IonItem key={index} onClick={() => handleSelectProvider(retailer)}>
                                 {retailer.logo && (
-                                    <IonImg src={retailer.logo} style={{
-                                        height: "20px"
-                                    }}></IonImg>
+                                    <RetailerLogoImg src={retailer.logo}></RetailerLogoImg>
                                 )}
                                 <RetailerLabel className="ion-padding">{retailer.name}</RetailerLabel>
                             </IonItem>

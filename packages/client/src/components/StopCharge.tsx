@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { IonContent, IonHeader, IonPage, IonTitle, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonButton } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import strings from "../constants/strings.json";
 
 const MessageContainer = styled.div`
@@ -40,8 +40,6 @@ export const StopCharge = () => {
                     </IonCol>
                 </IonRow>
             </IonGrid>
-
-
         </div>
 
     )

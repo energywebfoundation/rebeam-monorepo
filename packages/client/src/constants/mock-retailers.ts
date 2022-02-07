@@ -1,5 +1,5 @@
-import EnergyWebIcon from "../assets/EnergyWebIcon.png";
-import LichBlickIcon from "../assets/LichtBlockIcon.png"
+import EnergyWebIcon from "../assets/svgs/energyweb-logo.svg";
+import LichBlickIcon from "../assets/svgs/lichtblick-icon.svg"
 
 export const mockRetailers = [
     {

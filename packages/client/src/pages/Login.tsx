@@ -81,17 +81,17 @@ const Login = (props: LoginProps) => {
     //     //setLoading(false);
     // };
 
-
+    const LoginContainer = styled.div`
+    height: 100%;
+    border: 1px solid green;
+    `
 
     return (
         <IonPage>
             <IonContent className="login-screen">
-                <div style={{
-                    height: "100%",
-                    border: "1px solid green"
-                }}>
+                <LoginContainer>
                     <LoginOptions loginMethod={loginMethod} />
-                    </div>
+                    </LoginContainer>
             </IonContent>
             
         </IonPage >

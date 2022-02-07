@@ -1,8 +1,8 @@
 import React from "react";
 import { IonGrid, IonRow, IonCol, IonImg } from "@ionic/react";
-import Waze from "../assets/Waze.png";
-import GoogleMap from "../assets/GoogleMaps.png";
-import AppleMap from "../assets/AppleMaps.png";
+import Waze from "../assets/svgs/waze-icon.svg";
+import GoogleMap from "../assets/svgs/google-maps-icon.svg";
+import AppleMap from "../assets/svgs/maps-icon.svg";
 import styled from "styled-components";
 import strings from "../constants/strings.json"
 
@@ -51,10 +51,8 @@ const NavigationOptions = () => {
                             </IonRow>
                             <IonRow>
                                 <IonCol>
-                                    <NavText>{strings["googleMaps"]}</NavText>
+                                    <NavText>{strings.googleMaps}</NavText>
                                 </IonCol>
-
-
                             </IonRow>
                         </IonGrid>
                     </IonCol>
@@ -68,7 +66,7 @@ const NavigationOptions = () => {
                             </IonRow>
                             <IonRow>
                                 <IonCol>
-                                    <NavText>{strings["waze"]}</NavText>
+                                    <NavText>{strings.waze}</NavText>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>

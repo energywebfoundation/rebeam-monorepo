@@ -1,10 +1,8 @@
 import React from "react";
 import MetaMaskIcon from "../assets/login-icons/metamask-icon.svg";
-import WalletConnectIcon from "../assets/login-icons/wallet-connect-icon.svg";
 import { IonButton, IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
-import Login from "../pages/Login";
 import styled from "styled-components";
-import EliaLogo from "../assets/EliaVector.png";
+import EliaLogo from "../assets/svgs/rebeam-logo.svg";
 import strings from "../constants/strings.json";
 import "./login-options.css"
 // import { ProviderType } from "iam-client-lib";
@@ -15,18 +13,38 @@ interface LoginOptionsProps {
 
 const LoginOptions = (props: LoginOptionsProps) => {
     const { loginMethod } = props;
+
+
+    //METHODS: 
     const handleSelectMetamask = async () => {
         console.log("selected Metamask")
         loginMethod();
     }
 
-    const handleSelectWalletConnect = async () => {
-        console.log("selected Wallet Connect")
-    }
 
-    const MetaMaskLogin = styled(IonButton)`
+
+    //STYLED COMPONENTS: 
+    const MetaMaskLoginButton = styled(IonButton)`
         --background: white;
-        --border-radius: 6px
+        --border-radius: 6px;
+        height: 54px;
+    `
+
+    const Container = styled.div`
+    height: 100%;
+    border: 1px solid white;
+    `
+
+    const Grid = styled(IonGrid)`
+        border: 10px solid orange;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    `
+
+    const LogoRow = styled(IonRow)`
+        border: 3px solid green;
+        height: 80%;
     `
 
     const TitleHeader = styled.div`
@@ -38,72 +56,72 @@ const LoginOptions = (props: LoginOptionsProps) => {
     letter-spacing: 0.4px;
     `
 
+    const LogoImg = styled(IonImg)`
+    height: 130px;
+    `
+
+    const LoginButtonRow = styled(IonRow)`
+    border: 5px solid white;
+    height: 100%;
+    `
+
+    const MetaMaskLogo = styled(IonImg)`
+    height: 38px;
+    width: 38px;
+    border: 1px solid red;
+    `
+
+    const ConnectHeader = styled.h1`
+    font-size: 16px;
+    color: #363636;
+    border: 1px solid green;
+    margin: 0
+    `
+
+
     return (
-        <div style={{
-            height: "100%",
-            border: "1px solid white"
-        }}>
-            <IonGrid style={{
-                border: "10px solid orange",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column"
-                
-            }}>
-                <IonRow class="ion-align-items-end" style={{
-                    border: "3px solid green",
-                    height: "80%"
-                }}>
+        <Container>
+            <Grid>
+                <LogoRow class="ion-align-items-end">
                     <IonCol>
-                        <IonImg src={EliaLogo} style={{
-                            height: "130px",
-                        }}>
-                        </IonImg>
+                        <LogoImg src={EliaLogo}>
+                        </LogoImg>
                     </IonCol>
-                </IonRow>
+                </LogoRow>
                 <IonRow >
                     <IonCol class="ion-align-items-center ion-align-self-center">
-                            <TitleHeader>
-                                {strings.eliaRebeam}
-                            </TitleHeader>
+                        <TitleHeader>
+                            {strings.eliaRebeam}
+                        </TitleHeader>
                     </IonCol>
                 </IonRow>
-                <IonRow  class="ion-align-items-end" style={{
-                    border: "5px solid white",
-                    height: "100%"
-                    
-                }}>
-                    <IonCol className="login-button"  style={{
-                        border: "1px solid yellow",
+                <LoginButtonRow class="ion-align-items-end">
+                    <IonCol className="login-button" style={{
+                        border: "4px solid yellow",
                     }}>
-                        <MetaMaskLogin expand="block"
+                        <MetaMaskLoginButton expand="block"
                             onClick={handleSelectMetamask}
-                            style={{
-                                height: "54px"                            }}
                         >
-                            <IonImg
-                                class="ion-float-left"
-                                slot="start"
-                                src={MetaMaskIcon}
-                                alt="MetaMask Logo"
-                                style={{
-                                    height: "38px",
-                                    width: "38px",
-                                    margin: "10px"
-                                }}
-
-                            ></IonImg>
-                            <span style={{
-                                fontSize: "16px",
-                                color: "black"
-                            }}>Connect to MetaMask</span>
-                        </MetaMaskLogin>
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol size="2">
+                                        <MetaMaskLogo
+                                            src={MetaMaskIcon}
+                                            alt="MetaMask Logo"
+                                        ></MetaMaskLogo>
+                                    </IonCol>
+                                    <IonCol class="ion-align-self-center">
+                                        <ConnectHeader>{strings.connectToMeteMask}</ConnectHeader>
+                                    </IonCol>
+                                    <IonCol size="2"></IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        </MetaMaskLoginButton>
 
                     </IonCol>
-                </IonRow>
-            </IonGrid>
-
-        </div>
+                </LoginButtonRow>
+            </Grid>
+        </Container>
     )
 
 }

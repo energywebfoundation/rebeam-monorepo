@@ -1,6 +1,6 @@
 import React from "react";
 import BMWIcon from "../assets/bmwIcon.png";
-import { IonContent, IonHeader, IonPage, IonTitle, IonIcon, IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import styled from "styled-components";
 import strings from "../constants/strings.json";
 

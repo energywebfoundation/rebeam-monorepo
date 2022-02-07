@@ -21,6 +21,7 @@ export interface DetailModalProps {
     setSelectedChargePoint: any
     isOpen: boolean;
     handleStartCharge: () => void;
+    dismiss: any
 
 }
 
@@ -37,18 +38,20 @@ text-align: center;
 letter-spacing: 0.4px;
 --color: white;
 `
-    const {selectedChargePoint, isOpen, setSelectedChargePoint, handleStartCharge} = props;
+    const {selectedChargePoint, isOpen, handleStartCharge, dismiss} = props;
     const [selectedProvider, setSelectedProvider] = useState<Provider>();
     const { retailers, loadingRetailers } = useRetailers();
-
-    const hasRetailers = Object.keys(retailers).length > 0
-    // This is for the drawer
+    const hasRetailers = Object.keys(retailers).length > 0;
+    const handleDismiss = () => {
+        dismiss(false)
+    }
     return (
         <div>
             <IonModal
                 isOpen={isOpen}
                 breakpoints={[0.1, 0.5, 1]}
                 initialBreakpoint={0.8}
+                onDidDismiss={handleDismiss}
             >
                 <IonContent>
                     <StationHeader selectedChargePoint={selectedChargePoint}/>
