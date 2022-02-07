@@ -1,7 +1,7 @@
 import { IonContent, IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonPage, IonImg, IonGrid } from '@ionic/react';
 import { arrowDownCircle } from 'ionicons/icons';
 import { ReactChild, ReactFragment, ReactPortal, useRef } from 'react';
-import { Provider } from "../pages/ChargePointDetail";
+import { Provider } from "./ChargeDetailModal";
 import strings from "../constants/strings.json";
 import { logoElectron } from "ionicons/icons";
 import styled from "styled-components";

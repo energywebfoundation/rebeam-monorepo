@@ -16,7 +16,6 @@ import {
 } from '@ionic/react';
 import Map from "./components/Map";
 import Login from "./pages/Login";
-import ChargePointDetail from './pages/ChargePointDetail';
 import { IonReactRouter } from '@ionic/react-router';
 import ChargingSession from "./pages/ChargingSession";
 
@@ -41,14 +40,19 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+export interface ChargePoint {
+  id: number,
+  stationName: string,
+  formattedAddress?: string,
+  img?: string
+
+}
+
+
 const App: React.FC = () => {
-  const [selectedChargePoint, setSelectedChargePoint] = useState<{
-    id: number;
-    stationName: "string"
-  }>()
-  // const dismissSelectedChargePoint = () => {
-  //   setSelectedChargePoint(undefined)
-  // }
+
+  const [selectedChargePoint, setSelectedChargePoint] = useState()
+ 
   const [did, setDid] = useState<string>("")
   console.log(did, "THE DID IS SET")
   return (
@@ -71,7 +75,7 @@ const App: React.FC = () => {
           <Route exact path="/map">
             <Map setSelectedChargePoint={setSelectedChargePoint} selectedChargePoint={selectedChargePoint}></Map>
           </Route>
-          <Route
+          {/* <Route
             exact path="/detail/:id"
             render={(props) => {
               if (!selectedChargePoint) {
@@ -80,7 +84,7 @@ const App: React.FC = () => {
               return  <ChargePointDetail {...props} chargePoint={selectedChargePoint}/>
             }}
           >
-          </Route>
+          </Route> */}
           <Route exact path="/charge">
             <ChargingSession />
           </Route>

@@ -3,11 +3,11 @@ import React from "react";
 import styled from "styled-components";
 import ChargeStationImg from "../assets/BuildingImg.png"
 import ModalPinIcon from "../assets/ModalPinIcon.png"
-
+import { ChargePoint } from "../App"
 const data = {
     stationName: "50Hertz Transmission",
     formattedAddress: "Heidestraße 2, 10557 Berlin, Germany",
-    img: ChargeStationImg 
+    img: ChargeStationImg
 }
 
 const Header = styled.h1`
@@ -42,67 +42,75 @@ color: #A466FF;
 text-align: left;
 `
 
-// const PhotoContainer = styled.div`
-// border: "1px solid red";
-// borderRadius: "10px";
-// backgroundImage: `url(${ChargeStationImg})`;
-// backgroundRepeat: "no-repeat";
-// backgroundSize:"cover";
-// backgroundPosition: "center";
-// height: "100%";
-
-// `
+interface StationHeaderProps {
+    selectedChargePoint?: ChargePoint
+}
 
 
-
-const StationHeader = () => {
+const StationHeader = (props: StationHeaderProps) => {
+    const { selectedChargePoint } = props;
     return (
+        
         <div>
-            <IonGrid style={{
-                border: "1px solid yellow",
-            }}>
-                <IonRow>
-                    <IonCol size="3" style={{
-                        marginRight: "14px"
-                    }}>
-                        <div style={{
-                            border: "1px solid red",
-                            borderRadius: "10px",
-                            backgroundImage: `url(${ChargeStationImg})`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize:"cover",
-                            backgroundPosition: "center",
-                            height: "100%"
+                 <IonGrid style={{
+                    border: "1px solid yellow",
+                }}>
+                    <IonRow>
+                        <IonCol size="3" style={{
+                            marginRight: "14px"
                         }}>
-                        </div>
-                    </IonCol>
-                    <IonCol>
-                        <IonGrid  style={{
+                            <div style={{
+                                border: "1px solid red",
+                                borderRadius: "10px",
+                                backgroundImage: `url(${ChargeStationImg})`,
+                                backgroundRepeat: "no-repeat",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                height: "100%"
+                            }}>
+                            </div>
+                        </IonCol>
+                        <IonCol style={{
+                            border: "1px solid purple",
+                        }}>
+                            <IonGrid style={{
                                 border: "1px solid green",
                             }}>
-                            <IonRow>
-                                <IonCol>
-                                   <Header>
-                                   {data.stationName}
-                                    </Header> 
-                                </IonCol>
-                            </IonRow>
-                            <IonRow>
-                                <IonCol>
-                                    <Address>{data.formattedAddress}</Address>
-                                </IonCol>
-                            </IonRow>
-                            <IonRow>
-                                <MapIcon src={ModalPinIcon}>
-                                </MapIcon>
-                                <IonCol>
-                                    <MapInfo>{"450m/5m"}</MapInfo>
-                                </IonCol>
-                            </IonRow>
-                        </IonGrid>
-                    </IonCol>
-                </IonRow>
-            </IonGrid>
+                                <IonRow style={{
+                                    border: "1px solid blue",
+                                }}>
+                                    <IonCol style={{
+                                        border: "1px solid blue"
+                                    }}>
+                                        <Header>
+                                            {selectedChargePoint!.stationName}
+                                        </Header>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow style={{
+                                    border: "1px solid blue",
+                                }}>
+                                    <IonCol style={{
+                                        border: "1px solid blue"
+                                    }}>
+                                        <Address>{selectedChargePoint!.formattedAddress}</Address>
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow style={{
+                                    border: "1px solid blue",
+                                }}>
+                                    <MapIcon src={ModalPinIcon}>
+                                    </MapIcon>
+                                    <IonCol>
+                                        <MapInfo>{"450m/5m"}</MapInfo>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            
+           
         </div>
     )
 }
