@@ -3,7 +3,8 @@ import ReactMapGL, { Layer, MapEvent, MapRef, Source } from "react-map-gl";
 import { FeatureCollection } from "geojson";
 import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import getChargingPoints from '../hooks/getChargingPoints'
+import getChargingPoints from '../hooks/getChargingPoints';
+import styled from "styled-components";
 import {
     MAP_BOX_TOKEN,
     CHG_POINTS_SOURCE_ID,
@@ -49,6 +50,12 @@ const Map = (props: MapProps) => {
             history.push(`/detail/${properties.id}`)
         }
     }
+
+    const MapContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 100%
+    `
 
     return (
         <IonPage>

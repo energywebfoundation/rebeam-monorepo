@@ -5,6 +5,7 @@ import { chevronBackOutline } from "ionicons/icons";
 import ChargingStatusIcon from "../assets/ChargingStatusIcon.png";
 import ChargingStatus from "../components/ChargingStatus"
 import StopCharge from 'src/components/StopCharge';
+import {useHistory }from "react-router-dom";
 
 const ChargingHeader = styled.h1`
 font-size: 21px;
@@ -20,16 +21,22 @@ const StatusImg = styled(IonImg)`
 
 
 const ChargingSession: React.FC = (props) => {
+    const history = useHistory();
+    const handleBackClick = () => {
+        history.push('/map');
+    }
     return (
         <IonPage>
             <IonContent>
                 <IonGrid>
                     <IonRow>
                         <IonCol size="1" className=" ion-align-items-center">
-                                <IonIcon icon={chevronBackOutline} className="ion-align-self-center"></IonIcon>
+                                <IonIcon onClick={handleBackClick} icon={chevronBackOutline} className="ion-align-self-center"></IonIcon>
                         </IonCol>
                         <IonCol className="ion-align-self-center">
                             <ChargingHeader>{strings.charging}</ChargingHeader>
+                        </IonCol>
+                        <IonCol size="1" className=" ion-align-items-center">
                         </IonCol>
                     </IonRow>
                 </IonGrid>

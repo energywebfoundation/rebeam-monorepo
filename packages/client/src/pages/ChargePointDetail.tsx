@@ -9,7 +9,7 @@ import StationHeader from "../components/StationHeader";
 import NavigationOptions from "../components/NavigationOptions";
 import styled from "styled-components";
 import strings from "../constants/strings.json";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 interface ChargePoint {
   id: number,
@@ -47,43 +47,38 @@ const ChargePointDetail: React.FC<ChargePointDetailProps> = (props: ChargePointD
   const [chargeStopTime, setChargeStopTime] = useState<number>();
   const [selectedProvider, setSelectedProvider] = useState<Provider>();
   const history = useHistory();
-  console.log("State Selected Provider Set:", selectedProvider, )
-  const { match } = props;
-  const { chargePoint } = props;
-  const { id, stationName } = chargePoint;
+  console.log("State Selected Provider Set:", selectedProvider,)
   const { retailers, loadingRetailers } = useRetailers();
   console.log("State Retailers Set:", retailers)
   const handleStartCharge = () => {
     history.push(`/charge`)
   }
+
+
+  const StyledBorder = styled.hr`
+    background-color: #B3BBC0;
+    margin: 0;
+  `
   const hasRetailers = Object.keys(retailers).length > 0
   return (
     <IonPage>
       <IonContent>
-      <StationHeader/>
-      <hr style={{
-        backgroundColor: "#B3BBC0",
-        margin: "0"
-      }}></hr>
-      <NavigationOptions/>
-      <hr style={{
-        backgroundColor: "#B3BBC0"
-      }}></hr>
+        <StationHeader />
+        <StyledBorder></StyledBorder>
+        <NavigationOptions />
+        <StyledBorder></StyledBorder>
         {hasRetailers && (
           <RetailerDropdown retailers={retailers} loadingRetailers={loadingRetailers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} />
         )}
-          <hr style={{
-        backgroundColor: "#B3BBC0",
-        margin: "0"
-      }}></hr>
-          <div className="ion-padding ion-text-center">
+        <StyledBorder></StyledBorder>
+        <div className="ion-padding ion-text-center">
           <SessionButton expand="block" onClick={handleStartCharge} disabled={!selectedProvider} color={selectedProvider ? "primary" : "warning"}>
             {strings.startCharging}
           </SessionButton>
-          </div>
-       
+        </div>
+
         {isCharging && selectedProvider && (
-          <ChargingSession chargeStartTime={isCharging} provider={selectedProvider} stopTime={chargeStopTime}/>
+          <ChargingSession chargeStartTime={isCharging} provider={selectedProvider} stopTime={chargeStopTime} />
         )}
       </IonContent>
     </IonPage>
