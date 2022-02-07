@@ -41,6 +41,10 @@ text-transform: uppercase;
 
 `
 
+const SupplierItem = styled(IonItem)`
+--inner-padding-bottom: 20px;
+--inner-padding-top: 20px;
+`
 const RetailerLabel = styled(IonLabel)`
 margin: 2px;
 padding: 5px 5px 5px 10px;
@@ -94,11 +98,11 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                             </IonRow>
                         </IonGrid>
                     </IonItem>
-                    <IonList slot="content">
+                    <IonList slot="content" >
                         {retailers?.map((retailer: { id: { toString: () => string | undefined; }; logo: string | undefined; name: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined; }, index: number) => {
                             const isSelected = retailer?.name === selectedProvider?.name
                             return (
-                                <IonItem key={index} onClick={() => handleSelectProvider(retailer)}>
+                                <SupplierItem key={index} onClick={() => handleSelectProvider(retailer)}>
                                     {retailer.logo && (
                                         <RetailerLogoImg src={retailer.logo}></RetailerLogoImg>
                                     )}
@@ -107,7 +111,7 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                                         <IonImg src={Selected}></IonImg>
                                     )
                                     }
-                                </IonItem>
+                                </SupplierItem>
                             )
                         }
                         )}
