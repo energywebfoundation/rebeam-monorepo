@@ -6,7 +6,6 @@ import useRetailers from "src/hooks/getRetailers";
 import NavigationOptions from "./NavigationOptions"
 import styled from "styled-components";
 import strings from "../constants/strings.json";
-import { useHistory } from "react-router-dom";
 import { ChargePoint } from "../App";
 
 
@@ -26,11 +25,7 @@ export interface DetailModalProps {
 }
 
 const ChargePointDetailModal = (props: DetailModalProps) => {
-    const history = useHistory();
         
-const SectionBreak = styled.br`
-backgroundColor: "#B3BBC0"
-`
 const StyledBorder = styled.hr`
 background-color: #B3BBC0;
 margin: 0;
@@ -43,11 +38,8 @@ letter-spacing: 0.4px;
 --color: white;
 `
     const {selectedChargePoint, isOpen, setSelectedChargePoint, handleStartCharge} = props;
-    console.log(isOpen, "IS OPEN")
     const [selectedProvider, setSelectedProvider] = useState<Provider>();
-    console.log("State Selected Provider Set:", selectedProvider,)
     const { retailers, loadingRetailers } = useRetailers();
-    console.log("State Retailers Set:", retailers)
 
     const hasRetailers = Object.keys(retailers).length > 0
     // This is for the drawer
@@ -56,7 +48,7 @@ letter-spacing: 0.4px;
             <IonModal
                 isOpen={isOpen}
                 breakpoints={[0.1, 0.5, 1]}
-                initialBreakpoint={0.5}
+                initialBreakpoint={0.8}
             >
                 <IonContent>
                     <StationHeader selectedChargePoint={selectedChargePoint}/>
@@ -79,3 +71,10 @@ letter-spacing: 0.4px;
 }
 
 export default ChargePointDetailModal;
+
+
+{/* <IonModal
+isOpen={isOpen}
+breakpoints={[0.1, 0.5, 1]}
+initialBreakpoint={0.5}
+> */}

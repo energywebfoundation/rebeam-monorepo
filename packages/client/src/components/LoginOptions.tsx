@@ -57,13 +57,16 @@ const LoginOptions = (props: LoginOptionsProps) => {
                             </TitleHeader>
                     </IonCol>
                 </IonRow>
-                <IonRow>
-                    <IonCol className="login-button">
+                <IonRow class="ion-align-items-baseline" style={{
+                    border: "1px solid white",
+                }}>
+                    <IonCol className="login-button" style={{
+                        border: "1px solid yellow",
+                    }}>
                         <MetaMaskLogin expand="block"
                             onClick={handleSelectMetamask}
                             style={{
-                                height: "54px",
-                            }}
+                                height: "54px"                            }}
                         >
                             <IonImg
                                 class="ion-float-left"

@@ -24,7 +24,7 @@ font-style: normal;
 font-weight: normal;
 font-size: 12px;
 color: #363636;
-margin: 0;
+margin: 0 0 2px;
 padding: 0;
 text-align: left;
 `
@@ -40,6 +40,7 @@ margin: 0;
 padding: 0;
 color: #A466FF;
 text-align: left;
+
 `
 
 interface StationHeaderProps {
@@ -52,52 +53,45 @@ const StationHeader = (props: StationHeaderProps) => {
     return (
         
         <div>
-                 <IonGrid style={{
-                    border: "1px solid yellow",
-                }}>
-                    <IonRow>
+                 <IonGrid>
+                    <IonRow style={{
+                        height: "110px"
+                    }}>
                         <IonCol size="3" style={{
                             marginRight: "14px"
                         }}>
                             <div style={{
-                                border: "1px solid red",
                                 borderRadius: "10px",
                                 backgroundImage: `url(${ChargeStationImg})`,
                                 backgroundRepeat: "no-repeat",
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
-                                height: "100%"
+                                height: "100%",
+                                margin: "0 auto"
                             }}>
                             </div>
                         </IonCol>
-                        <IonCol style={{
-                            border: "1px solid purple",
-                        }}>
-                            <IonGrid style={{
-                                border: "1px solid green",
-                            }}>
+                        <IonCol>
+                            <IonGrid>
                                 <IonRow style={{
-                                    border: "1px solid blue",
+                                    height: "20px"
                                 }}>
-                                    <IonCol style={{
-                                        border: "1px solid blue"
-                                    }}>
+                                    <IonCol>
                                         <Header>
                                             {selectedChargePoint!.stationName}
                                         </Header>
                                     </IonCol>
                                 </IonRow>
                                 <IonRow style={{
-                                    border: "1px solid blue",
+                                    height: "17px"
                                 }}>
-                                    <IonCol style={{
-                                        border: "1px solid blue"
-                                    }}>
+                                    <IonCol>
                                         <Address>{selectedChargePoint!.formattedAddress}</Address>
                                     </IonCol>
                                 </IonRow>
                                 <IonRow style={{
-                                    border: "1px solid blue",
+                                    height: "17px",
+                                    marginTop: "5px"
                                 }}>
                                     <MapIcon src={ModalPinIcon}>
                                     </MapIcon>
