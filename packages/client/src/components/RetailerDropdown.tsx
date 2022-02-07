@@ -21,6 +21,35 @@ align-items: center
 flex-direction: column
 align-content: center
 `
+const SelectSupplierHeader = styled.p`
+font-size: 16px;
+line-height: 19px;
+margin: 0;
+padding: 0px;
+color: #363636;;
+`
+
+const SelectSupplierSubHeader = styled.p`
+font-size: 16px;
+line-height: 19px;
+margin: 0;
+color: #363636;;
+font-size: 12px;
+line-height: 18px;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+
+`
+
+const RetailerLabel = styled(IonLabel)`
+margin: 2px;
+padding: 5px 5px 5px 10px;
+`
+
+const RetailerLogoImg = styled(IonImg)`
+height: 20px;
+`
+
 
 
 const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdownProps) => {
@@ -31,34 +60,6 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
         setSelectedProvider(provider)
     }
 
-    const SelectSupplierHeader = styled.p`
-    font-size: 16px;
-    line-height: 19px;
-    margin: 0;
-    padding: 0px;
-    color: #363636;;
-    `
-
-    const SelectSupplierSubHeader = styled.p`
-    font-size: 16px;
-    line-height: 19px;
-    margin: 0;
-    color: #363636;;
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    
-    `
-
-    const RetailerLabel = styled(IonLabel)`
-    margin: 2px;
-    padding: 5px 5px 5px 10px;
-    `
-
-    const RetailerLogoImg = styled(IonImg)`
-    height: 20px;
-    `
 
 
     return (

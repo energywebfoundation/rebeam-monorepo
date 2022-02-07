@@ -40,7 +40,27 @@ margin: 0;
 padding: 0;
 color: #A466FF;
 text-align: left;
+`
 
+const RowContainer = styled(IonRow)`
+height: 110px;
+`
+
+const ImgCol = styled(IonCol)`
+margin-right: 14px;
+`
+
+const HeaderRow = styled(IonRow)`
+height: 35px;
+`
+
+const AddressRow = styled(IonRow)`
+height: 17px;
+`
+
+const MapPinRow = styled(IonRow)`
+height: 17px;
+margin-top: 5px
 `
 
 interface StationHeaderProps {
@@ -54,12 +74,8 @@ const StationHeader = (props: StationHeaderProps) => {
         
         <div>
                  <IonGrid>
-                    <IonRow style={{
-                        height: "110px"
-                    }}>
-                        <IonCol size="3" style={{
-                            marginRight: "14px"
-                        }}>
+                    <RowContainer>
+                        <ImgCol size="3">
                             <div style={{
                                 borderRadius: "10px",
                                 backgroundImage: `url(${ChargeStationImg})`,
@@ -70,38 +86,31 @@ const StationHeader = (props: StationHeaderProps) => {
                                 margin: "0 auto"
                             }}>
                             </div>
-                        </IonCol>
+                        </ImgCol>
                         <IonCol>
                             <IonGrid>
-                                <IonRow style={{
-                                    height: "20px"
-                                }}>
+                                <HeaderRow>
                                     <IonCol>
                                         <Header>
                                             {selectedChargePoint!.stationName}
                                         </Header>
                                     </IonCol>
-                                </IonRow>
-                                <IonRow style={{
-                                    height: "17px"
-                                }}>
+                                </HeaderRow>
+                                <AddressRow>
                                     <IonCol>
                                         <Address>{selectedChargePoint!.formattedAddress}</Address>
                                     </IonCol>
-                                </IonRow>
-                                <IonRow style={{
-                                    height: "17px",
-                                    marginTop: "5px"
-                                }}>
+                                </AddressRow>
+                                <MapPinRow>
                                     <MapIcon src={ModalPinIcon}>
                                     </MapIcon>
                                     <IonCol>
                                         <MapInfo>{"450m/5m"}</MapInfo>
                                     </IonCol>
-                                </IonRow>
+                                </MapPinRow>
                             </IonGrid>
                         </IonCol>
-                    </IonRow>
+                    </RowContainer>
                 </IonGrid>
             
            

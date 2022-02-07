@@ -24,8 +24,6 @@ export interface DetailModalProps {
 
 }
 
-const ChargePointDetailModal = (props: DetailModalProps) => {
-        
 const StyledBorder = styled.hr`
 background-color: #B3BBC0;
 margin: 0;
@@ -37,6 +35,10 @@ text-align: center;
 letter-spacing: 0.4px;
 --color: white;
 `
+
+const ChargePointDetailModal = (props: DetailModalProps) => {
+        
+
     const {selectedChargePoint, isOpen, handleStartCharge, showModal} = props;
     const [selectedProvider, setSelectedProvider] = useState<Provider>();
     const { retailers, loadingRetailers } = useRetailers();

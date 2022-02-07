@@ -30,7 +30,7 @@ const ChargingSession: React.FC = (props) => {
             <IonContent>
                 <IonGrid>
                     <IonRow>
-                        <IonCol size="1" className=" ion-align-items-center">
+                        <IonCol size="1" className=" ion-align-items-center ion-align-self-center">
                                 <IonIcon onClick={handleBackClick} icon={chevronBackOutline} className="ion-align-self-center"></IonIcon>
                         </IonCol>
                         <IonCol className="ion-align-self-center">

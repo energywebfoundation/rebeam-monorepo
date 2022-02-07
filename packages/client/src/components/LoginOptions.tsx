@@ -4,46 +4,30 @@ import { IonButton, IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import styled from "styled-components";
 import EliaLogo from "../assets/svgs/rebeam-logo.svg";
 import strings from "../constants/strings.json";
-import "./login-options.css"
 // import { ProviderType } from "iam-client-lib";
 interface LoginOptionsProps {
     loginMethod: any
 }
-
-
-const LoginOptions = (props: LoginOptionsProps) => {
-    const { loginMethod } = props;
-
-
-    //METHODS: 
-    const handleSelectMetamask = async () => {
-        console.log("selected Metamask")
-        loginMethod();
-    }
-
-
 
     //STYLED COMPONENTS: 
     const MetaMaskLoginButton = styled(IonButton)`
         --background: white;
         --border-radius: 6px;
         height: 54px;
+        margin-bottom: 66px;
     `
 
     const Container = styled.div`
     height: 100%;
-    border: 1px solid white;
     `
 
     const Grid = styled(IonGrid)`
-        border: 10px solid orange;
         height: 100%;
         display: flex;
         flex-direction: column;
     `
 
     const LogoRow = styled(IonRow)`
-        border: 3px solid green;
         height: 80%;
     `
 
@@ -61,25 +45,31 @@ const LoginOptions = (props: LoginOptionsProps) => {
     `
 
     const LoginButtonRow = styled(IonRow)`
-    border: 5px solid white;
     height: 100%;
     `
 
     const MetaMaskLogo = styled(IonImg)`
     height: 38px;
     width: 38px;
-    border: 1px solid red;
     `
 
     const ConnectHeader = styled.h1`
     font-size: 16px;
     color: #363636;
-    border: 1px solid green;
     margin: 0
     `
 
+const LoginOptions = (props: LoginOptionsProps) => {
+    const { loginMethod } = props;
 
-    return (
+
+    //METHODS: 
+    const handleSelectMetamask = async () => {
+        console.log("selected Metamask")
+        loginMethod();
+    }
+
+return (
         <Container>
             <Grid>
                 <LogoRow class="ion-align-items-end">
@@ -96,9 +86,7 @@ const LoginOptions = (props: LoginOptionsProps) => {
                     </IonCol>
                 </IonRow>
                 <LoginButtonRow class="ion-align-items-end">
-                    <IonCol className="login-button" style={{
-                        border: "4px solid yellow",
-                    }}>
+                    <IonCol className="login-button">
                         <MetaMaskLoginButton expand="block"
                             onClick={handleSelectMetamask}
                         >

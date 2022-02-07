@@ -19,6 +19,12 @@ interface MapProps {
     selectedChargePoint?: ChargePoint
 }
 
+const MapContainer = styled.div`
+display: flex;
+flex-direction: row;
+height: 100%;
+`
+
 const Map = (props: MapProps) => {
     //history for react router:
     const history = useHistory();
@@ -62,22 +68,9 @@ const Map = (props: MapProps) => {
         }
     }
 
-    console.log(showModal, "SHOW MODAL")
-
-    const MapContainer = styled.div`
-    display: flex;
-    flex-direction:row;
-    height: 100%;
-    `
-
-
     return (
         <IonPage>
-            <div style={{
-                display: "flex",
-                flexDirection: "row",
-                height: "100%",
-            }}>
+            <MapContainer>
                 <ReactMapGL
                     {...viewport}
                     ref={mapRef}
@@ -134,7 +127,7 @@ const Map = (props: MapProps) => {
                     <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} handleStartCharge={handleStartCharge} showModal={setShowModal} />
 
            
-            </div>
+            </MapContainer>
         </IonPage>
     )
 }

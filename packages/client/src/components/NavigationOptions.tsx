@@ -4,7 +4,7 @@ import Waze from "../assets/svgs/waze-icon.svg";
 import GoogleMap from "../assets/svgs/google-maps-icon.svg";
 import AppleMap from "../assets/svgs/maps-icon.svg";
 import styled from "styled-components";
-import strings from "../constants/strings.json"
+import strings from "../constants/strings.json";
 
 
 const NavImg = styled(IonImg)`

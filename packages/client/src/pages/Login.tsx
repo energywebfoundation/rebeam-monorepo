@@ -1,7 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle } from '@ionic/react';
 import LoginOptions from '../components/LoginOptions';
 import styled from "styled-components";
-import "./login.css"
 // import {
 //     initWithEKC,
 //     initWithGnosis,
@@ -17,9 +16,17 @@ import "./login.css"
 interface LoginProps {
     setDid: (did: string) => void
 }
+const LoginContainer = styled.div`
+height: 100%;
+`
+const Content = styled(IonContent)`
+--ion-background-color: #652CA1;
 
+`
 const Login = (props: LoginProps) => {
     const { setDid } = props;
+
+    //CODE FOR LOGIN WHEN IAM CLIENT LIB IS INTEGRATED: 
 
     // const initSignerService = async function (providerType: ProviderType) {
     //     switch (providerType) {
@@ -31,13 +38,6 @@ const Login = (props: LoginProps) => {
     //             throw new Error(`no handler for provider '${providerType}'`);
     //     }
     // };
-
-    const loginMethod = async () => {
-        console.log("logging in!")
-        setDid("didstring")
-    }
-
-   
 
     // const login = async function ({
     //     providerType,
@@ -81,18 +81,17 @@ const Login = (props: LoginProps) => {
     //     //setLoading(false);
     // };
 
-    const LoginContainer = styled.div`
-    height: 100%;
-    border: 1px solid green;
-    `
+    const loginMethod = async () => {
+        setDid("didstring")
+    }
 
     return (
         <IonPage>
-            <IonContent className="login-screen">
+            <Content>
                 <LoginContainer>
                     <LoginOptions loginMethod={loginMethod} />
                     </LoginContainer>
-            </IonContent>
+            </Content >
             
         </IonPage >
     );
