@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { IonModal, IonContent, IonButton } from '@ionic/react';
 import StationHeader from "./StationHeader";
 import RetailerDropdown from "./RetailerDropdown";
-import useRetailers from "src/hooks/getRetailers";
+import useRetailers from "../hooks/getRetailers";
 import NavigationOptions from "./NavigationOptions"
 import styled from "styled-components";
 import strings from "../constants/strings.json";

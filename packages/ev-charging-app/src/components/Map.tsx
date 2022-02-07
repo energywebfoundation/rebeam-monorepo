@@ -29,7 +29,6 @@ const Map = (props: MapProps) => {
     //history for react router:
     const history = useHistory();
     const { setSelectedChargePoint, selectedChargePoint } = props;
-    console.log(selectedChargePoint, "THE SELECTED CHARGE POINT");
     const [showModal, setShowModal] = useState(false)
     const [viewport, setViewport] = useState({
         latitude: 52.5200,
@@ -40,14 +39,13 @@ const Map = (props: MapProps) => {
         pitch: 0,
         source: 'mapbox://styles/mapbox/streets-v11'
     });
-    const { chargePoints, loadingChargePoints } = getChargingPoints();
+    const { chargePoints } = getChargingPoints();
     const mapRef = useRef<MapRef>(null);
     const handleStartCharge = () => {
         setShowModal(false);
         history.push('/charge');
     }
     const handleMapOnClick = (event: MapEvent) => {
-        console.log("in handle on click")
         event.preventDefault();
         const map = mapRef.current;
         const features = map!.queryRenderedFeatures(event.point)
@@ -55,11 +53,9 @@ const Map = (props: MapProps) => {
         const { layer } = selectedProperties;
         const { id } = layer;
         if (id !== CHG_POINTS_LAYER_ID) {
-            console.log("nothing")
             return
         }
         if (!selectedProperties) {
-            console.log("nothing")
             return
         } else {
             const { properties } = selectedProperties;

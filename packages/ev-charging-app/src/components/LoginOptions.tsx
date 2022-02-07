@@ -65,7 +65,6 @@ const LoginOptions = (props: LoginOptionsProps) => {
 
     //METHODS: 
     const handleSelectMetamask = async () => {
-        console.log("selected Metamask")
         loginMethod();
     }
 

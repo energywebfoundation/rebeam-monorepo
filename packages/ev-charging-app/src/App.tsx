@@ -1,7 +1,15 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import React, { useState } from "react";
+
+import {
+  IonApp,
+  IonRouterOutlet,
+  setupIonicReact
+} from '@ionic/react';
+import Map from "./components/Map";
+import Login from "./pages/Login";
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import ChargingSession from "./pages/ChargingSession";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,19 +32,48 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+export interface ChargePoint {
+  id: number,
+  stationName: string,
+  formattedAddress?: string,
+  img?: string
 
+}
+
+
+const App: React.FC = () => {
+
+  const [selectedChargePoint, setSelectedChargePoint] = useState()
+ 
+  const [did, setDid] = useState<string>("")
+  console.log(did, "THE DID IS SET")
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route
+            exact path="/login"
+            render={() => {
+              if (did) {
+                return <Redirect to="/map"/>
+              }
+              return <Login setDid={setDid} />;
+            }}
+          >
+          </Route>
+          <Route exact path="/map">
+            <Map setSelectedChargePoint={setSelectedChargePoint} selectedChargePoint={selectedChargePoint}></Map>
+          </Route>
+          <Route exact path="/charge">
+            <ChargingSession />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  )
+};
+// docs on Ionic Router: https://ionicframework.com/docs/react/navigation
 export default App;

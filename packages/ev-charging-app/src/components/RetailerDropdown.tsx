@@ -1,8 +1,7 @@
-import { IonAccordionGroup, IonAccordion, IonIcon, IonItem, IonRow, IonCol, IonLabel, IonList, IonImg, IonGrid } from '@ionic/react';
+import { IonAccordionGroup, IonAccordion, IonItem, IonRow, IonCol, IonLabel, IonList, IonImg, IonGrid } from '@ionic/react';
 import { ReactChild, ReactFragment, ReactPortal, useRef } from 'react';
 import { Provider } from "./ChargeDetailModal";
 import strings from "../constants/strings.json";
-import { logoElectron } from "ionicons/icons";
 import styled from "styled-components";
 import Selected from "../assets/svgs/selected-icon.svg";
 import supplierIcon from "../assets/svgs/supplier-icon.svg"
@@ -14,13 +13,6 @@ interface RetailerDropdownProps {
     setSelectedProvider?: any
 }
 
-const ImgContainer = styled(IonCol)`
-display: flex;
-justify-content: center
-align-items: center
-flex-direction: column
-align-content: center
-`
 const SelectSupplierHeader = styled.p`
 font-size: 16px;
 line-height: 19px;
@@ -57,10 +49,9 @@ height: 20px;
 
 
 const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdownProps) => {
-    const { retailers, loadingRetailers, setSelectedProvider, selectedProvider } = props;
+    const { retailers, setSelectedProvider, selectedProvider } = props;
     const accordionGroupRef = useRef(null);
     const handleSelectProvider = (provider: any) => {
-        console.log(provider)
         setSelectedProvider(provider)
     }
 

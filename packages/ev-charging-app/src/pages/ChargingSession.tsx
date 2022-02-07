@@ -4,7 +4,7 @@ import strings from "../constants/strings.json";
 import { chevronBackOutline } from "ionicons/icons";
 import ChargingStatusIcon from "../assets/ChargingStatusIcon.png";
 import ChargingStatus from "../components/ChargingStatus"
-import StopCharge from 'src/components/StopCharge';
+import StopCharge from '../components/StopCharge';
 import {useHistory }from "react-router-dom";
 
 const ChargingHeader = styled.h1`
