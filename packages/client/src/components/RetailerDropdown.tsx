@@ -5,6 +5,7 @@ import strings from "../constants/strings.json";
 import { logoElectron } from "ionicons/icons";
 import styled from "styled-components";
 import Selected from "../assets/svgs/selected-icon.svg";
+import supplierIcon from "../assets/svgs/supplier-icon.svg"
 
 interface RetailerDropdownProps {
     retailers: any,
@@ -68,7 +69,7 @@ const RetailerDropdown: React.FC<RetailerDropdownProps> = (props: RetailerDropdo
                         <IonGrid>
                             <IonRow>
                                 <IonCol class="ion-align-self-center" size="2">
-                                    <IonIcon icon={logoElectron}></IonIcon>
+                                    <IonImg src={supplierIcon}></IonImg>
                                 </IonCol>
                                 <IonCol>
                                     <IonGrid>
