@@ -39,13 +39,13 @@ jobs:
             echo "::set-output name=argocd_username::${{ secrets.DEV_ARGOCD_USERNAME }}"
             echo "::set-output name=argocd_password::${{ secrets.DEV_ARGOCD_PASS }}"
           elif [ "${{ github.ref }}" = "refs/heads/DOI-1680_rebeam_cicd" ]; then
-            echo "::set-output name=aws_access_key_id::${{ secrets.DEV_AWS_ACCESS_KEY_ID }}"
-            echo "::set-output name=aws_secret_key::${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}"
-            echo "::set-output name=aws_region::${{ secrets.DEV_AWS_REGION }}"
-            echo "::set-output name=aws_ecr_repository::${{ secrets.DEV_ECR_REPOSITORY }}"
-            echo "::set-output name=argocd_url::${{ secrets.DEV_ARGOCD_URL }}"
-            echo "::set-output name=argocd_username::${{ secrets.DEV_ARGOCD_USERNAME }}"
-            echo "::set-output name=argocd_password::${{ secrets.DEV_ARGOCD_PASS }}"
+            echo "::set-output name=aws_access_key_id::${{ secrets.SAND_AWS_ACCESS_KEY_ID }}"
+            echo "::set-output name=aws_secret_key::${{ secrets.SAND_AWS_SECRET_ACCESS_KEY }}"
+            echo "::set-output name=aws_region::${{ secrets.SAND_AWS_REGION }}"
+            echo "::set-output name=aws_ecr_repository::${{ secrets.SAND_ECR_REPOSITORY }}"
+            echo "::set-output name=argocd_url::${{ secrets.SAND_ARGOCD_URL }}"
+            echo "::set-output name=argocd_username::${{ secrets.SAND_ARGOCD_USERNAME }}"
+            echo "::set-output name=argocd_password::${{ secrets.SAND_ARGOCD_PASS }}"
           else
             echo "Branch ${{ github.ref }} is not configured for deployment"
             exit 1
