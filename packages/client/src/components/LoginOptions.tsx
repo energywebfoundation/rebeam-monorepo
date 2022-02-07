@@ -1,7 +1,7 @@
 import React from "react";
 import MetaMaskIcon from "../assets/login-icons/metamask-icon.svg";
 import WalletConnectIcon from "../assets/login-icons/wallet-connect-icon.svg";
-import { IonModal, IonContent, IonPage, IonCard, IonButton, IonTitle, IonCardContent, IonMenuButton, IonGrid, IonRow, IonCol, IonHeader, IonImg } from '@ionic/react';
+import { IonButton, IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import Login from "../pages/Login";
 import styled from "styled-components";
 import EliaLogo from "../assets/EliaVector.png";
@@ -39,13 +39,24 @@ const LoginOptions = (props: LoginOptionsProps) => {
     `
 
     return (
-        <div>
-            <IonGrid>
-                <IonRow>
+        <div style={{
+            height: "100%",
+            border: "1px solid white"
+        }}>
+            <IonGrid style={{
+                border: "10px solid orange",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column"
+                
+            }}>
+                <IonRow class="ion-align-items-end" style={{
+                    border: "3px solid green",
+                    height: "80%"
+                }}>
                     <IonCol>
                         <IonImg src={EliaLogo} style={{
                             height: "130px",
-                            marginTop: "200px"
                         }}>
                         </IonImg>
                     </IonCol>
@@ -57,10 +68,12 @@ const LoginOptions = (props: LoginOptionsProps) => {
                             </TitleHeader>
                     </IonCol>
                 </IonRow>
-                <IonRow class="ion-align-items-baseline" style={{
-                    border: "1px solid white",
+                <IonRow  class="ion-align-items-end" style={{
+                    border: "5px solid white",
+                    height: "100%"
+                    
                 }}>
-                    <IonCol className="login-button" style={{
+                    <IonCol className="login-button"  style={{
                         border: "1px solid yellow",
                     }}>
                         <MetaMaskLogin expand="block"

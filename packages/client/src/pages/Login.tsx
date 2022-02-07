@@ -86,7 +86,10 @@ const Login = (props: LoginProps) => {
     return (
         <IonPage>
             <IonContent className="login-screen">
-                <div>
+                <div style={{
+                    height: "100%",
+                    border: "1px solid green"
+                }}>
                     <LoginOptions loginMethod={loginMethod} />
                     </div>
             </IonContent>
