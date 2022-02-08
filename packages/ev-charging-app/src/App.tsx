@@ -43,7 +43,7 @@ export interface ChargePoint {
 
 const App: React.FC = () => {
 
-  const [selectedChargePoint, setSelectedChargePoint] = useState()
+  const [selectedChargePoint, setSelectedChargePoint] = useState<ChargePoint | undefined>(undefined)
  
   const [did, setDid] = useState<string>("")
   console.log(did, "THE DID IS SET")

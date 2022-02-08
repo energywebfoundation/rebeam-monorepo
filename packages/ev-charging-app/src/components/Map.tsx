@@ -15,7 +15,7 @@ import {
 } from "../constants/map-constants";
 
 interface MapProps {
-    setSelectedChargePoint: any;
+    setSelectedChargePoint: (x: ChargePoint) => void;
     selectedChargePoint?: ChargePoint
 }
 
