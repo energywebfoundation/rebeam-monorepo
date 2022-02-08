@@ -78,4 +78,4 @@ jobs:
           aws s3 cp packages/ev-charging-app/build s3://${{ secrets.DEV_BUCKET_NAME }} --recursive
       - name: Invalidate CloudFront # cloudfront caches s3 content so after each deployment, it needs to be cleared.
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_CLOUDFRONT_ID }} --paths "packages/ev-charging-app/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_CLOUDFRONT_ID }} --paths "/*"
