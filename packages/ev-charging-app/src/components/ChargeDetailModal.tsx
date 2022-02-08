@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import { IonModal, IonContent, IonButton } from '@ionic/react';
 import StationHeader from "./StationHeader";
-import RetailerDropdown from "./RetailerDropdown";
 import useRetailers from "../hooks/getRetailers";
 import NavigationOptions from "./NavigationOptions"
 import styled from "styled-components";
@@ -37,22 +36,16 @@ letter-spacing: 0.4px;
 `
 
 const ChargePointDetailModal = (props: DetailModalProps) => {
-        
-
     const {selectedChargePoint, isOpen, handleStartCharge, showModal} = props;
-    const [selectedProvider, setSelectedProvider] = useState<Provider>();
-    const { retailers, loadingRetailers } = useRetailers();
-    const hasRetailers = Object.keys(retailers).length > 0;
     const handleDismiss = () => {
         showModal(false)
-        setSelectedProvider(undefined)
     }
     return (
         <div>
             <IonModal
                 isOpen={isOpen}
                 breakpoints={[0.1, 0.5, 1]}
-                initialBreakpoint={0.8}
+                initialBreakpoint={0.5}
                 onDidDismiss={handleDismiss}
             >
                 <IonContent>
@@ -60,13 +53,9 @@ const ChargePointDetailModal = (props: DetailModalProps) => {
                     <StyledBorder></StyledBorder>
                     <NavigationOptions />
                     <StyledBorder></StyledBorder>
-                    {hasRetailers && (
-                        <RetailerDropdown retailers={retailers} loadingRetailers={loadingRetailers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} />
-                    )}
-                    <StyledBorder></StyledBorder>
                     <div className="ion-padding ion-text-center">
-                        <SessionButton expand="block" onClick={handleStartCharge} disabled={!selectedProvider} color={selectedProvider ? "primary" : "warning"}>
-                            {strings.startCharging}
+                        <SessionButton expand="block" onClick={handleStartCharge} color={"primary"}>
+                            {strings.requestStartCharging}
                         </SessionButton>
                     </div>
                 </IonContent>
