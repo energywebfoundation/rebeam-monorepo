@@ -59,7 +59,7 @@ margin-top: 5px
 `
 
 interface StationHeaderProps {
-    selectedChargePoint?: ChargePoint
+    selectedChargePoint: ChargePoint
 }
 
 
@@ -87,13 +87,13 @@ const StationHeader = (props: StationHeaderProps) => {
                                 <HeaderRow>
                                     <IonCol>
                                         <Header>
-                                            {selectedChargePoint!.stationName}
+                                            {selectedChargePoint.stationName}
                                         </Header>
                                     </IonCol>
                                 </HeaderRow>
                                 <AddressRow>
                                     <IonCol>
-                                        <Address>{selectedChargePoint!.formattedAddress}</Address>
+                                        <Address>{selectedChargePoint.formattedAddress}</Address>
                                     </IonCol>
                                 </AddressRow>
                                 <MapPinRow>

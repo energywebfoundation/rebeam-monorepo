@@ -48,19 +48,23 @@ const Map = (props: MapProps) => {
     const handleMapOnClick = (event: MapEvent) => {
         event.preventDefault();
         const map = mapRef.current;
-        const features = map!.queryRenderedFeatures(event.point)
-        const selectedProperties = features?.[0];
-        const { layer } = selectedProperties;
-        const { id } = layer;
-        if (id !== CHG_POINTS_LAYER_ID) {
-            return
-        }
-        if (!selectedProperties) {
-            return
+        if (map) {
+            const features = map.queryRenderedFeatures(event.point)
+            const selectedProperties = features?.[0];
+            const { layer } = selectedProperties;
+            const { id } = layer;
+            if (id !== CHG_POINTS_LAYER_ID) {
+                return
+            }
+            if (!selectedProperties) {
+                return
+            } else {
+                const { properties } = selectedProperties;
+                setSelectedChargePoint(properties)
+                setShowModal(true)
+            }
         } else {
-            const { properties } = selectedProperties;
-            setSelectedChargePoint(properties)
-            setShowModal(true)
+            return;
         }
     }
 
@@ -120,9 +124,10 @@ const Map = (props: MapProps) => {
 
                     )}
                 </ReactMapGL>
+                {selectedChargePoint && (
                     <ChargePointDetailModal selectedChargePoint={selectedChargePoint} isOpen={showModal} handleStartCharge={handleStartCharge} showModal={setShowModal} />
-
-           
+                )}
+                    
             </MapContainer>
         </IonPage>
     )

@@ -41,24 +41,27 @@ const ChargePointDetailModal = (props: DetailModalProps) => {
     }
     return (
         <div>
-            <IonModal
-                isOpen={isOpen}
-                breakpoints={[0.1, 0.5, 1]}
-                initialBreakpoint={0.5}
-                onDidDismiss={handleDismiss}
-            >
-                <IonContent>
-                    <StationHeader selectedChargePoint={selectedChargePoint}/>
-                    <StyledBorder></StyledBorder>
-                    <NavigationOptions />
-                    <StyledBorder></StyledBorder>
-                    <div className="ion-padding ion-text-center">
-                        <SessionButton expand="block" onClick={handleStartCharge} color={"primary"}>
-                            {strings.requestStartCharging}
-                        </SessionButton>
-                    </div>
-                </IonContent>
-            </IonModal>
+            {selectedChargePoint && (
+                   <IonModal
+                   isOpen={isOpen}
+                   breakpoints={[0.1, 0.5, 1]}
+                   initialBreakpoint={0.5}
+                   onDidDismiss={handleDismiss}
+               >
+                   <IonContent>
+                       <StationHeader selectedChargePoint={selectedChargePoint}/>
+                       <StyledBorder></StyledBorder>
+                       <NavigationOptions />
+                       <StyledBorder></StyledBorder>
+                       <div className="ion-padding ion-text-center">
+                           <SessionButton expand="block" onClick={handleStartCharge} color={"primary"}>
+                               {strings.requestStartCharging}
+                           </SessionButton>
+                       </div>
+                   </IonContent>
+               </IonModal>
+            )}
+         
         </div>
     )
 }
