@@ -1,0 +1,80 @@
+name: Deploy to bucket
+
+on:
+  push:
+    branches: [develop, DOI-1680_*]
+jobs:
+  cancel-previous:
+    name: 'Cancel Previous Runs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+  env_name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get GHA environment name
+        id: env_name
+        run: |
+          echo "Running on branch ${{ github.ref }}"
+          if [ "${{ github.ref }}" = "refs/heads/develop" ]; then
+            echo "::set-output name=aws_access_key_id::${{ secrets.DEV_CF_AWS_ACCESS_KEY_ID }}"
+            echo "::set-output name=aws_secret_key::${{ secrets.DEV_CF_AWS_SECRET_ACCESS_KEY }}"
+            echo "::set-output name=aws_region::${{ secrets.AWS_REGION_S3 }}"
+            echo "::set-output name=bucket_name::${{ secrets.DEV_BUCKET_NAME }}"
+            echo "::set-output name=cloudfront_id::${{ secrets.DEV_CLOUDFRONT_ID }}"
+          elif [ "${{ github.ref }}" = "refs/heads/DOI-1680_rebeam_cicd" ]; then
+            echo "::set-output name=aws_access_key_id::${{ secrets.DEV_CF_AWS_ACCESS_KEY_ID }}"
+            echo "::set-output name=aws_secret_key::${{ secrets.DEV_CF_AWS_SECRET_ACCESS_KEY }}"
+            echo "::set-output name=aws_region::${{ secrets.AWS_REGION_S3 }}"
+            echo "::set-output name=bucket_name::${{ secrets.DEV_BUCKET_NAME }}"
+            echo "::set-output name=cloudfront_id::${{ secrets.DEV_CLOUDFRONT_ID }}"
+          else
+            echo "Branch ${{ github.ref }} is not configured for deployment"
+            exit 1
+          fi
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '16.10.0'
+          registry-url: https://registry.npmjs.org/
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+      - name: Install npm packages
+        run: |
+          cd packages/ev-charging-app/
+          npm install
+          npm run build
+
+      - name: Ensure build is present
+        run: |
+          test -d "packages/ev-charging-app/build" && echo OK || exit 1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ steps.env_name.outputs.aws_access_key_id }}
+          aws-secret-access-key: ${{ steps.env_name.outputs.aws_secret_key }}
+          aws-region: ${{ steps.env_vars.outputs.aws_region }}
+      - name: Clear bucket
+        run: |
+          aws s3 rm s3://${{ secrets.DEV_BUCKET_NAME }} --recursive
+      - name: Upload to bucket
+        run: |
+          aws s3 cp dist s3://${{ secrets.DEV_BUCKET_NAME }} --recursive
+      - name: Invalidate CloudFront # cloudfront caches s3 content so after each deployment, it needs to be cleared.
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_CLOUDFRONT_ID }} --paths "packages/ev-charging-app/*"
