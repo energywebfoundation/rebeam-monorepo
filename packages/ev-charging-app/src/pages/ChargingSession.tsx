@@ -20,7 +20,7 @@ const StatusImg = styled(IonImg)`
 `
 
 
-const ChargingSession: React.FC = (props) => {
+const ChargingSession: React.FC = () => {
     const history = useHistory();
     const handleBackClick = () => {
         history.push('/map');

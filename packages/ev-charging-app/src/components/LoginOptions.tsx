@@ -6,7 +6,7 @@ import EliaLogo from "../assets/svgs/rebeam-logo.svg";
 import strings from "../constants/strings.json";
 // import { ProviderType } from "iam-client-lib";
 interface LoginOptionsProps {
-    loginMethod: any
+    loginMethod: () => void;
 }
 
     //STYLED COMPONENTS: 

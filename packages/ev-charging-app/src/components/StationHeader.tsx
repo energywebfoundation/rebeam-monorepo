@@ -4,11 +4,6 @@ import styled from "styled-components";
 import ChargeStationImg from "../assets/BuildingImg.png"
 import ModalPinIcon from "../assets/ModalPinIcon.png"
 import { ChargePoint } from "../App"
-const data = {
-    stationName: "50Hertz Transmission",
-    formattedAddress: "Heidestraße 2, 10557 Berlin, Germany",
-    img: ChargeStationImg
-}
 
 const Header = styled.h1`
 font-weight: bold;
