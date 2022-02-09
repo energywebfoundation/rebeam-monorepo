@@ -8,8 +8,7 @@ export class PresentationService {
 
   async cachePresentation(data: PresentationDTO): Promise<PresentationDTO> {
     const { ocpiTokenUID } = data;
-    const stored = await this.cacheManager.set(ocpiTokenUID, data);
-    console.log(stored, 'THE STORED VALUE');
+    await this.cacheManager.set(ocpiTokenUID, data);
     const cachedPresentation = await this.cacheManager.get(ocpiTokenUID);
     return cachedPresentation as PresentationDTO;
   }

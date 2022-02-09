@@ -50,7 +50,6 @@ export class PresentationController {
   ): Promise<PresentationDTO | null> {
     try {
       const cachedData = await this.service.fetchPresentation(id);
-      console.log(cachedData, 'should be null');
       return cachedData;
     } catch (err) {
       this.logger.error(
