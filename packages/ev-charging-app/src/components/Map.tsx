@@ -8,12 +8,11 @@ import ChargePointDetailModal from "./ChargeDetailModal";
 import styled from "styled-components";
 import { ChargePoint } from "../App";
 import {
-    MAP_BOX_TOKEN,
     CHG_POINTS_SOURCE_ID,
     CHG_POINTS_LAYER_ID,
     SOURCE_DATA_TYPE
 } from "../constants/map-constants";
-
+console.log(process.env.REACT_APP_MAP_BOX_TOKEN, "WHAT IS THIS PROCESS???")
 interface MapProps {
     setSelectedChargePoint: (x: ChargePoint) => void;
     selectedChargePoint?: ChargePoint
@@ -74,7 +73,7 @@ const Map = (props: MapProps) => {
                 <ReactMapGL
                     {...viewport}
                     ref={mapRef}
-                    mapboxApiAccessToken={MAP_BOX_TOKEN}
+                    mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
                     width="100%"
                     height="100%"
                     onClick={handleMapOnClick}

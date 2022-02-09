@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "ev-charging-app",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -52,7 +52,9 @@
     "start": "PORT=3006 react-scripts start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.tsx\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.tsx\" --fix"
   },
   "eslintConfig": {
     "extends": [
