@@ -22,7 +22,7 @@ describe('PresentationController', () => {
         },
         ocpiTokenUID: 'tokenUUID',
       };
-      const result = await presController.present(presentationInfo)
+      const result = await presController.present(presentationInfo);
       expect(result).toBe(presentationInfo);
     });
   });
