@@ -13,7 +13,7 @@ describe('PresentationController', () => {
   });
 
   describe('root', () => {
-    it('should return the presentation information', () => {
+    it('should return the presentation information', async () => {
       const presentationInfo = {
         presentationLink: {
           type: 'presType',
@@ -22,7 +22,8 @@ describe('PresentationController', () => {
         },
         ocpiTokenUID: 'tokenUUID',
       };
-      expect(presController.present(presentationInfo)).toBe(presentationInfo);
+      const result = await presController.present(presentationInfo)
+      expect(result).toBe(presentationInfo);
     });
   });
 });
