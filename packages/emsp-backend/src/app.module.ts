@@ -18,7 +18,7 @@ import envValidationSchema from './config/schema';
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
-        Object.assign(getConnectionOptions(), { autoLoadEntities: true }),
+        Object.assign(await getConnectionOptions(), { autoLoadEntities: true }),
     }),
     LoggerModule,
     OcnModule,

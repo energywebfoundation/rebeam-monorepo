@@ -14,16 +14,16 @@ services:
       - POSTGRES_PASSWORD=${TYPEORM_PASSWORD}
       - POSTGRES_DB=${TYPEORM_DATABASE}
       - POSTGRES_HOST=${TYPEORM_HOST}
-  app:
-    image: emsp-backend # production image
-    restart: always
-    ports:
-      - 3003:3003
-      - 3002:3002
-    depends_on:
-      - db
-    env_file:
-      - ./.env
-    environment:
-      # example of overriding env vars
-      - SERVER_PORT=3002
+  # app:
+  #   image: emsp-backend # production image
+  #   restart: always
+  #   ports:
+  #     - 3003:3003
+  #     - 3002:3002
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - ./.env
+  #   environment:
+  #     # example of overriding env vars
+  #     - SERVER_PORT=3002
