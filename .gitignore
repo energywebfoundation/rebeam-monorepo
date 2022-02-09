@@ -2,4 +2,4 @@
 /.vscode/
 /storage/
 
-*.log
+lerna-debug.log
