@@ -5,7 +5,6 @@ import { PresentationDTO } from './presentation.dto';
 @ApiTags('presentation')
 @Controller('presentation')
 export class PresentationController {
-  constructor() {}
 
   @Post()
   @HttpCode(200)
