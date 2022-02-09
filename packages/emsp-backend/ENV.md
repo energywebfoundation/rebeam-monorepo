@@ -53,6 +53,10 @@ The OCN Component uses the [OCN Bridge](https://github.com/energywebfoundation/o
 
 Registration to the OCN should be done once, manually.
 
+### `OCN_OCPI_SERVER_BASE_URL`
+
+The base URL of the OCPI server, matching the `OCN_OCPI_SERVER_PORT`.
+
 ### `OCN_OCPI_SERVER_PORT`
 
 Dictates which port the embedded OCPI server will run on.
@@ -61,3 +65,10 @@ Dictates which port the embedded OCPI server will run on.
 
 The secp256k1 private key used to sign OCPI messages on the OCN. This should
 match the same key used to register on the OCN.
+
+### `OCN_ENVIRONMENT`
+
+This is the environment which will be used for the OCN connection. It should be
+one of the [OCN Registry network keys](https://bitbucket.org/shareandcharge/ocn-registry/src/master/src/networks.ts)
+(`local`, `volta` or `prod`). Becuase `local` does not work in local docker
+networks, the special `docker` key can be provided in such an environment.
