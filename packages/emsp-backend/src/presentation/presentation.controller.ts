@@ -20,7 +20,9 @@ export class PresentationController {
     summary: 'Cache charging session presentation information',
   })
   @ApiResponse({ status: 200, type: PresentationDTO })
-  async cachePresentation(@Body() data: PresentationDTO): Promise<PresentationDTO> {
+  async cachePresentation(
+    @Body() data: PresentationDTO
+  ): Promise<PresentationDTO> {
     try {
       //Cache the presentation data. The key is the OCPI token Id, the value is stringified presentation data:
       const cachedData = await this.service.cachePresentation(data);
@@ -48,7 +50,7 @@ export class PresentationController {
   ): Promise<PresentationDTO | null> {
     try {
       const cachedData = await this.service.fetchPresentation(id);
-      console.log(cachedData, "should be null")
+      console.log(cachedData, 'should be null');
       return cachedData;
     } catch (err) {
       this.logger.error(

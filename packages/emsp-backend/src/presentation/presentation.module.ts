@@ -1,7 +1,7 @@
 import { Module, CacheModule, CacheInterceptor } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { PresentationController } from './presentation.controller';
-import {PresentationService} from "./presentation.service";
+import { PresentationService } from './presentation.service';
 @Module({
   imports: [
     CacheModule.register({
@@ -13,8 +13,8 @@ import {PresentationService} from "./presentation.service";
     PresentationService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    }
-  ]
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class PresentationModule {}
