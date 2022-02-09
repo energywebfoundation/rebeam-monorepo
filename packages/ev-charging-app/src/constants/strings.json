@@ -1,0 +1,19 @@
+{
+    "charging": "Charging",
+    "connectToMeteMask": "Connect To MetaMask",
+    "contine": "Continue",
+    "cost": "Cost",
+    "duration": "Duration",
+    "eliaRebeam": "Elia ReBeam",
+    "googleMaps": "Google Maps",
+    "maps": "Maps",
+    "selectAProvider": "Select a Provider",
+    "selectSupplier": "Select Supplier",
+    "stopCharging": "Stop Charging",
+    "supplier": "Supplier",
+    "suppliers": "Suppliers",
+    "requestStartCharging": "Request to Start Charging",
+    "stopChargingMessage": "You can stop charging from App or by disconnecting charge head from your vehicle",
+    "totalKwH": "Total Kwh",
+    "waze": "Waze"   
+}
