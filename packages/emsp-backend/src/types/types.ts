@@ -11,5 +11,5 @@ export class ApiError {
 export enum ApiErrorCode {
   BAD_PAYLOAD = 'bad_payload',
   OCN_BRIDGE = 'ocn_bridge_failure',
-  PRESENTATION = 'presentation_module_cache_failure'
+  PRESENTATION = 'presentation_module_cache_failure',
 }
