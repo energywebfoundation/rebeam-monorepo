@@ -21,11 +21,10 @@ describe('PresentationController', () => {
     }).compile();
 
     presController = app.get<PresentationController>(PresentationController);
-    cache = app.get<Cache>(CACHE_MANAGER)
+    cache = app.get<Cache>(CACHE_MANAGER);
   });
 
   describe('presentation', () => {
-    
     const presentationInfo = {
       presentationLink: {
         type: 'string',
@@ -46,10 +45,10 @@ describe('PresentationController', () => {
           ssiSession: 'string',
         },
         ocpiTokenUID: 'test6',
-      }
-      
-      const {ocpiTokenUID} = data;
-      await cache.set(ocpiTokenUID, data)
+      };
+
+      const { ocpiTokenUID } = data;
+      await cache.set(ocpiTokenUID, data);
       const result = await presController.fetchPresentationData(ocpiTokenUID);
       expect(result).toEqual(data);
     });
