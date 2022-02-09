@@ -31,7 +31,7 @@ describe('PresentationController', () => {
       };
 
       const result = await presController.present(presentationInfo);
-      expect(result).toBe(presentationInfo.toString());
+      expect(result).toBe("{\"presentationLink\":{\"type\":\"string\",\"url\":\"string\",\"ssiSession\":\"string\"},\"ocpiTokenUID\":\"test5\"}");
     });
   });
 

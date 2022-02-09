@@ -60,6 +60,7 @@ export class PresentationController {
   ): Promise<PresentationDTO | null> {
     try {
       const cachedData = await this.cacheManager.get(id);
+      console.log(cachedData, "THE CACHED DATA")
       return cachedData ? JSON.parse(cachedData as string) : null;
     } catch (err) {
       this.logger.error(
