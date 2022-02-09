@@ -1,30 +1,20 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { AppService } from '../app.service';
-import { Request, Response } from 'express';
+import { Body, Controller, Post, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './presentation.dto';
-
-import { ConfigService } from '@nestjs/config';
 
 @ApiTags('presentation')
 @Controller('presentation')
 export class PresentationController {
-  constructor(
-    private readonly appService: AppService,
-    private configService: ConfigService
-  ) {}
+  constructor() {}
 
   @Post()
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Provide the charging session presentation information',
+  })
+  @ApiResponse({ status: 200, type: PresentationDTO })
   async present(@Body() presentation: PresentationDTO) {
-    console.log(presentation, 'THE REQUEST');
+    console.log(`The Presentation: ${presentation}`);
     return presentation;
   }
 }

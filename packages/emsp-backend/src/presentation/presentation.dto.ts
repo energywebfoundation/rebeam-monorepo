@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PresentationDTO {
+export class PresentationLinkDTO {
   @ApiProperty({ type: String })
   type: string;
 
@@ -9,4 +9,12 @@ export class PresentationDTO {
 
   @ApiProperty({ type: String })
   ssiSession: string;
+}
+
+export class PresentationDTO {
+  @ApiProperty({ type: PresentationLinkDTO })
+  presentationLink: PresentationLinkDTO;
+
+  @ApiProperty({ type: String })
+  ocpiTokenUID: string;
 }
