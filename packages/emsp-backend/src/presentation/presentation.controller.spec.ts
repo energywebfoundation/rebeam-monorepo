@@ -2,12 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PresentationController } from './presentation.controller';
 import { CacheModule, Logger } from '@nestjs/common';
 import { LoggerService } from '../logger/logger.service';
+import { PresentationService } from './presentation.service';
 describe('PresentationController', () => {
   let presController: PresentationController;
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [PresentationController],
-      providers: [LoggerService],
+      providers: [LoggerService, PresentationService],
       imports: [
         CacheModule.register({
           ttl: 0,
