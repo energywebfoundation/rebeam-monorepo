@@ -4,7 +4,6 @@ import { CacheModule, Logger } from '@nestjs/common';
 import { LoggerService } from '../logger/logger.service';
 describe('PresentationController', () => {
   let presController: PresentationController;
-
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [PresentationController],
@@ -19,35 +18,23 @@ describe('PresentationController', () => {
     presController = app.get<PresentationController>(PresentationController);
   });
 
-  describe('post present', () => {
+  describe('presentation', () => {
+    const presentationInfo = {
+      presentationLink: {
+        type: 'string',
+        url: 'string',
+        ssiSession: 'string',
+      },
+      ocpiTokenUID: 'test5',
+    };
     it('should return the presentation information that is cached', async () => {
-      const presentationInfo = {
-        presentationLink: {
-          type: 'string',
-          url: 'string',
-          ssiSession: 'string',
-        },
-        ocpiTokenUID: 'test5',
-      };
-
-      const result = await presController.present(presentationInfo);
-      expect(result).toBe("{\"presentationLink\":{\"type\":\"string\",\"url\":\"string\",\"ssiSession\":\"string\"},\"ocpiTokenUID\":\"test5\"}");
+      const result = await presController.cachePresentation(presentationInfo);
+      expect(result).toBe(presentationInfo);
     });
-  });
-
-  describe('get id', () => {
-    it('should return the presentation information that is cached', async () => {
-      const presentationInfo = {
-        presentationLink: {
-          type: 'string',
-          url: 'string',
-          ssiSession: 'string',
-        },
-        ocpiTokenUID: 'test5',
-      };
-      const id = 'test5';
-      const result = await presController.getPresentationData(id);
-      expect(result).toBe(presentationInfo.toString());
+    it('should fetch the cache given a uuid', async () => {
+      const id = presentationInfo.ocpiTokenUID;
+      const result = await presController.fetchPresentationData(id);
+      expect(result).toBe(presentationInfo);
     });
   });
 });
