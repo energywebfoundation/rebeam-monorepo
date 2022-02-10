@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-
 export class InitiateChargeDTO {
-    @ApiProperty({ type: String })
-    ocpiToken: String;
-  }
+  @ApiProperty({ type: String })
+  ocpiToken: string;
+}

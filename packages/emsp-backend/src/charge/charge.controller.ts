@@ -21,12 +21,10 @@ export class ChargeController {
     try {
       const token = await this.service.initiate();
       return {
-          ocpiToken: token
-      }
+        ocpiToken: token,
+      };
     } catch (err) {
-      this.logger.error(
-        `Cannot generate OCPI token `
-      );
+      this.logger.error(`Cannot generate OCPI token `);
       throw new ApiError(
         ApiErrorCode.OCN_BRIDGE,
         'Failure to start OCPI session',

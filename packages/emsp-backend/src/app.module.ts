@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { OcnModule } from './ocn/ocn.module';
 import { PresentationModule } from './presentation/presentation.module';
-import { ChargeModule } from "./charge/charge.module"
+import { ChargeModule } from './charge/charge.module';
 import loadConfig from './config/load';
 import envValidationSchema from './config/schema';
 
@@ -25,7 +25,7 @@ import envValidationSchema from './config/schema';
     LoggerModule,
     OcnModule,
     PresentationModule,
-    ChargeModule
+    ChargeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
