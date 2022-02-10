@@ -1,8 +1,6 @@
 import { Body, Controller, Post, HttpCode, Get, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './dtos/presentation.dto';
-import { Inject, CACHE_MANAGER } from '@nestjs/common';
-import { Cache } from 'cache-manager';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { PresentationService } from './presentation.service';
@@ -10,7 +8,6 @@ import { PresentationService } from './presentation.service';
 @Controller('presentation')
 export class PresentationController {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly logger: LoggerService,
     private readonly service: PresentationService
   ) {}
