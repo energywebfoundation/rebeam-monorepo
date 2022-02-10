@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpCode, Get, Param } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, Get, Param, UnprocessableEntityException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './dtos/presentation.dto';
 import { LoggerService } from '../logger/logger.service';
@@ -20,6 +20,17 @@ export class PresentationController {
   async cachePresentation(
     @Body() data: PresentationDTO
   ): Promise<PresentationDTO> {
+    try {
+      PresentationDTO.validate(data);
+    } catch (err) {
+      throw new UnprocessableEntityException(
+        new ApiError(
+          ApiErrorCode.BAD_PAYLOAD,
+          'The request body failed validation',
+          err
+        )
+      );
+    }
     try {
       //Cache the presentation data. The key is the OCPI token Id, the value is stringified presentation data:
       const cachedData = await this.service.cachePresentation(data);

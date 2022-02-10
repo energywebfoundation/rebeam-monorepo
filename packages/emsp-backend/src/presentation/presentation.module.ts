@@ -5,7 +5,7 @@ import { PresentationService } from './presentation.service';
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 0,
+      ttl: +process.env.TTL,
     }),
   ],
   controllers: [PresentationController],
