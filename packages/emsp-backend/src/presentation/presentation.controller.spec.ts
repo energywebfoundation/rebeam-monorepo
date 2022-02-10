@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PresentationController } from './presentation.controller';
-import { CacheModule, Logger } from '@nestjs/common';
+import { CacheModule } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/common';
 
