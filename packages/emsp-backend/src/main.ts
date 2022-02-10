@@ -6,15 +6,16 @@ import { LoggerService } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api')
 
   const logger = app.get(LoggerService);
 
   const api = new DocumentBuilder().setTitle('ReBeam eMSP Backend').build();
   const document = SwaggerModule.createDocument(app, api);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/spec', app, document);
 
-  logger.log(`OpenAPI UI mapped to /api`, SwaggerModule.name);
-  logger.log('OpenAPI spec mapped to /api-json', SwaggerModule.name);
+  logger.log(`OpenAPI UI mapped to /api/spec`, SwaggerModule.name);
+  logger.log('OpenAPI spec mapped to /api/spec-json', SwaggerModule.name);
 
   const config = app.get(ConfigService);
   const port = +config.get('server.port');
