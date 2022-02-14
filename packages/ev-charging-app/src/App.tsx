@@ -1,15 +1,10 @@
 import { Redirect, Route } from 'react-router-dom';
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import {
-  IonApp,
-  IonRouterOutlet,
-  setupIonicReact
-} from '@ionic/react';
-import Map from "./components/Map";
-import Login from "./pages/Login";
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import Map from './pages/Map';
 import { IonReactRouter } from '@ionic/react-router';
-import ChargingSession from "./pages/ChargingSession";
+import ChargingSession from './pages/ChargingSession';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,47 +28,41 @@ import './theme/variables.css';
 setupIonicReact();
 
 export interface ChargePoint {
-  id: number,
-  stationName: string,
-  formattedAddress?: string,
-  img?: string
-
+  id: number;
+  stationName: string;
+  formattedAddress?: string;
+  img?: string;
 }
 
-
 const App: React.FC = () => {
-
-  const [selectedChargePoint, setSelectedChargePoint] = useState<ChargePoint | undefined>(undefined)
- 
-  const [did, setDid] = useState<string>("")
-  console.log(did, "THE DID IS SET")
+  const [selectedChargePoint, setSelectedChargePoint] = useState<
+    ChargePoint | undefined
+  >(undefined);
+  const [ocpiToken, setOcpiToken] = useState<string>('');
+  // const [did, setDid] = useState<string>("")
+  // console.log(did, "THE DID IS SET")
   return (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-          <Route
-            exact path="/login"
-            render={() => {
-              if (did) {
-                return <Redirect to="/map"/>
-              }
-              return <Login setDid={setDid} />;
-            }}
-          >
+            <Redirect to="/map" />
           </Route>
           <Route exact path="/map">
-            <Map setSelectedChargePoint={setSelectedChargePoint} selectedChargePoint={selectedChargePoint}></Map>
+            <Map
+              setSelectedChargePoint={setSelectedChargePoint}
+              selectedChargePoint={selectedChargePoint}
+              setToken={setOcpiToken}
+              token={ocpiToken}
+            ></Map>
           </Route>
           <Route exact path="/charge">
-            <ChargingSession />
+            <ChargingSession token={ocpiToken} />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
-  )
+  );
 };
 // docs on Ionic Router: https://ionicframework.com/docs/react/navigation
 export default App;
