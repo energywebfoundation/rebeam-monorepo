@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './dtos/presentation.dto';
-import { PresentationEncodedDTO } from "./dtos/presentationEncoded.dto"
+import { PresentationEncodedDTO } from './dtos/presentationEncoded.dto';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { PresentationService } from './presentation.service';
@@ -19,7 +19,7 @@ export class PresentationController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: PresentationService
-  ) { }
+  ) {}
   @Post()
   @HttpCode(200)
   @ApiOperation({
@@ -67,9 +67,11 @@ export class PresentationController {
   ): Promise<PresentationEncodedDTO | null> {
     try {
       const cachedData = await this.service.fetchPresentation(id);
-      return cachedData ? {
-        presentationLinkEncoded: cachedData
-      } : null
+      return cachedData
+        ? {
+            presentationLinkEncoded: cachedData,
+          }
+        : null;
     } catch (err) {
       this.logger.error(
         `Cannot fetch cached presentation data for ${id}: ${err.message}`

@@ -13,12 +13,12 @@ export class PresentationService {
     return cachedPresentation as PresentationDTO;
   }
 
-  async fetchPresentation(id: string): Promise<String | null> {
+  async fetchPresentation(id: string): Promise<string | null> {
     const fetchedData = await this.cacheManager.get(id);
     let transformedData = null;
     if (fetchedData) {
-       const dataToString =  JSON.stringify(fetchedData);
-       transformedData = Buffer.from(dataToString).toString("base64");
+      const dataToString = JSON.stringify(fetchedData);
+      transformedData = Buffer.from(dataToString).toString('base64');
     }
     return transformedData;
   }

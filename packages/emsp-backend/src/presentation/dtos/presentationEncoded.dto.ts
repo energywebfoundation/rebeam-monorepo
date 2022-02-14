@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 
 export class PresentationEncodedDTO {
   @ApiProperty({ type: String })
-  presentationLinkEncoded: String;
+  presentationLinkEncoded: string;
 
   static validate(dto: PresentationEncodedDTO) {
     Joi.assert(
