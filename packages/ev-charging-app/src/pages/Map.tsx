@@ -31,8 +31,6 @@ const MapContainer = styled.div`
 `;
 
 const Map = (props: MapProps) => {
-  console.log(process.env.REACT_APP_BACKEND_URL, 'THE URL');
-  console.log(process.env.REACT_APP_SWITCHBOARD_URL, 'SWITCHBOARD URL');
   const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
     props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
