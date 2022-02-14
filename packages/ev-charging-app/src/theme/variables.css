@@ -2,6 +2,10 @@
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
+
+ion-popover  {
+--width: 350px
+  }
 :root {
   /** primary **/
   --ion-color-primary: #A566FF;
