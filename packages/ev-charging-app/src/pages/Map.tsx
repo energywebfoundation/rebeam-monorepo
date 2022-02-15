@@ -4,6 +4,7 @@ import { FeatureCollection } from 'geojson';
 import { IonPage, IonLoading, IonContent } from '@ionic/react';
 import getChargingPoints from '../hooks/getChargingPoints';
 import ChargePointDetailModal from '../components/ChargeDetailModal';
+import strings from "../constants/strings.json";
 import styled from 'styled-components';
 import { ChargePoint } from '../App';
 import {
@@ -35,7 +36,7 @@ const Map = (props: MapProps) => {
     props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [chargeProcessLoading, setChargeProcessLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [presentation, setPresentation] = useState<string>();
   const [viewport, setViewport] = useState({
     latitude: 52.52,
@@ -51,7 +52,6 @@ const Map = (props: MapProps) => {
 
   useEffect(() => {
     if (!presentation && chargeProcessLoading) {
-      console.log(presentation);
       const poll = setInterval(async () => {
         const id = localStorage.getItem('ocpiToken');
         const results = await axios.get(
@@ -65,14 +65,12 @@ const Map = (props: MapProps) => {
           return () => clearInterval();
         }
       }, 2000);
-      return () => clearTimeout(poll);
+      return () => clearInterval(poll);
     }
   }, [presentation, chargeProcessLoading]);
 
   const handleStartCharge = async () => {
     if (!token) {
-      //setShowModal(false);
-      console.log(`${process.env.REACT_APP_BACKEND_URL}charge`);
       const result = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}charge`
       );
@@ -107,7 +105,7 @@ const Map = (props: MapProps) => {
       } else {
         const { properties } = selectedProperties;
         setSelectedChargePoint(properties);
-        setShowModal(true);
+        setShowChargeStationModal(true);
       }
     } else {
       return;
@@ -119,7 +117,7 @@ const Map = (props: MapProps) => {
       <IonContent>
         <IonLoading
           isOpen={chargeProcessLoading}
-          message={'Requesting Charge...'}
+          message={strings.requestingChargeLoader}
           onDidDismiss={() => setChargeProcessLoading(false)}
         />
         <MapContainer>
@@ -171,9 +169,9 @@ const Map = (props: MapProps) => {
           {selectedChargePoint && (
             <ChargePointDetailModal
               selectedChargePoint={selectedChargePoint}
-              isOpen={showModal}
+              isOpen={showChargeStationModal}
               handleStartCharge={handleStartCharge}
-              showModal={setShowModal}
+              showModal={setShowChargeStationModal}
               setToken={setToken}
             />
           )}

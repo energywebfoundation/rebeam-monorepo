@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   IonPopover,
   IonContent,
-  IonModal,
   IonRow,
   IonCol,
   IonIcon,
@@ -11,15 +10,12 @@ import {
   IonList,
   IonLabel,
   IonHeader,
-  IonButton,
-  IonListHeader,
   IonGrid,
 } from '@ionic/react';
 import styled from 'styled-components';
 import WalletQRCode from '../assets/smallQRCode.png';
 import EnergyWebIcon from '../assets/svgs/energyweb-logo.svg';
 import { closeOutline, chevronForwardOutline } from 'ionicons/icons';
-import './popoverContent.css';
 import strings from '../constants/strings.json';
 const SupplierItem = styled(IonItem)`
   --inner-padding-bottom: 10px;

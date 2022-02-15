@@ -39,8 +39,6 @@ const App: React.FC = () => {
     ChargePoint | undefined
   >(undefined);
   const [ocpiToken, setOcpiToken] = useState<string>('');
-  // const [did, setDid] = useState<string>("")
-  // console.log(did, "THE DID IS SET")
   return (
     <IonApp>
       <IonReactRouter>
@@ -64,5 +62,4 @@ const App: React.FC = () => {
     </IonApp>
   );
 };
-// docs on Ionic Router: https://ionicframework.com/docs/react/navigation
 export default App;

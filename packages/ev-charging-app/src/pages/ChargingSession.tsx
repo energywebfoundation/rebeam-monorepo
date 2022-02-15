@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   IonContent,
   IonPage,
@@ -7,7 +7,6 @@ import {
   IonRow,
   IonCol,
   IonImg,
-  IonLoading,
 } from '@ionic/react';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
@@ -37,9 +36,7 @@ export interface IPresentationData {
   prentationLinkEncoded: string;
 }
 
-const ChargingSession: React.FC<IChargingSessionProps> = (
-  props: IChargingSessionProps
-) => {
+const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const history = useHistory();
   const handleBackClick = () => {
     history.push('/map');
