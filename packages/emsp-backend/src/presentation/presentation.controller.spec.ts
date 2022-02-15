@@ -47,10 +47,15 @@ describe('PresentationController', () => {
         ocpiTokenUID: 'test6',
       };
 
+      const linkEncoded = {
+        presentationLinkEncoded:
+          'eyJwcmVzZW50YXRpb25MaW5rIjp7InR5cGUiOiJzdHJpbmciLCJ1cmwiOiJzdHJpbmciLCJzc2lTZXNzaW9uIjoic3RyaW5nIn0sIm9jcGlUb2tlblVJRCI6InRlc3Q2In0=',
+      };
+
       const { ocpiTokenUID } = data;
       await cache.set(ocpiTokenUID, data);
       const result = await presController.fetchPresentationData(ocpiTokenUID);
-      expect(result).toEqual(data);
+      expect(result).toEqual(linkEncoded);
     });
   });
 });
