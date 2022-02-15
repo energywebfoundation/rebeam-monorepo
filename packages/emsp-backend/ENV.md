@@ -6,9 +6,17 @@
 
 Dictates which port the eMSP backend server will run on.
 
+## Cache
+
+### `TTL_CACHE`
+
+The time-to-live of items stored in-memory, for example, presentation
+invitations. Set to 0 for infinite.
+
 ## Database
 
-The default driver is PostgreSQL. The following variables should be provided to connect to a PostgreSQL server instance.
+The default driver is PostgreSQL. The following variables should be provided
+to connect to a PostgreSQL server instance.
 
 ### `TYPEORM_CONNECTION`
 
@@ -49,7 +57,8 @@ can be set to `true` during debugging.
 
 ## OCN
 
-The OCN Component uses the [OCN Bridge](https://github.com/energywebfoundation/ocn-bridge/tree/v3). It runs an embedded server which handles OCPI requests over the OCN.
+The OCN Component uses the [OCN Bridge](https://github.com/energywebfoundation/ocn-bridge/tree/v3).
+It runs an embedded server which handles OCPI requests over the OCN.
 
 Registration to the OCN should be done once, manually.
 
