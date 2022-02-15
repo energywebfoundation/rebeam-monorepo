@@ -3,6 +3,7 @@ import * as Joi from 'joi';
 export default () =>
   Joi.object({
     SERVER_PORT: Joi.number().required(),
+    TTL_CACHE: Joi.number().required(),
     /**
      * OCN ENV VARS
      */

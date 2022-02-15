@@ -15,7 +15,7 @@ describe('PresentationController', () => {
       providers: [LoggerService, PresentationService],
       imports: [
         CacheModule.register({
-          ttl: +process.env.TTL,
+          ttl: +process.env.TTL_CACHE,
         }),
       ],
     }).compile();
