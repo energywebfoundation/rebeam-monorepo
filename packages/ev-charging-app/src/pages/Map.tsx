@@ -4,7 +4,7 @@ import { FeatureCollection } from 'geojson';
 import { IonPage, IonLoading, IonContent } from '@ionic/react';
 import getChargingPoints from '../hooks/getChargingPoints';
 import ChargePointDetailModal from '../components/ChargeDetailModal';
-import strings from "../constants/strings.json";
+import strings from '../constants/strings.json';
 import styled from 'styled-components';
 import { ChargePoint } from '../App';
 import {
