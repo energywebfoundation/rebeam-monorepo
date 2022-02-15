@@ -8,6 +8,7 @@
     "@capacitor/haptics": "1.1.4",
     "@capacitor/keyboard": "1.2.1",
     "@capacitor/status-bar": "1.0.7",
+    "@craco/craco": "^6.4.3",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
     "@testing-library/jest-dom": "^5.11.9",
@@ -49,9 +50,9 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "start": "PORT=3006 react-scripts start",
-    "build": "react-scripts --max_old_space_size=4096 build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
+    "start": "PORT=3006 craco start",
+    "build": "craco --max_old_space_size=4096 build",
+    "test": "craco test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.tsx\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.tsx\" --fix"
