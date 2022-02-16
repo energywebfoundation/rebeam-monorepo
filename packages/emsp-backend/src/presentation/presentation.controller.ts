@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './dtos/presentation.dto';
+import { PresentationEncodedDTO } from './dtos/presentationEncoded.dto';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { PresentationService } from './presentation.service';
@@ -60,13 +61,17 @@ export class PresentationController {
   @ApiOperation({
     summary: 'Fetch cached charging session presentation information',
   })
-  @ApiResponse({ status: 200, type: PresentationDTO || null })
+  @ApiResponse({ status: 200, type: PresentationEncodedDTO || null })
   async fetchPresentationData(
     @Param('id') id: string
-  ): Promise<PresentationDTO | null> {
+  ): Promise<PresentationEncodedDTO | null> {
     try {
       const cachedData = await this.service.fetchPresentation(id);
-      return cachedData;
+      return cachedData
+        ? {
+            presentationLinkEncoded: cachedData,
+          }
+        : null;
     } catch (err) {
       this.logger.error(
         `Cannot fetch cached presentation data for ${id}: ${err.message}`
