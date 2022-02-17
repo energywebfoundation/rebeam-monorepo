@@ -2,7 +2,7 @@ name: Deploy to bucket
 
 on:
   push:
-    branches: [develop, DOI-1680_*]
+    branches: [develop]
 jobs:
   cancel-previous:
     name: 'Cancel Previous Runs'
@@ -59,6 +59,7 @@ jobs:
         run: |
           cd packages/ev-charging-app/
           npm install
+          cp .env.$(git branch --show-current) .env.local
           npm run build
 
       - name: Ensure build is present
