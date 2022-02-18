@@ -81,7 +81,29 @@ services:
       - POSTGRES_DATABASE=postgres
       - POSTGRES_PORT=5432
 
+  cpo-backend:
+    container_name: cpo-backend
+    build: https://github.com/energywebfoundation/ocn-tools.git#feat/admin-api
+    volumes:
+      - cpo-backend-db:/home/node/app/data
+    ports:
+      - 3060:3060 # admin port
+    environment:
+      - OCN_NODE_URL=http://ocn-node:8080
+      - OCN_IDENTITY=0x737f5c61de545d32059ce6d5bc72f7d34b9963310adde62ef0f26621266b65dc
+      - OCN_STAGE=docker
+      - CPO_PORT=3000
+      - CPO_ADMIN_PORT=3060
+      - CPO_PUBLIC_IP=http://cpo-backend:3000
+      - CPO_PARTY_ID=CPO
+      - CPO_COUNTRY_CODE=DE
+      - CPO_NAME=MockCPO
+      - CPO_PREQUALIFY_ASSETS=false
+      - CPO_CREATE_DIDS=false
+    command: ['node', 'dist/index.js', 'mock', '--cpo']
+
 volumes:
   ganache:
   emsp-backend-db:
   ocn-node-db:
+  cpo-backend-db:
