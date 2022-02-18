@@ -32,10 +32,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService,  
+  providers: [
+    AppService,
     {
-    provide: APP_INTERCEPTOR,
-    useClass: CacheInterceptor,
-  }],
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}
