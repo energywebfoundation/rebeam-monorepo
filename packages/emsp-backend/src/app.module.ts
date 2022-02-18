@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, CacheInterceptor, CacheModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
@@ -10,6 +10,7 @@ import { PresentationModule } from './presentation/presentation.module';
 import { ChargeModule } from './charge/charge.module';
 import loadConfig from './config/load';
 import envValidationSchema from './config/schema';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -26,8 +27,15 @@ import envValidationSchema from './config/schema';
     OcnModule,
     PresentationModule,
     ChargeModule,
+    CacheModule.register({
+      ttl: +process.env.TTL_CACHE,
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,  
+    {
+    provide: APP_INTERCEPTOR,
+    useClass: CacheInterceptor,
+  }],
 })
 export class AppModule {}
