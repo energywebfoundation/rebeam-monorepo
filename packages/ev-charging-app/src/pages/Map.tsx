@@ -72,7 +72,7 @@ const Map = (props: MapProps) => {
   const handleStartCharge = async () => {
     if (!token) {
       const result = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}charge`
+        `${process.env.REACT_APP_BACKEND_URL}charge/initiate`
       );
       const { data } = result;
       const { ocpiToken } = data;
