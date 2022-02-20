@@ -104,7 +104,20 @@ export class OcnApiService implements IPluggableAPI {
         console.log(
           `THE RESULT FROM POST: ${uid}, ${command}, result: ${result}`
         );
-        await this.cacheManager.set(uid, result);
+        const resultData = {
+          command,
+          result,
+          uid,
+        };
+        /*
+        {
+          command: "START_SESSION",
+          result: "ACCEPTED || "CANCELED_RESERVATION || FAILED || NOT_SUPPORTED || REJECTED || TIMEOUT",
+          uid: "123cvb"
+        }
+
+        */
+        await this.cacheManager.set(`${uid}-auth`, resultData);
         this.logger.log(
           `[POST commands] /${command}/${uid}: ${JSON.stringify(result)}}`,
           OcnApiService.name

@@ -4,12 +4,14 @@ import { OcnApiService } from './services/ocn-api.service';
 import { OcnDbService } from './services/ocn-db.service';
 import { OcnService } from './services/ocn.service';
 import { Auth } from './schemas/auth.schema';
+import { Session } from './schemas/session.schema';
 import { Endpoint } from './schemas/endpoint.schema';
 import { OcnController } from './ocn.controller';
 import { OcnBridgeProvider } from './providers/ocn-bridge.provider';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Auth, Endpoint])],
+  imports: [TypeOrmModule.forFeature([Auth, Endpoint, Session])],
+  exports: [OcnBridgeProvider],
   providers: [OcnApiService, OcnDbService, OcnBridgeProvider, OcnService],
   controllers: [OcnController],
 })
