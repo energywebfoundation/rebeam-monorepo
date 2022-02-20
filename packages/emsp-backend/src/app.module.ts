@@ -29,6 +29,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     ChargeModule,
     CacheModule.register({
       ttl: +process.env.TTL_CACHE,
+      isGlobal: true,
     }),
   ],
   controllers: [AppController],
