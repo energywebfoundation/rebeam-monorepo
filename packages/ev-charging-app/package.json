@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@capacitor/app": "1.1.0",
-    "@capacitor/core": "3.4.0",
+    "@capacitor/core": "3.4.1",
     "@capacitor/haptics": "1.1.4",
-    "@capacitor/keyboard": "1.2.1",
-    "@capacitor/status-bar": "1.0.7",
+    "@capacitor/keyboard": "1.2.2",
+    "@capacitor/status-bar": "1.0.8",
     "@craco/craco": "^6.4.3",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
@@ -22,7 +22,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.21",
     "assert": "^2.0.0",
-    "axios": "^0.25.0",
+    "axios": "^0.26.0",
     "ionicons": "^5.4.0",
     "mapbox-gl": "^2.7.0",
     "process": "^0.11.10",
@@ -76,7 +76,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.4.0",
+    "@capacitor/cli": "3.4.1",
     "@energyweb/eslint-config": "^0.0.0",
     "@energyweb/prettier-config": "^0.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",

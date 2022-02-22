@@ -2,14 +2,14 @@ name: Deploy to bucket
 
 on:
   push:
-    branches: [develop, DOI-1680_*]
+    branches: [develop]
 jobs:
   cancel-previous:
     name: 'Cancel Previous Runs'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: styfle/cancel-workflow-action@0.8.0
+      - uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ github.token }}
   deploy:
@@ -59,6 +59,7 @@ jobs:
         run: |
           cd packages/ev-charging-app/
           npm install
+          cp .env.$(git branch --show-current) .env.local
           npm run build
 
       - name: Ensure build is present

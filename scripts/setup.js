@@ -1,12 +1,6 @@
 const ethers = require('ethers')
 const axios = require('axios')
 
-/**
- * TODO:
- *   - register node
- *   - register emsp
- */
-
 const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
 
 const deployer = new ethers.Wallet(
@@ -52,9 +46,52 @@ async function main() {
   const registeredUrl = await asNode.getNode(node.address)
   console.log('Node registered on', registeredUrl)
 
+  console.log('Registering CPO...')
+  const cpo = new ethers.Wallet(
+    '0x737f5c61de545d32059ce6d5bc72f7d34b9963310adde62ef0f26621266b65dc',
+    provider
+  )
+
+  console.log('Setting CPO Party in OCN Registry contract...')
+  const asCPO = new ethers.Contract(registry.address, Registry.abi, node)
+  const setPartyTx = await asCPO.setParty(
+    `0x${Buffer.from('DE').toString('hex')}`,
+    `0x${Buffer.from('CPO').toString('hex')}`,
+    [0],
+    node.address
+  )
+  await setPartyTx.wait()
+  console.log('Set CPO in OCN Registry')
+
+  console.log('Generating OCPI TOKEN_A for CPO...')
+  const { data: { token: cpoToken } } = await axios.post(
+    'http://localhost:8080/admin/generate-registration-token',
+    [{
+      country_code: 'DE',
+      party_id: 'CPO'
+    }],
+    { headers: { Authorization: 'Token randomkey' } }
+  )
+  console.log('CPO TOKEN_A =', cpoToken)
+  console.log('Registering CPO credentials with OCN Node...')
+  await axios.post('http://localhost:3060/admin/connect', {
+    tokenA: cpoToken,
+    baseURL: 'http://cpo-backend:3000',
+    nodeURL: registeredUrl,
+    roles: [{
+      country_code: 'DE',
+      party_id: 'CPO',
+      role: 'CPO',
+      business_details: {
+        name: 'MockCPO'
+      }
+    }]
+  })
+  console.log('Registered CPO')
+
   console.log('Registering eMSP...')
   console.log('Generating OCPI TOKEN_A for eMSP...')
-  const { data: { token} } = await axios.post(
+  const { data: { token: mspToken } } = await axios.post(
     'http://localhost:8080/admin/generate-registration-token',
     [{
       country_code: 'DE',
@@ -62,10 +99,10 @@ async function main() {
     }],
     { headers: { Authorization: 'Token randomkey'} }
   )
-  console.log('TOKEN_A =', token)
+  console.log('MSP TOKEN_A =', mspToken)
   console.log('Registering eMSP credentials with OCN Node...')
-  await axios.post('http://localhost:3000/ocn/register', {
-    tokenA: token,
+  await axios.post('http://localhost:3000/api/ocn/register', {
+    tokenA: mspToken,
     nodeURL: registeredUrl
   })
   console.log('Registered eMSP. Setup complete!')
