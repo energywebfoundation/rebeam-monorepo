@@ -1,4 +1,4 @@
-version: '3'
+version: '2.4'
 
 services:
 
@@ -25,6 +25,7 @@ services:
     build:
       context: ./docker/ocn-node
       dockerfile: ./Dockerfile
+    platform: linux/amd64
     ports:
       - 8080:8080
     depends_on:
@@ -83,7 +84,9 @@ services:
 
   cpo-backend:
     container_name: cpo-backend
-    build: https://github.com/energywebfoundation/ocn-tools.git#feat/admin-api
+    build:
+      context: ./ocn-tools
+      dockerfile: ./Dockerfile 
     volumes:
       - cpo-backend-db:/home/node/app/data
     ports:
