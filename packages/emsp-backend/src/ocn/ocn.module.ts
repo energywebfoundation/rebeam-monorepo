@@ -8,11 +8,17 @@ import { Session } from './schemas/session.schema';
 import { Endpoint } from './schemas/endpoint.schema';
 import { OcnController } from './ocn.controller';
 import { OcnBridgeProvider } from './providers/ocn-bridge.provider';
+import { Providers } from '../types/symbols';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Auth, Endpoint, Session])],
-  exports: [OcnBridgeProvider],
-  providers: [OcnApiService, OcnDbService, OcnBridgeProvider, OcnService],
+  providers: [OcnApiService, OcnDbService, OcnService, OcnBridgeProvider],
+  exports: [
+    {
+      provide: Providers.OCN_BRIDGE,
+      useValue: OcnBridgeProvider,
+    },
+  ],
   controllers: [OcnController],
 })
 export class OcnModule {}

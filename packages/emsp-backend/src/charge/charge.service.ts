@@ -7,18 +7,27 @@ import {
   IStartSession,
   ITokenType,
   ICommandResult,
+  IOcpiParty,
 } from '@energyweb/ocn-bridge';
 import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
+import { Providers } from '../types/symbols';
 @Injectable()
 export class ChargeService {
   constructor(
     @InjectRepository(Session)
     private readonly SessionRepository: Repository<Session>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @Inject(Providers.OCN_BRIDGE) private bridge: IBridge
   ) {}
+
+  async getConnectionStatus() {
+    return {
+      connected: await this.bridge.registry.isConnectedToNode(),
+    };
+  }
 
   //unit test
   async initiate(locationId: string): Promise<string> {
@@ -37,14 +46,27 @@ export class ChargeService {
       whitelist: 'NEVER',
       last_updated: lastUpdated.toString(),
     };
-    const OCPIServerUrl = `process.env.OCN_OCPI_SERVER_BASE_URL/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
+    const OCPIServerUrl = `http://localhost:3030/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
     const startSessionData: IStartSession = {
       token,
       response_url: OCPIServerUrl,
       location_id: locationId,
     };
+    const recipient: IOcpiParty = {
+      country_code: 'DE',
+      party_id: 'REB',
+    };
+    try {
+      const value = await this.bridge.requests.startSession(
+        recipient,
+        startSessionData
+      );
+      console.log(value, "Value returned from start session request")
+    } catch (error) {
+      console.log(error, 'THE ERROR');
+    }
 
-    // const startSessionRequest = await this.bridge.requests.startSession()
+
 
     return mockOcpiToken;
   }
