@@ -4,7 +4,7 @@ const axios = require('axios')
 const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
 
 const deployer = new ethers.Wallet(
-  'c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
+  '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
   provider
 )
 console.log('DEPLOYER =', deployer.address)
@@ -37,7 +37,7 @@ async function main() {
 
   console.log('Registering OCN Node...')
   const node = new ethers.Wallet(
-    'ae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f',
+    '0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f',
     provider
   )
   const asNode = new ethers.Contract(registry.address, Registry.abi, node)
@@ -46,14 +46,18 @@ async function main() {
   const registeredUrl = await asNode.getNode(node.address)
   console.log('Node registered on', registeredUrl)
 
+
+
+
+
   console.log('Registering CPO...')
+
   const cpo = new ethers.Wallet(
     '0x737f5c61de545d32059ce6d5bc72f7d34b9963310adde62ef0f26621266b65dc',
     provider
   )
-
   console.log('Setting CPO Party in OCN Registry contract...')
-  const asCPO = new ethers.Contract(registry.address, Registry.abi, node)
+  const asCPO = new ethers.Contract(registry.address, Registry.abi, cpo)
   const setPartyTx = await asCPO.setParty(
     `0x${Buffer.from('DE').toString('hex')}`,
     `0x${Buffer.from('CPO').toString('hex')}`,
