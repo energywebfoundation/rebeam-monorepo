@@ -34,7 +34,6 @@ export class ChargeService {
     //Start Session Object needed from OCPI: https://github.com/ocpi/ocpi/blob/master/mod_commands.asciidoc#mod_commands_startsession_object
     //Placeholder for call to Charge Operator to get a start session token:
     const mockOcpiToken = randomUUID();
-    const lastUpdated = Date.now();
     const token = {
       country_code: 'DE',
       party_id: 'REB',
@@ -43,30 +42,30 @@ export class ChargeService {
       contract_id: `DE-REB-${mockOcpiToken}`,
       issuer: 'ReBeam eMSP',
       valid: true,
-      whitelist: 'NEVER',
-      last_updated: lastUpdated.toString(),
+      whitelist: 'ALWAYS',
+      last_updated: new Date().toISOString(),
     };
-    const OCPIServerUrl = `http://localhost:3030/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
+    const OCPIServerUrl = `${process.env.OCN_OCPI_SERVER_BASE_URL}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
+    console.log(process.env.OCN_OCPI_SERVER_BASE_URL, 'server url');
     const startSessionData: IStartSession = {
       token,
       response_url: OCPIServerUrl,
       location_id: locationId,
     };
+    console.log(startSessionData, 'THE START SESSION DATA');
     const recipient: IOcpiParty = {
       country_code: 'DE',
-      party_id: 'REB',
+      party_id: 'CPO',
     };
     try {
       const value = await this.bridge.requests.startSession(
         recipient,
         startSessionData
       );
-      console.log(value, "Value returned from start session request")
+      console.log(value, 'Value returned from start session request');
     } catch (error) {
       console.log(error, 'THE ERROR');
     }
-
-
 
     return mockOcpiToken;
   }
