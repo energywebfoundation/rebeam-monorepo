@@ -4,7 +4,7 @@ import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { ChargeService } from './charge.service';
 import { InitiateChargeDTO } from './dtos/initiate-charge.dto';
-import { ICommandResult, ISession } from '@energyweb/ocn-bridge';
+import { ICommandResult } from '@energyweb/ocn-bridge';
 import { Session } from '../ocn/schemas/session.schema';
 import { RequestStartChargeDTO } from './dtos/RequestStartCharge.dto';
 import { SessionDTO } from './dtos/session.dto';

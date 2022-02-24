@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ICdrToken, IChargingPeriod, IPrice } from '@energyweb/ocn-bridge';
 
 class Price {
   @ApiProperty({ type: Number, example: 100 })

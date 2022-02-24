@@ -1,5 +1,4 @@
-import { Module, CacheModule, CacheInterceptor } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Module } from '@nestjs/common';
 import { PresentationController } from './presentation.controller';
 import { PresentationService } from './presentation.service';
 @Module({

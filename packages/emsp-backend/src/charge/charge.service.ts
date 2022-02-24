@@ -1,4 +1,4 @@
-import { Inject, Injectable, CACHE_MANAGER, CacheModule } from '@nestjs/common';
+import { Inject, Injectable, CACHE_MANAGER } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { SessionDTO } from './dtos/session.dto';
 import { Session } from '../ocn/schemas/session.schema';
@@ -9,7 +9,6 @@ import {
   ICommandResult,
   IOcpiParty,
 } from '@energyweb/ocn-bridge';
-import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';

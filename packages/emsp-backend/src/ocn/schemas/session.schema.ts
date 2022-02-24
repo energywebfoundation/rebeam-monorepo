@@ -1,4 +1,4 @@
-import { ICdrToken, IChargingPeriod, IPrice } from '@energyweb/ocn-bridge';
+import { IPrice } from '@energyweb/ocn-bridge';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
