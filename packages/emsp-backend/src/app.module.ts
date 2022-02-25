@@ -1,11 +1,12 @@
 import { Module, CacheInterceptor, CacheModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
+import { getConnectionOptions, Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { OcnModule } from './ocn/ocn.module';
+import { LocationModule } from './location/location.module';
 import { PresentationModule } from './presentation/presentation.module';
 import { ChargeModule } from './charge/charge.module';
 import loadConfig from './config/load';
@@ -27,6 +28,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     OcnModule,
     PresentationModule,
     ChargeModule,
+    LocationModule,
     CacheModule.register({
       ttl: +process.env.TTL_CACHE,
       isGlobal: true,
