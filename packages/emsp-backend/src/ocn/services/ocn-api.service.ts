@@ -1,5 +1,6 @@
 import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import Decimal from 'decimal.js';
 import {
   IChargeDetailRecord,
   ICommandResult,
@@ -10,6 +11,7 @@ import { Session } from '../schemas/session.schema';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
+import { OcnDbService } from './ocn-db.service';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {
@@ -17,7 +19,8 @@ export class OcnApiService implements IPluggableAPI {
     private readonly logger: LoggerService,
     @InjectRepository(Session)
     private readonly SessionRepository: Repository<Session>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @Inject(OcnDbService) private dbService: OcnDbService
   ) {}
 
   /**
@@ -37,21 +40,41 @@ export class OcnApiService implements IPluggableAPI {
     receiver: {
       // TODO: implement PUT method (save sessions in database)
       update: async (session: ISession): Promise<void> => {
+        // this.logger.log(typeof (session.kwh), "THE TYPE OF KWH", session)
+        // this.logger.log(
+        // 	`[PUT sessions] ${JSON.stringify(session, null, 2)}`,
+        // 	OcnApiService.name
+        // );
+        const {
+          cdr_token: { uid },
+        } = session;
+        const sessionFormatted = Object.assign({}, session, {
+          sessionId: uid,
+        });
         this.logger.log(
-          `[PUT sessions] ${JSON.stringify(session, null, 2)}`,
+          `[PUT session FORMATTED] ${JSON.stringify(
+            sessionFormatted,
+            null,
+            2
+          )}`,
           OcnApiService.name
         );
-        const savedSession = await this.SessionRepository.findOne({
-          id: session.id,
-        });
-        if (savedSession) {
-          await this.SessionRepository.update(
-            { _id: savedSession._id },
-            session
-          );
-        } else {
-          await this.SessionRepository.insert(session);
-        }
+        await this.dbService.insertSession(sessionFormatted);
+        // const savedSession = await this.SessionRepository.findOne({
+        //   id: session.id,
+        // });
+        // this.logger.log(
+        // 	`[PUT session FORMATTED RETRIEVED] ${JSON.stringify(savedSession, null, 2)}`,
+        // 	OcnApiService.name
+        // );
+        // if (savedSession) {
+        //   await this.SessionRepository.update(
+        //     { _id: savedSession._id },
+        //     sessionFormatted
+        //   );
+        // } else {
+        //   await this.SessionRepository.insert(sessionFormatted);
+        // }
         return;
       },
       // TODO: patch needs to be implemented in OCN-BRIDGE
@@ -101,22 +124,26 @@ export class OcnApiService implements IPluggableAPI {
         uid: string,
         result: ICommandResult
       ): Promise<void> => {
-        console.log(
-          `THE RESULT FROM POST: ${uid}, ${command}, result: ${result}`
+        this.logger.log(
+          command,
+          uid,
+          JSON.stringify(result),
+          'THIS IS THE RETURN FROM ASYNC RESULT'
         );
+        this.logger.log('RECEIVING THE POST DATA!!!!!!!!!!!!!*******');
         const resultData = {
           command,
           result,
           uid,
         };
         /*
-        {
-          command: "START_SESSION",
-          result: "ACCEPTED || "CANCELED_RESERVATION || FAILED || NOT_SUPPORTED || REJECTED || TIMEOUT",
-          uid: "123cvb"
-        }
-
-        */
+				{
+				  command: "START_SESSION",
+				  result: "ACCEPTED || "CANCELED_RESERVATION || FAILED || NOT_SUPPORTED || REJECTED || TIMEOUT",
+				  uid: "123cvb"
+				}
+		
+				*/
         await this.cacheManager.set(`${uid}-auth`, resultData);
         this.logger.log(
           `[POST commands] /${command}/${uid}: ${JSON.stringify(result)}}`,

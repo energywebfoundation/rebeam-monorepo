@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { ChargeController } from './charge.controller';
 import { ChargeService } from './charge.service';
 import { OcnModule } from '../ocn/ocn.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Session } from '../ocn/schemas/session.schema';
+import { ChargeDBService } from './charge-db.service';
 
 @Module({
-  imports: [OcnModule, TypeOrmModule.forFeature([Session])],
+  imports: [OcnModule],
   controllers: [ChargeController],
-  providers: [ChargeService],
+  providers: [ChargeService, ChargeDBService],
 })
 export class ChargeModule {}

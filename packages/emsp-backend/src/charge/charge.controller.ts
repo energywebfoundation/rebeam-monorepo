@@ -9,6 +9,8 @@ import { Session } from '../ocn/schemas/session.schema';
 import { RequestStartChargeDTO } from './dtos/RequestStartCharge.dto';
 import { SessionDTO } from './dtos/session.dto';
 import { BasicDTO } from './dtos/basic.dto';
+import { ClientSessionDTO } from './dtos/client-session.dto';
+import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 
 @ApiTags('Charge')
 @Controller('charge')
@@ -25,11 +27,11 @@ export class ChargeController {
   })
   @ApiResponse({ status: 200, type: InitiateChargeDTO })
   async startCharge(
-    @Body() body: RequestStartChargeDTO
+    @Body() body: SelectedChargePointDTO
   ): Promise<InitiateChargeDTO> {
     try {
       const { locationId } = body;
-      const token = await this.service.initiate(locationId);
+      const token = await this.service.initiate(body);
       return {
         ocpiToken: token,
       };
@@ -87,17 +89,21 @@ export class ChargeController {
     }
   }
 
-  @Get('session-update/:id')
+  @Post('session-update')
   @HttpCode(200)
   @ApiOperation({
     summary: 'Fetch charge session updates',
   })
-  @ApiResponse({ status: 200, type: Session })
-  async getChargeSessionData(@Param('id') id: string): Promise<Session> {
+  @ApiResponse({ status: 200, type: ClientSessionDTO || null })
+  async getChargeSessionData(
+    @Body() body: BasicDTO
+  ): Promise<ClientSessionDTO | null> {
     try {
-      const sessionData = await this.service.fetchSessionData(id);
+      console.log('getting to controller!');
+      const sessionData = await this.service.fetchSessionData(body.locationId);
       return sessionData;
     } catch (err) {
+      console.log(err, 'THE ERR');
       this.logger.error(`Cannot generate OCPI token`);
       throw new ApiError(
         ApiErrorCode.CHARGE_SESSION,

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IPluggableDB, IVersionDetail } from '@energyweb/ocn-bridge';
+import { IPluggableDB, IVersionDetail, ISession } from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from '../schemas/auth.schema';
 import { Repository } from 'typeorm';
 import { Endpoint } from '../schemas/endpoint.schema';
+import { Session } from '../schemas/session.schema';
 
 @Injectable()
 /**
@@ -15,7 +16,9 @@ export class OcnDbService implements IPluggableDB {
     @InjectRepository(Auth)
     private readonly authRepository: Repository<Auth>,
     @InjectRepository(Endpoint)
-    private readonly endpointRepository: Repository<Endpoint>
+    private readonly endpointRepository: Repository<Endpoint>,
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>
   ) {}
 
   async getTokenB(): Promise<string> {
@@ -63,5 +66,34 @@ export class OcnDbService implements IPluggableDB {
     } else {
       await this.authRepository.insert(update);
     }
+  }
+
+  async insertSession(
+    session: ISession & {
+      sessionId: string;
+    }
+  ) {
+    const existent = await this.sessionRepository.findOne({
+      id: session.id,
+    });
+    if (existent) {
+      // console.log(existent, "IT ExISTS")
+      await this.sessionRepository.update({ _id: existent._id }, session);
+      const sessionUpdated = await this.sessionRepository.findOne({
+        id: session.id,
+      });
+      console.log(sessionUpdated, 'THE SESSIOn UPDATED');
+    } else {
+      await this.sessionRepository.insert(session);
+    }
+  }
+
+  async getSession(sessionID: string) {
+    console.log('USING GET SESSION');
+    const sessionData = await this.sessionRepository.find({
+      sessionId: sessionID,
+    });
+    console.log(sessionData, 'THE SESSION DATA FETCHED!!!! MORE THAN ONE?????');
+    return sessionData[0];
   }
 }

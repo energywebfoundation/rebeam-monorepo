@@ -14,6 +14,8 @@ import { Providers } from '../types/symbols';
   imports: [TypeOrmModule.forFeature([Auth, Endpoint, Session])],
   providers: [OcnApiService, OcnDbService, OcnService, OcnBridgeProvider],
   exports: [
+    TypeOrmModule,
+    OcnDbService,
     {
       provide: Providers.OCN_BRIDGE,
       useValue: OcnBridgeProvider,
