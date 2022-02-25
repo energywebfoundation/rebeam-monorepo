@@ -28,10 +28,12 @@ import './theme/variables.css';
 setupIonicReact();
 
 export interface ChargePoint {
-  id: number;
+  id: string;
   stationName: string;
   formattedAddress?: string;
   img?: string;
+  country?: string;
+  evses?: any;
 }
 
 const App: React.FC = () => {

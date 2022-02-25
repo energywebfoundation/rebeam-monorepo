@@ -3,7 +3,7 @@ import BMWIcon from '../assets/bmwIcon.png';
 import { IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
-
+import { ISessionData } from '../pages/ChargingSession';
 const CarImg = styled(IonImg)``;
 
 const DataValue = styled.h1`
@@ -31,7 +31,13 @@ const PaddedRow = styled(IonRow)`
   margin-bottom: 40px;
 `;
 
-export const ChargingStatus = () => {
+interface IChargingStatusProps {
+  chargeSessionData: ISessionData;
+}
+
+export const ChargingStatus = (props: IChargingStatusProps) => {
+  const { chargeSessionData } = props;
+  const { kwh, formattedCost, start_date_time } = chargeSessionData;
   return (
     <div>
       <IonGrid>
@@ -40,7 +46,7 @@ export const ChargingStatus = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <DataValue>{'00:05:30'}</DataValue>
+                  <DataValue>{start_date_time}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>
@@ -50,7 +56,7 @@ export const ChargingStatus = () => {
               </PaddedRow>
               <IonRow>
                 <IonCol>
-                  <DataValue>{'0.49'}</DataValue>
+                  <DataValue>{kwh ? kwh : '...'}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>
@@ -60,7 +66,7 @@ export const ChargingStatus = () => {
               </PaddedRow>
               <IonRow>
                 <IonCol>
-                  <DataValue>{'$0.80'}</DataValue>
+                  <DataValue>{formattedCost ? formattedCost : '...'}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>

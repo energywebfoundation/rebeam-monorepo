@@ -39,15 +39,16 @@ const Map = (props: MapProps) => {
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [presentation, setPresentation] = useState<string>();
   const [viewport, setViewport] = useState({
-    latitude: 52.52,
-    longitude: 13.405,
+    latitude: 52.54154,
+    longitude: 13.38588,
     zoom: 15,
     minZoom: 2.1,
     bearing: 0,
     pitch: 0,
     source: 'mapbox://styles/mapbox/streets-v11',
   });
-  const { chargePoints } = getChargingPoints();
+  const { chargePoints, loadingChargePoints, setLoadingChargePoints } =
+    getChargingPoints();
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
@@ -71,8 +72,20 @@ const Map = (props: MapProps) => {
 
   const handleStartCharge = async () => {
     if (!token) {
+      console.log(selectedChargePoint, 'THE CHARGE POINT SELECTED');
+      const evse = JSON.parse(selectedChargePoint?.evses);
+      console.log(evse, 'THE EVSE HERE');
+      const selectedChargePointData = {
+        locationId: selectedChargePoint?.id,
+        evseId: evse[0].uid,
+      };
+      console.log(
+        selectedChargePointData,
+        'THE DATA FROM SELCTED CHARGE POINT'
+      );
       const result = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}charge/initiate`
+        `${process.env.REACT_APP_BACKEND_URL}charge/initiate`,
+        selectedChargePointData
       );
       const { data } = result;
       const { ocpiToken } = data;
@@ -103,6 +116,7 @@ const Map = (props: MapProps) => {
       if (!selectedProperties) {
         return;
       } else {
+        console.log('making to else');
         const { properties } = selectedProperties;
         setSelectedChargePoint(properties);
         setShowChargeStationModal(true);
@@ -120,52 +134,60 @@ const Map = (props: MapProps) => {
           message={strings.requestingChargeLoader}
           onDidDismiss={() => setChargeProcessLoading(false)}
         />
+        <IonLoading
+          isOpen={loadingChargePoints}
+          message={'Fetching Charge Points'}
+          onDidDismiss={() => setLoadingChargePoints(false)}
+        />
         <MapContainer>
-          <ReactMapGL
-            {...viewport}
-            ref={mapRef}
-            mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
-            width="100%"
-            height="100%"
-            onClick={handleMapOnClick}
-            interactiveLayerIds={[CHG_POINTS_LAYER_ID]}
-            onViewportChange={setViewport}
-          >
-            {chargePoints && (
-              <div>
-                <Source
-                  type={SOURCE_DATA_TYPE}
-                  id={CHG_POINTS_SOURCE_ID}
-                  data={chargePoints as FeatureCollection}
-                >
-                  <div>
-                    <Layer
-                      id={CHG_POINTS_LAYER_ID}
-                      source={CHG_POINTS_SOURCE_ID}
-                      type="circle"
-                      paint={{
-                        'circle-radius': [
-                          'case',
-                          ['boolean', ['feature-state', 'hover'], false],
-                          15, // on hover
-                          10,
-                        ],
-                        'circle-blur': [
-                          'case',
-                          ['boolean', ['feature-state', 'hover'], false],
-                          0.5, // on hover
-                          0,
-                        ],
-                        'circle-color': '#A466FF',
-                        'circle-stroke-width': 2,
-                        'circle-stroke-color': '#fff',
-                      }}
-                    ></Layer>
-                  </div>
-                </Source>
-              </div>
-            )}
-          </ReactMapGL>
+          {!loadingChargePoints && (
+            <ReactMapGL
+              {...viewport}
+              ref={mapRef}
+              mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
+              width="100%"
+              height="100%"
+              onClick={handleMapOnClick}
+              interactiveLayerIds={[CHG_POINTS_LAYER_ID]}
+              onViewportChange={setViewport}
+            >
+              {chargePoints && (
+                <div>
+                  <Source
+                    type={SOURCE_DATA_TYPE}
+                    id={CHG_POINTS_SOURCE_ID}
+                    data={chargePoints as FeatureCollection}
+                  >
+                    <div>
+                      <Layer
+                        id={CHG_POINTS_LAYER_ID}
+                        source={CHG_POINTS_SOURCE_ID}
+                        type="circle"
+                        paint={{
+                          'circle-radius': [
+                            'case',
+                            ['boolean', ['feature-state', 'hover'], false],
+                            15, // on hover
+                            10,
+                          ],
+                          'circle-blur': [
+                            'case',
+                            ['boolean', ['feature-state', 'hover'], false],
+                            0.5, // on hover
+                            0,
+                          ],
+                          'circle-color': '#A466FF',
+                          'circle-stroke-width': 2,
+                          'circle-stroke-color': '#fff',
+                        }}
+                      ></Layer>
+                    </div>
+                  </Source>
+                </div>
+              )}
+            </ReactMapGL>
+          )}
+
           {selectedChargePoint && (
             <ChargePointDetailModal
               selectedChargePoint={selectedChargePoint}

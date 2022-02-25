@@ -12,7 +12,6 @@ import {
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
 import { chevronBackOutline } from 'ionicons/icons';
-import ChargingStatusIcon from '../assets/ChargingStatusIcon.png';
 import ChargingStatus from '../components/ChargingStatus';
 import StopCharge from '../components/StopCharge';
 import { useHistory } from 'react-router-dom';
@@ -34,10 +33,12 @@ interface IChargingSessionProps {
   token: string;
 }
 
-interface ISessionData {
-  duration: string;
-  totalKwh: string;
-  cost: string;
+export interface ISessionData {
+  kwh?: number;
+  formattedCost?: string;
+  start_date_time: string;
+  last_updated: string;
+  id: string;
 }
 
 export interface IPresentationData {
@@ -47,6 +48,7 @@ export interface IPresentationData {
 const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
+  const [counter, setCounter] = useState(0);
   const history = useHistory();
   const handleBackClick = () => {
     history.push('/map');
@@ -80,66 +82,61 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   useEffect(() => {
     if (isAuthorized) {
-      console.log('in this');
       const poll = setInterval(async () => {
+        console.log('in this', counter);
         const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-update/${id}`
+        const results = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}charge/session-update/`,
+          {
+            locationId: id,
+          }
         );
         console.log(results?.data, 'THE DATA FROM THE MOCK SESSION CALL');
-        if (results?.data) {
-          const data = results.data;
-          const { kwh, totalCost } = data;
-          const duration = '2 min';
-          setSessionData({
-            totalKwh: kwh,
-            cost: totalCost,
-            duration,
-          });
-          console.log(results.data);
-          return () => clearInterval();
-        }
-      }, 2000);
+        // if (results?.data) {
+        const newvalue = counter + 1;
+        setCounter(newvalue);
+        console.log(true, 'TRUE!!!!!!!!', counter);
+
+        const data = results.data;
+        console.log(data, 'IS THE DATA CHANGING?????');
+        setSessionData(data);
+        console.log(results.data);
+        // }
+      }, 500);
       return () => clearInterval(poll);
     }
-  }, [sessionData, isAuthorized]);
+  }, [isAuthorized]);
 
   return (
     <IonPage>
       <IonContent>
+        <IonGrid>
+          <IonRow>
+            <IonCol
+              size="1"
+              className=" ion-align-items-center ion-align-self-center"
+            >
+              <IonIcon
+                onClick={handleBackClick}
+                icon={chevronBackOutline}
+                className="ion-align-self-center"
+              ></IonIcon>
+            </IonCol>
+            <IonCol className="ion-align-self-center">
+              <ChargingHeader>{strings.charging}</ChargingHeader>
+            </IonCol>
+            <IonCol size="1" className=" ion-align-items-center"></IonCol>
+          </IonRow>
+        </IonGrid>
+        {isAuthorized && !sessionData && <ChargeAuthorized />}
         <IonLoading
           isOpen={!isAuthorized}
           message={strings.requestingChargeLoader}
         />
-        {isAuthorized && !sessionData && <ChargeAuthorized />}
         {isAuthorized && sessionData && (
           <>
-            <IonGrid>
-              <IonRow>
-                <IonCol
-                  size="1"
-                  className=" ion-align-items-center ion-align-self-center"
-                >
-                  <IonIcon
-                    onClick={handleBackClick}
-                    icon={chevronBackOutline}
-                    className="ion-align-self-center"
-                  ></IonIcon>
-                </IonCol>
-                <IonCol className="ion-align-self-center">
-                  <ChargingHeader>{strings.charging}</ChargingHeader>
-                </IonCol>
-                <IonCol size="1" className=" ion-align-items-center"></IonCol>
-              </IonRow>
-            </IonGrid>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <StatusImg src={ChargingStatusIcon}></StatusImg>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-            <ChargingStatus />
+            <IonGrid></IonGrid>
+            <ChargingStatus chargeSessionData={sessionData} />
             <StopCharge />
           </>
         )}
