@@ -28,10 +28,10 @@ describe('OcnService', () => {
           provide: getRepositoryToken(Endpoint),
           useClass: Repository,
         },
-		{
-			provide: getRepositoryToken(Session),
-			useClass: Repository,
-		  },
+        {
+          provide: getRepositoryToken(Session),
+          useClass: Repository,
+        },
         OcnService,
         LoggerService,
         OcnApiService,

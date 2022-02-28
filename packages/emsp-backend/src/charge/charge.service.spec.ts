@@ -134,8 +134,8 @@ describe('ChargeService', () => {
         kwh: 0.73,
         last_updated: mockDate,
         id: 'c63cc282-0235-4081-a337-ac256e658299',
-		formattedCost: undefined,
-		formattedStartTime: "February 28th, 2022 10:46pm"
+        formattedCost: undefined,
+        formattedStartTime: 'February 28th, 2022 10:46pm',
       };
       const formattedResult = await chargeService.fetchSessionData(
         '7e42736a-4287-4c1e-b883-9ff03ea622b5'
