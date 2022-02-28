@@ -34,7 +34,6 @@ export class ChargeService {
   }
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
-    console.log(chargeData, 'charge data coming through!');
     const { locationId, evseId } = chargeData;
     const mockOcpiToken = randomUUID();
     const token = {
