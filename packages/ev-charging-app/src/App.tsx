@@ -27,7 +27,6 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-
 export interface ChargePoint {
   id: string;
   stationName: string;
