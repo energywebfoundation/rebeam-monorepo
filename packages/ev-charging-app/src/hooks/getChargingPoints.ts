@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { mockData } from "../constants/mock-data";
 import axios from 'axios';
 
 /*
