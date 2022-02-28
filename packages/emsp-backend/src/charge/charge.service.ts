@@ -3,8 +3,8 @@ import { randomUUID } from 'crypto';
 import { SessionDTO } from './dtos/session.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { Session } from '../ocn/schemas/session.schema';
-import * as moment from "moment";
-import {formatCurrency, formatStartTime} from "./utils/formatters"
+import * as moment from 'moment';
+import { formatCurrency, formatStartTime } from './utils/formatters';
 import {
   IBridge,
   IStartSession,
@@ -71,7 +71,6 @@ export class ChargeService {
   }
 
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
-  
     const sessionData = await this.dbService.getSession(sessionId);
     if (sessionData) {
       const data = sessionData;
@@ -84,10 +83,14 @@ export class ChargeService {
         id,
         country_code,
       } = data;
-	  const formattedStartTime = formatStartTime(start_date_time)
+      const formattedStartTime = formatStartTime(start_date_time);
       let formattedCost: string;
       if (total_cost?.excl_vat) {
-        formattedCost = formatCurrency(country_code, total_cost?.excl_vat, currency)
+        formattedCost = formatCurrency(
+          country_code,
+          total_cost?.excl_vat,
+          currency
+        );
       }
       const formattedData = {
         start_date_time,
@@ -95,7 +98,7 @@ export class ChargeService {
         formattedCost,
         last_updated,
         id,
-		formattedStartTime 
+        formattedStartTime,
       };
       return formattedData;
     }

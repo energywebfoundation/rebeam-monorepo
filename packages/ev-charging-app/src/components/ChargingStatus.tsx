@@ -7,15 +7,14 @@ import { ISessionData } from '../pages/ChargingSession';
 const CarImg = styled(IonImg)``;
 
 const StartTime = styled.h3`
-font-weight: bold;
-font-size: 15px;
-line-height: 18px;
-color: #5b5b5b;
-margin: 2px;
-padding: 0;
-text-align: left;
-
-`
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 18px;
+  color: #5b5b5b;
+  margin: 2px;
+  padding: 0;
+  text-align: left;
+`;
 
 const DataValue = styled.h1`
   font-weight: bold;
