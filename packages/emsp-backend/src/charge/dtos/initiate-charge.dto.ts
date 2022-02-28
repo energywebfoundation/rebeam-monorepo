@@ -8,7 +8,7 @@ export class InitiateChargeDTO {
   static validate(dto: InitiateChargeDTO) {
     Joi.assert(
       dto,
-	  Joi.object({
+      Joi.object({
         ocpiToken: Joi.string().uuid().required(),
       })
     );

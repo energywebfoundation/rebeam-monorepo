@@ -71,9 +71,9 @@ export class ChargeService {
   //unit test
   //endpoint to poll for respponse in cache. Once there, front end can poll for session updates.
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
-	const currencyLookup = {
-		"DE": "de-DE",
-	}
+    const currencyLookup = {
+      DE: 'de-DE',
+    };
     const sessionData = await this.dbService.getSession(sessionId);
     console.log(sessionData, 'session data found from get session!');
     if (sessionData) {

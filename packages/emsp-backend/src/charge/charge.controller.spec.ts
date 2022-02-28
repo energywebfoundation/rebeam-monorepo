@@ -23,7 +23,6 @@ describe('ChargeController', () => {
   let ocnService: OcnService;
   let bridge: IBridge;
 
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [

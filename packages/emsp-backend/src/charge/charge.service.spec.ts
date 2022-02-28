@@ -138,6 +138,16 @@ describe('ChargeService', () => {
       const formattedResult = await chargeService.fetchSessionData('7e42736a-4287-4c1e-b883-9ff03ea622b5');
       expect(formattedResult ).toEqual(result);
     });
+	it('should format the cost according to currency if cost is provided', async () => {
+		const mockDataWithCost = Object.assign({}, mockSession, {
+			total_cost: {
+				excl_vat: 5.50
+			}
+		})
+		jest.spyOn(ocnDbService, 'getSession').mockResolvedValue(mockDataWithCost);
+		const formattedResult = await chargeService.fetchSessionData('7e42736a-4287-4c1e-b883-9ff03ea622b5');
+		expect(formattedResult.formattedCost).toBeTruthy()
+	  });
   });
 
 
