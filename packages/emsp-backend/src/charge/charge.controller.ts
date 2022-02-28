@@ -34,7 +34,6 @@ export class ChargeController {
   @ApiOperation({ summary: 'Determine connection status of OCN Bridge' })
   @ApiResponse({ status: 200, type: ConnectionDto })
   async getConnection() {
-    // TODO: authenticate
     try {
       const status = await this.service.getConnectionStatus();
       return status;

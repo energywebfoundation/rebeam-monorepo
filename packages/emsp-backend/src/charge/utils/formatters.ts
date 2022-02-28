@@ -18,6 +18,5 @@ export const formatCurrency = (
 export const formatStartTime = (startTime: Date) => {
   const m = moment(startTime);
   const formattedStartTime = m.format('MMMM Do, YYYY h:mma');
-  console.log(formattedStartTime, 'THE FORMATTED TIME');
   return formattedStartTime;
 };

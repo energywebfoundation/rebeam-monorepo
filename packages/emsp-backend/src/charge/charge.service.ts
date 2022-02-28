@@ -57,7 +57,6 @@ export class ChargeService {
       location_id: locationId,
       evse_uid: evseId,
     };
-    console.log(startSessionData, 'THE START SESSION DATA');
     const recipient: IOcpiParty = {
       country_code: 'DE',
       party_id: 'CPO',

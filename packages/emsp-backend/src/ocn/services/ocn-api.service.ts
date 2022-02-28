@@ -9,7 +9,6 @@ import {
 } from '@energyweb/ocn-bridge';
 import { Session } from '../schemas/session.schema';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { OcnDbService } from './ocn-db.service';
 
@@ -18,7 +17,6 @@ export class OcnApiService implements IPluggableAPI {
   constructor(
     private readonly logger: LoggerService,
     @InjectRepository(Session)
-    private readonly SessionRepository: Repository<Session>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(OcnDbService) private dbService: OcnDbService
   ) {}
@@ -40,41 +38,30 @@ export class OcnApiService implements IPluggableAPI {
     receiver: {
       // TODO: implement PUT method (save sessions in database)
       update: async (session: ISession): Promise<void> => {
-        // this.logger.log(typeof (session.kwh), "THE TYPE OF KWH", session)
-        // this.logger.log(
-        // 	`[PUT sessions] ${JSON.stringify(session, null, 2)}`,
-        // 	OcnApiService.name
-        // );
         const {
           cdr_token: { uid },
         } = session;
         const sessionFormatted = Object.assign({}, session, {
           sessionId: uid,
         });
+        const savedSession = await this.dbService.getSession(uid);
         this.logger.log(
-          `[PUT session FORMATTED] ${JSON.stringify(
-            sessionFormatted,
-            null,
-            2
-          )}`,
-          OcnApiService.name
+        	`[PUT session FORMATTED RETRIEVED] ${JSON.stringify(savedSession, null, 2)}`,
+        	OcnApiService.name
         );
-        await this.dbService.insertSession(sessionFormatted);
-        // const savedSession = await this.SessionRepository.findOne({
-        //   id: session.id,
-        // });
-        // this.logger.log(
-        // 	`[PUT session FORMATTED RETRIEVED] ${JSON.stringify(savedSession, null, 2)}`,
-        // 	OcnApiService.name
-        // );
-        // if (savedSession) {
-        //   await this.SessionRepository.update(
-        //     { _id: savedSession._id },
-        //     sessionFormatted
-        //   );
-        // } else {
-        //   await this.SessionRepository.insert(sessionFormatted);
-        // }
+        if (savedSession) {
+          await this.dbService.updateSession(savedSession._id, sessionFormatted)
+        } else {
+			this.logger.log(
+				`[PUT session FORMATTED] ${JSON.stringify(
+				  sessionFormatted,
+				  null,
+				  2
+				)}`,
+				OcnApiService.name
+			  );
+			await this.dbService.insertSession(sessionFormatted);
+        }
         return;
       },
       // TODO: patch needs to be implemented in OCN-BRIDGE
