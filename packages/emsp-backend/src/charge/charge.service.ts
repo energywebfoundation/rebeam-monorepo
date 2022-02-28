@@ -32,7 +32,6 @@ export class ChargeService {
     };
   }
 
-  //unit test
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
     console.log(chargeData, 'charge data coming through!');
     const { locationId, evseId } = chargeData;
@@ -68,14 +67,12 @@ export class ChargeService {
     console.log(value, 'Value returned from start session request');
     return mockOcpiToken;
   }
-  //unit test
-  //endpoint to poll for respponse in cache. Once there, front end can poll for session updates.
+
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
     const currencyLookup = {
       DE: 'de-DE',
     };
     const sessionData = await this.dbService.getSession(sessionId);
-    console.log(sessionData, 'session data found from get session!');
     if (sessionData) {
       const data = sessionData;
       const {
@@ -131,7 +128,6 @@ export class ChargeService {
     }
   }
 
-  //unit test
   async fetchSessionConfirmation(
     sessionId: string
   ): Promise<ICommandResult | null> {

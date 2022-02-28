@@ -15,8 +15,6 @@ import { ChargeService } from './charge.service';
 import { InitiateChargeDTO } from './dtos/initiate-charge.dto';
 import { ICommandResult } from '@energyweb/ocn-bridge';
 import { Session } from '../ocn/schemas/session.schema';
-import { RequestStartChargeDTO } from './dtos/RequestStartCharge.dto';
-import { OcnService } from '../ocn/services/ocn.service';
 import { SessionDTO } from './dtos/session.dto';
 import { SessionIdDTO } from './dtos/session-id.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
@@ -29,7 +27,6 @@ export class ChargeController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: ChargeService,
-    private readonly ocnService: OcnService
   ) {}
 
   @Get('status')

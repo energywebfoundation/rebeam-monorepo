@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { ChargeController } from './charge.controller';
 import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
-import { OcnService } from '../ocn/services/ocn.service';
 import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
 import { IBridge, stopBridge, CommandResultType } from '@energyweb/ocn-bridge';
@@ -20,7 +19,6 @@ import { Endpoint } from '../ocn/schemas/endpoint.schema';
 describe('ChargeController', () => {
   let controller: ChargeController;
   let chargeService: ChargeService;
-  let ocnService: OcnService;
   let bridge: IBridge;
 
   beforeEach(async () => {
@@ -57,7 +55,6 @@ describe('ChargeController', () => {
         OcnDbService,
         OcnApiService,
         OcnBridgeProvider,
-        OcnService,
         ChargeService,
       ],
       imports: [
@@ -70,7 +67,6 @@ describe('ChargeController', () => {
 
     controller = module.get<ChargeController>(ChargeController);
     chargeService = module.get<ChargeService>(ChargeService);
-    ocnService = module.get<OcnService>(OcnService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
   });
 
