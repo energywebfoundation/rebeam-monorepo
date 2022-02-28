@@ -12,7 +12,6 @@ const useChargePoints = () => {
     useEffect(() => {
         (async () => {
             try {
-                //uncomment this when we have loading treatement: 
                 setLoadingChargePoints(true);
 				const locationResult = await axios.get(`${process.env.REACT_APP_BACKEND_URL}location/get-locations`);
 				console.log(locationResult.data, "THE LOCATION RESULT");
@@ -23,10 +22,6 @@ const useChargePoints = () => {
 					type: "FeatureCollection",
 					features: locationResult?.data?.locations
 				}
-				//handle errors
-                // mock for return from call to backend to fetch charge points
-                //const chargePoints = await call to backend to fetch charge points
-				
                 setChargePoints(data);
             } catch (error) {
                 console.error('Error while fetching charge points', error);

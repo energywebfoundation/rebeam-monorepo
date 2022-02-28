@@ -6,7 +6,6 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonImg,
   IonLoading,
 } from '@ionic/react';
 import styled from 'styled-components';
@@ -23,10 +22,6 @@ const ChargingHeader = styled.h1`
   text-align: center;
   color: #030303;
   margin: 10px 0;
-`;
-
-const StatusImg = styled(IonImg)`
-  height: 242px;
 `;
 
 interface IChargingSessionProps {
@@ -48,7 +43,6 @@ export interface IPresentationData {
 const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
-  const [counter, setCounter] = useState(0);
   const history = useHistory();
   const handleBackClick = () => {
     history.push('/map');
@@ -83,25 +77,18 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   useEffect(() => {
     if (isAuthorized) {
       const poll = setInterval(async () => {
-        console.log('in this', counter);
         const id = localStorage.getItem('ocpiToken');
         const results = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-update/`,
+          `${process.env.REACT_APP_BACKEND_URL}charge/fetch-session/`,
           {
-            locationId: id,
+            sessionId: id,
           }
         );
-        console.log(results?.data, 'THE DATA FROM THE MOCK SESSION CALL');
-        // if (results?.data) {
-        const newvalue = counter + 1;
-        setCounter(newvalue);
-        console.log(true, 'TRUE!!!!!!!!', counter);
-
-        const data = results.data;
-        console.log(data, 'IS THE DATA CHANGING?????');
-        setSessionData(data);
-        console.log(results.data);
-        // }
+        if (results?.data) {
+          const data = results.data;
+          setSessionData(data);
+          console.log(results.data);
+        }
       }, 500);
       return () => clearInterval(poll);
     }

@@ -79,10 +79,6 @@ const Map = (props: MapProps) => {
         locationId: selectedChargePoint?.id,
         evseId: evse[0].uid,
       };
-      console.log(
-        selectedChargePointData,
-        'THE DATA FROM SELCTED CHARGE POINT'
-      );
       const result = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}charge/initiate`,
         selectedChargePointData

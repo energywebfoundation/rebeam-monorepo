@@ -8,7 +8,7 @@ export class SessionIdDTO {
   static validate(dto: SessionIdDTO) {
     Joi.assert(
       dto,
-	  Joi.object({
+      Joi.object({
         sessionId: Joi.string().uuid().required(),
       })
     );
