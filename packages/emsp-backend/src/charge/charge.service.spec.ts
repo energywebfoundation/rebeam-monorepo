@@ -6,12 +6,7 @@ import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
-import {
-  IBridge,
-  stopBridge,
-  tokenType,
-  ISession,
-} from '@energyweb/ocn-bridge';
+import { IBridge, stopBridge, tokenType } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { CacheModule } from '@nestjs/common';
 import { ChargeService } from './charge.service';

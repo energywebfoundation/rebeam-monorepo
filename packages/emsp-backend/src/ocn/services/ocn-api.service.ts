@@ -1,6 +1,5 @@
 import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import Decimal from 'decimal.js';
 import {
   IChargeDetailRecord,
   ICommandResult,
@@ -17,7 +16,8 @@ export class OcnApiService implements IPluggableAPI {
   constructor(
     private readonly logger: LoggerService,
     @InjectRepository(Session)
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
     @Inject(OcnDbService) private dbService: OcnDbService
   ) {}
 
@@ -46,21 +46,28 @@ export class OcnApiService implements IPluggableAPI {
         });
         const savedSession = await this.dbService.getSession(uid);
         this.logger.log(
-        	`[PUT session FORMATTED RETRIEVED] ${JSON.stringify(savedSession, null, 2)}`,
-        	OcnApiService.name
+          `[PUT session FORMATTED RETRIEVED] ${JSON.stringify(
+            savedSession,
+            null,
+            2
+          )}`,
+          OcnApiService.name
         );
         if (savedSession) {
-          await this.dbService.updateSession(savedSession._id, sessionFormatted)
+          await this.dbService.updateSession(
+            savedSession._id,
+            sessionFormatted
+          );
         } else {
-			this.logger.log(
-				`[PUT session FORMATTED] ${JSON.stringify(
-				  sessionFormatted,
-				  null,
-				  2
-				)}`,
-				OcnApiService.name
-			  );
-			await this.dbService.insertSession(sessionFormatted);
+          this.logger.log(
+            `[PUT session FORMATTED] ${JSON.stringify(
+              sessionFormatted,
+              null,
+              2
+            )}`,
+            OcnApiService.name
+          );
+          await this.dbService.insertSession(sessionFormatted);
         }
         return;
       },

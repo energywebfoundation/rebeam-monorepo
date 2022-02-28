@@ -171,7 +171,7 @@ describe('ChargeController', () => {
         formattedCost: '$5.00',
         last_updated: mockDate,
         id: '439e9741-5488-4ec2-b735-796229829719',
-		formattedStartTime: "Dec 12, 2021 4:00 PM"
+        formattedStartTime: 'Dec 12, 2021 4:00 PM',
       };
       jest
         .spyOn(chargeService, 'fetchSessionData')

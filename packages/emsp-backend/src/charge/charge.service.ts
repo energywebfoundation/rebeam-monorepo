@@ -3,7 +3,6 @@ import { randomUUID } from 'crypto';
 import { SessionDTO } from './dtos/session.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { Session } from '../ocn/schemas/session.schema';
-import * as moment from 'moment';
 import { formatCurrency, formatStartTime } from './utils/formatters';
 import {
   IBridge,

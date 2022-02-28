@@ -92,13 +92,10 @@ export class OcnDbService implements IPluggableDB {
     const sessionData = await this.sessionRepository.findOne({
       sessionId: sessionID,
     });
-    return sessionData;;
+    return sessionData;
   }
 
   async updateSession(id: number, session: ISession) {
-	await this.sessionRepository.update(
-		{ _id: id },
-		session
-	  );
+    await this.sessionRepository.update({ _id: id }, session);
   }
 }
