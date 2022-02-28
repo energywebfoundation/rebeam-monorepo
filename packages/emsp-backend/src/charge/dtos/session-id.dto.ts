@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as Joi from 'joi';
 
-export class InitiateChargeDTO {
+export class SessionIdDTO {
   @ApiProperty({ type: String })
-  ocpiToken: string;
+  sessionId: string;
 
-  static validate(dto: InitiateChargeDTO) {
+  static validate(dto: SessionIdDTO) {
     Joi.assert(
       dto,
 	  Joi.object({
-        ocpiToken: Joi.string().uuid().required(),
+        sessionId: Joi.string().uuid().required(),
       })
     );
   }

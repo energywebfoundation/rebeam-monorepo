@@ -15,6 +15,7 @@ import { Providers } from '../types/symbols';
   providers: [OcnApiService, OcnDbService, OcnService, OcnBridgeProvider],
   exports: [
     TypeOrmModule,
+	OcnService,
     OcnDbService,
     {
       provide: Providers.OCN_BRIDGE,
