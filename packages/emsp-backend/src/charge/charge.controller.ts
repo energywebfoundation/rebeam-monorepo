@@ -26,7 +26,7 @@ import { ConnectionDto } from '../ocn/dtos/connection.dto';
 export class ChargeController {
   constructor(
     private readonly logger: LoggerService,
-    private readonly service: ChargeService,
+    private readonly service: ChargeService
   ) {}
 
   @Get('status')
