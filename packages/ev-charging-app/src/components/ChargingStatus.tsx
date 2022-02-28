@@ -6,6 +6,17 @@ import strings from '../constants/strings.json';
 import { ISessionData } from '../pages/ChargingSession';
 const CarImg = styled(IonImg)``;
 
+const StartTime = styled.h3`
+font-weight: bold;
+font-size: 15px;
+line-height: 18px;
+color: #5b5b5b;
+margin: 2px;
+padding: 0;
+text-align: left;
+
+`
+
 const DataValue = styled.h1`
   font-weight: bold;
   font-size: 26px;
@@ -37,7 +48,7 @@ interface IChargingStatusProps {
 
 export const ChargingStatus = (props: IChargingStatusProps) => {
   const { chargeSessionData } = props;
-  const { kwh, formattedCost, start_date_time } = chargeSessionData;
+  const { kwh, formattedCost, formattedStartTime } = chargeSessionData;
   return (
     <div>
       <IonGrid>
@@ -46,7 +57,7 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <DataValue>{start_date_time}</DataValue>
+                  <StartTime>{formattedStartTime}</StartTime>
                 </IonCol>
               </IonRow>
               <PaddedRow>

@@ -15,4 +15,7 @@ export class ClientSessionDTO {
 
   @ApiProperty({ type: String })
   id: string;
+
+  @ApiProperty({ type: String })
+  formattedStartTime: string;
 }

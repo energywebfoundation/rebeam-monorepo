@@ -155,7 +155,6 @@ export class ChargeController {
       );
     }
     try {
-      console.log('getting to controller!');
       const sessionData = await this.service.fetchSessionData(body.sessionId);
       return sessionData;
     } catch (err) {

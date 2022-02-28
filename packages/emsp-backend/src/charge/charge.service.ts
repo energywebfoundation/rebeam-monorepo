@@ -3,6 +3,8 @@ import { randomUUID } from 'crypto';
 import { SessionDTO } from './dtos/session.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { Session } from '../ocn/schemas/session.schema';
+import * as moment from "moment";
+import {formatCurrency, formatStartTime} from "./utils/formatters"
 import {
   IBridge,
   IStartSession,
@@ -69,9 +71,7 @@ export class ChargeService {
   }
 
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
-    const currencyLookup = {
-      DE: 'de-DE',
-    };
+  
     const sessionData = await this.dbService.getSession(sessionId);
     if (sessionData) {
       const data = sessionData;
@@ -84,12 +84,10 @@ export class ChargeService {
         id,
         country_code,
       } = data;
+	  const formattedStartTime = formatStartTime(start_date_time)
       let formattedCost: string;
       if (total_cost?.excl_vat) {
-        formattedCost = new Intl.NumberFormat(
-          `${currencyLookup[country_code]}`,
-          { style: 'currency', currency: currency }
-        ).format(total_cost.excl_vat);
+        formattedCost = formatCurrency(country_code, total_cost?.excl_vat, currency)
       }
       const formattedData = {
         start_date_time,
@@ -97,6 +95,7 @@ export class ChargeService {
         formattedCost,
         last_updated,
         id,
+		formattedStartTime 
       };
       return formattedData;
     }
@@ -113,7 +112,6 @@ export class ChargeService {
       },
     });
     if (savedSession) {
-      console.log('there is a saved session');
       try {
         await this.SessionRepository.update(
           { _id: savedSession._id },

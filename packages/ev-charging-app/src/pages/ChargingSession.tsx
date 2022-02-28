@@ -34,6 +34,7 @@ export interface ISessionData {
   start_date_time: string;
   last_updated: string;
   id: string;
+  formattedStartTime: string;
 }
 
 export interface IPresentationData {
