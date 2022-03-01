@@ -17,6 +17,7 @@ import { Cache } from 'cache-manager';
 import { Providers } from '../types/symbols';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class ChargeService {
   constructor(
@@ -24,7 +25,8 @@ export class ChargeService {
     private readonly SessionRepository: Repository<Session>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-    @Inject(OcnDbService) private dbService: OcnDbService
+    @Inject(OcnDbService) private dbService: OcnDbService,
+	@Inject(ConfigService) private config: ConfigService
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
@@ -41,7 +43,8 @@ export class ChargeService {
       whitelist: 'ALWAYS',
       last_updated: new Date().toISOString(),
     };
-    const OCPIServerUrl = `${process.env.OCN_OCPI_SERVER_BASE_URL}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
+	const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL')
+    const OCPIServerUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
     const startSessionData: IStartSession = {
       token,
       response_url: OCPIServerUrl,
