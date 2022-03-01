@@ -116,7 +116,6 @@ describe('OcnController', () => {
       await controller.register({ tokenA: actualToken, nodeURL: actualUrl });
     });
 
-
     it('should return error if registration fails', async () => {
       jest.spyOn(service, 'register').mockImplementation(async () => {
         throw Error('Connection refused; localhost:8080');
