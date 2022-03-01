@@ -87,13 +87,6 @@ describe('LocatiomService', () => {
     expect(locationService).toBeDefined();
   });
 
-  describe('status', () => {
-    it('should return connected status', async () => {
-      jest.spyOn(bridge.registry, 'isConnectedToNode').mockResolvedValue(true);
-      const { connected } = await locationService.getConnectionStatus();
-      expect(connected).toBe(true);
-    });
-  });
   describe('fetch location data', () => {
     it('should return locations formatted for the client', async () => {
       const mockLocationReturn = {

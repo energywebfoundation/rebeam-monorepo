@@ -1,17 +1,19 @@
-import { Controller, Get, HttpCode, BadGatewayException } from '@nestjs/common';
+import { Controller, Get, HttpCode, BadGatewayException, InternalServerErrorException, UsePipes, ValidationPipe} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { LocationService } from './location.service';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { ConnectionDto } from '../ocn/dtos/connection.dto';
-
+import { OcnService } from '../ocn/services/ocn.service';
+@UsePipes(ValidationPipe)
 @ApiTags('Location')
 @Controller('location')
 export class LocationController {
   constructor(
     private readonly logger: LoggerService,
-    private readonly service: LocationService
+    private readonly service: LocationService,
+	private readonly ocnService: OcnService,
   ) {}
 
   @Get('status')
@@ -20,7 +22,7 @@ export class LocationController {
   @ApiResponse({ status: 200, type: ConnectionDto })
   async getConnection() {
     try {
-      const status = await this.service.getConnectionStatus();
+      const status = await this.ocnService.getConnectionStatus();
       return status;
     } catch (err) {
       this.logger.error(
@@ -49,7 +51,7 @@ export class LocationController {
       return locations;
     } catch (err) {
       this.logger.error(`Cannot fetch locations for given CPO`);
-      throw new BadGatewayException(
+      throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.OCN_BRIDGE,
           'The OCN Bridge failed to fetch locations. Are the desired RPC and OCN Nodes available?',

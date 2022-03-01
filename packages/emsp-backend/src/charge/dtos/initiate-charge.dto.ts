@@ -1,16 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import * as Joi from 'joi';
+import {IsNotEmpty, IsString} from 'class-validator';
 
 export class InitiateChargeDTO {
-  @ApiProperty({ type: String })
+  @IsString()
+  @IsNotEmpty()
   ocpiToken: string;
 
-  static validate(dto: InitiateChargeDTO) {
-    Joi.assert(
-      dto,
-      Joi.object({
-        ocpiToken: Joi.string().uuid().required(),
-      })
-    );
-  }
 }

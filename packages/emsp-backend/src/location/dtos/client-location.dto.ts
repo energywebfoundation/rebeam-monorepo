@@ -1,27 +1,39 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IEvse } from '@energyweb/ocn-bridge';
+import {IsString, IsNumber, IsNotEmpty} from "class-validator";
 
 export class Operator {
   @ApiProperty({ type: String })
+  @IsString()
   name: string;
 }
 export class Property {
   @ApiProperty({ type: String })
+  @IsString()
   id: string;
+
   @ApiProperty({ type: String })
+  @IsString()
   stationName: string;
+
   @ApiProperty({ type: String })
+  @IsString()
   formattedAddress: string;
+
   @ApiProperty({ type: String })
+  @IsString()
   country: string;
+
   @ApiProperty({ type: Array })
   evses: IEvse[];
+
   @ApiProperty({ type: Object })
   operator: Operator;
 }
 
 export class ClientLocation {
   @ApiProperty({ type: String })
+  @IsString()
   type: string;
 
   @ApiProperty({ type: Object })
@@ -33,6 +45,7 @@ export class ClientLocation {
 
 export class Geometry {
   @ApiProperty({ type: String })
+  @IsString()
   type: string;
 
   @ApiProperty({ type: Array })

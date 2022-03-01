@@ -1,21 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsNumber, IsString } from "class-validator";
 
 export class ClientSessionDTO {
-  @ApiProperty({ type: Date })
-  start_date_time: Date;
+	@ApiProperty({ type: Date })
+	@IsDate()
+	start_date_time: Date;
 
-  @ApiProperty({ type: Number })
-  kwh?: number;
+	@ApiProperty({ type: Number })
+	@IsNumber()
+	kwh?: number;
 
-  @ApiProperty({ type: String })
-  formattedCost?: string;
+	@ApiProperty({ type: String })
+	@IsString()
+	formattedCost?: string;
 
-  @ApiProperty({ type: Date })
-  last_updated: Date;
+	@ApiProperty({ type: Date })
+	@IsDate()
+	last_updated: Date;
 
-  @ApiProperty({ type: String })
-  id: string;
+	@ApiProperty({ type: String })
+	@IsString()
+	id: string;
 
-  @ApiProperty({ type: String })
-  formattedStartTime: string;
+	@ApiProperty({ type: String })
+	@IsString()
+	formattedStartTime: string;
 }

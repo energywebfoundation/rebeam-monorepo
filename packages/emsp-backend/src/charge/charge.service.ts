@@ -27,12 +27,6 @@ export class ChargeService {
     @Inject(OcnDbService) private dbService: OcnDbService
   ) {}
 
-  async getConnectionStatus() {
-    return {
-      connected: await this.bridge.registry.isConnectedToNode(),
-    };
-  }
-
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
     const { locationId, evseId } = chargeData;
     const mockOcpiToken = randomUUID();

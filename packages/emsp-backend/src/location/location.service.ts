@@ -7,12 +7,6 @@ import { ClientLocationsDTO } from './dtos/client-location.dto';
 export class LocationService {
   constructor(@Inject(Providers.OCN_BRIDGE) private bridge: IBridge) {}
 
-  async getConnectionStatus() {
-    return {
-      connected: await this.bridge.registry.isConnectedToNode(),
-    };
-  }
-
   async fetchLocations(): Promise<ClientLocationsDTO> {
     const recipient: IOcpiParty = {
       country_code: 'DE',
