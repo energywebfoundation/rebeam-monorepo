@@ -75,8 +75,6 @@ describe('LocatiomService', () => {
 
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-    ocnDbService = module.get<OcnDbService>(OcnDbService);
-    cache = module.get<Cache>(CACHE_MANAGER);
   });
 
   afterEach(async () => {

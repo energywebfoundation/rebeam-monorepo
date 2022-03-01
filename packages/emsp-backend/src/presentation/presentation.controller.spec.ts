@@ -23,7 +23,6 @@ describe('PresentationController', () => {
     }).compile();
 
     presController = app.get<PresentationController>(PresentationController);
-    cache = app.get<Cache>(CACHE_MANAGER);
     presService = app.get<PresentationService>(PresentationService);
   });
 
