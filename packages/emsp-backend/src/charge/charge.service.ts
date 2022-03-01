@@ -26,7 +26,7 @@ export class ChargeService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @Inject(OcnDbService) private dbService: OcnDbService,
-    @Inject(ConfigService) private config: ConfigService
+   	private readonly config: ConfigService
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
