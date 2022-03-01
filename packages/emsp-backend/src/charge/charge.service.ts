@@ -42,7 +42,6 @@ export class ChargeService {
       last_updated: new Date().toISOString(),
     };
     const OCPIServerUrl = `${process.env.OCN_OCPI_SERVER_BASE_URL}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
-    console.log(process.env.OCN_OCPI_SERVER_BASE_URL, 'server url');
     const startSessionData: IStartSession = {
       token,
       response_url: OCPIServerUrl,
@@ -53,11 +52,10 @@ export class ChargeService {
       country_code: 'DE',
       party_id: 'CPO',
     };
-    const value = await this.bridge.requests.startSession(
+    await this.bridge.requests.startSession(
       recipient,
       startSessionData
     );
-    console.log(value, 'Value returned from start session request');
     return mockOcpiToken;
   }
 
@@ -99,7 +97,6 @@ export class ChargeService {
 
   async mockPostSessionData(data: SessionDTO) {
     const { id } = data;
-    console.log(id, 'getting id');
     const savedSession = await this.SessionRepository.findOne({
       cdr_token: {
         uid: id,
@@ -116,7 +113,6 @@ export class ChargeService {
       }
     } else {
       const insert = await this.SessionRepository.insert(data);
-      console.log(insert);
     }
   }
 
@@ -135,7 +131,6 @@ export class ChargeService {
     };
     await this.cacheManager.set(`${id}-auth`, resultData);
     const result = this.cacheManager.get(`${id}-auth`);
-    console.log(result, 'RESULT FROM AUTH CACHE FETCH');
     return result;
   }
 }

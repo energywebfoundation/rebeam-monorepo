@@ -77,12 +77,10 @@ export class OcnDbService implements IPluggableDB {
       id: session.id,
     });
     if (existent) {
-      // console.log(existent, "IT ExISTS")
       await this.sessionRepository.update({ _id: existent._id }, session);
-      const sessionUpdated = await this.sessionRepository.findOne({
+      await this.sessionRepository.findOne({
         id: session.id,
       });
-      console.log(sessionUpdated, 'THE SESSIOn UPDATED');
     } else {
       await this.sessionRepository.insert(session);
     }

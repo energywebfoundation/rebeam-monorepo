@@ -11,7 +11,6 @@ const useRetailers = () => {
     const [loadingRetailers, setLoadingRetailers] = useState(false);
     useEffect(() => {
         (async () => {
-            console.log("in use effect")
             try {
                 //uncomment this when we have loading treatement: 
                 setLoadingRetailers(true);

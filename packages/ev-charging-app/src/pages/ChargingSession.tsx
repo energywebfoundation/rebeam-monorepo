@@ -56,7 +56,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
         const results = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}charge/session-conf/${id}`
         );
-        console.log(results?.data, 'THE DATA FROM THE MOCK AUTH CALL');
         if (results?.data) {
           const data = results.data;
           const { command, uid, result } = data;
@@ -88,7 +87,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
         if (results?.data) {
           const data = results.data;
           setSessionData(data);
-          console.log(results.data);
         }
       }, 500);
       return () => clearInterval(poll);
