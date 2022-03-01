@@ -99,7 +99,7 @@ describe('ChargeService', () => {
     });
   });
   describe('fetch session data', () => {
-    const mockDate = new Date();
+    const mockDate = new Date('1995-12-17T03:24:00');
     const mockSession = {
       _id: 2,
       country_code: 'DE',
@@ -135,7 +135,7 @@ describe('ChargeService', () => {
         last_updated: mockDate,
         id: 'c63cc282-0235-4081-a337-ac256e658299',
         formattedCost: undefined,
-        formattedStartTime: 'February 28th, 2022 10:46pm',
+        formattedStartTime: "December 17th, 1995 3:24am",
       };
       const formattedResult = await chargeService.fetchSessionData(
         '7e42736a-4287-4c1e-b883-9ff03ea622b5'
