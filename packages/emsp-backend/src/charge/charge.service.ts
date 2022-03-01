@@ -26,7 +26,7 @@ export class ChargeService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @Inject(OcnDbService) private dbService: OcnDbService,
-	@Inject(ConfigService) private config: ConfigService
+    @Inject(ConfigService) private config: ConfigService
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
@@ -43,7 +43,7 @@ export class ChargeService {
       whitelist: 'ALWAYS',
       last_updated: new Date().toISOString(),
     };
-	const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL')
+    const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
     const OCPIServerUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
     const startSessionData: IStartSession = {
       token,
