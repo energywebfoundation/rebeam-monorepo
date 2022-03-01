@@ -135,7 +135,7 @@ describe('ChargeService', () => {
         last_updated: mockDate,
         id: 'c63cc282-0235-4081-a337-ac256e658299',
         formattedCost: undefined,
-        formattedStartTime: "December 17th, 1995 3:24am",
+        formattedStartTime: 'December 17th, 1995 3:24am',
       };
       const formattedResult = await chargeService.fetchSessionData(
         '7e42736a-4287-4c1e-b883-9ff03ea622b5'

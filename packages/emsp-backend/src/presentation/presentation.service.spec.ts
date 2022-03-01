@@ -10,9 +10,7 @@ describe('ChargeService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        PresentationService,
-      ],
+      providers: [PresentationService],
       imports: [
         CacheModule.register({
           ttl: +process.env.TTL_CACHE,
@@ -24,38 +22,36 @@ describe('ChargeService', () => {
     cache = module.get<Cache>(CACHE_MANAGER);
   });
 
-
-
   it('should be defined', () => {
     expect(presService).toBeDefined();
   });
 
   describe('fetch and set presentation cache', () => {
-	const presentationMockData = {
-		presentationLink: {
-		  type: 'string',
-		  url: 'string',
-		  ssiSession: 'string',
-		},
-		ocpiTokenUID: 'test5',
-	  }
+    const presentationMockData = {
+      presentationLink: {
+        type: 'string',
+        url: 'string',
+        ssiSession: 'string',
+      },
+      ocpiTokenUID: 'test5',
+    };
     it('should cache presentation data and return the cached value', async () => {
-		const result = await presService.cachePresentation(presentationMockData);
-		expect(result).toEqual(presentationMockData)
+      const result = await presService.cachePresentation(presentationMockData);
+      expect(result).toEqual(presentationMockData);
     });
 
     it('should fetch presentation data given and base64 the fetched data', async () => {
-		const pres = {
-			presentationLink: {
-			  type: 'string',
-			  url: 'string',
-			  ssiSession: 'string',
-			},
-			ocpiTokenUID: 'test6',
-		  }
-		await cache.set('test6-present', pres)
-      const result = await presService.fetchPresentation('test6')
-		  console.log(result, "THE RESULT")
+      const pres = {
+        presentationLink: {
+          type: 'string',
+          url: 'string',
+          ssiSession: 'string',
+        },
+        ocpiTokenUID: 'test6',
+      };
+      await cache.set('test6-present', pres);
+      const result = await presService.fetchPresentation('test6');
+      console.log(result, 'THE RESULT');
       expect(result).toBeTruthy();
     });
   });
