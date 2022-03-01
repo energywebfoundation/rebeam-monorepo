@@ -1,94 +1,99 @@
 import {
-  IAdditionalGeoLocation,
-  IBusinessDetails,
-  IDisplayText,
-  IEnergyMix,
-  IGeoLocation,
-  IHours,
-  IImage,
-  IPublishTokenType,
+	IAdditionalGeoLocation,
+	IBusinessDetails,
+	IDisplayText,
+	IEnergyMix,
+	IGeoLocation,
+	IHours,
+	IImage,
+	IEvse,
+	IPublishTokenType,
+	ILocation
 } from '@energyweb/ocn-bridge';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { EVSE } from "./evse.schema"
 
 @Entity()
 export class Location {
-  @PrimaryGeneratedColumn()
-  _id: string;
+	@PrimaryGeneratedColumn()
+	_id: string;
 
-  @Column()
-  country_code: string;
+	@Column()
+	country_code: string;
 
-  @Column()
-  party_id: string;
+	@Column()
+	party_id: string;
 
-  @Column()
-  id: string;
+	@Column()
+	evses: string
 
-  @Column()
-  publish: boolean;
+	@Column()
+	id: string;
 
-  @Column({ type: 'json', nullable: true })
-  publish_allowed_to: IPublishTokenType[];
+	@Column()
+	publish: boolean;
 
-  @Column({ nullable: true })
-  name: string;
+	@Column({ type: 'json', nullable: true })
+	publish_allowed_to: IPublishTokenType[];
 
-  @Column()
-  address: string;
+	@Column({ nullable: true })
+	name: string;
 
-  @Column()
-  city: string;
+	@Column()
+	address: string;
 
-  @Column({ nullable: true })
-  postal_code: string;
+	@Column()
+	city: string;
 
-  @Column({ nullable: true })
-  state: string;
+	@Column({ nullable: true })
+	postal_code: string;
 
-  @Column()
-  country: string;
+	@Column({ nullable: true })
+	state: string;
 
-  @Column({ type: 'json' })
-  coordinates: IGeoLocation;
+	@Column()
+	country: string;
 
-  @Column({ type: 'json', nullable: true })
-  related_locations: IAdditionalGeoLocation[];
+	@Column({ type: 'json' })
+	coordinates: IGeoLocation;
 
-  @Column({ nullable: true })
-  parking_type: string;
+	@Column({ type: 'json', nullable: true })
+	related_locations: IAdditionalGeoLocation[];
 
-  // TODO: one to many evses
+	@Column({ nullable: true })
+	parking_type: string;
 
-  @Column({ type: 'json', nullable: true })
-  directions: IDisplayText[];
+	@Column({ type: 'json', nullable: true })
+	directions: IDisplayText[];
 
-  @Column({ type: 'json', nullable: true })
-  operator: IBusinessDetails;
+	@Column({ type: 'json', nullable: true })
+	operator: IBusinessDetails;
 
-  @Column({ type: 'json', nullable: true })
-  suboperator: IBusinessDetails;
+	@Column({ type: 'json', nullable: true })
+	suboperator: IBusinessDetails;
 
-  @Column({ type: 'json', nullable: true })
-  owner: IBusinessDetails;
+	@Column({ type: 'json', nullable: true })
+	owner: IBusinessDetails;
 
-  @Column({ type: 'json', nullable: true })
-  facilities: string[];
+	@Column({ type: 'json', nullable: true })
+	facilities: string[];
 
-  @Column()
-  time_zone: string;
+	@Column()
+	time_zone: string;
 
-  @Column({ type: 'json', nullable: true })
-  opening_times: IHours;
+	@Column({ type: 'json', nullable: true })
+	opening_times: IHours;
 
-  @Column({ nullable: true })
-  charging_when_closed: boolean;
+	@Column({ nullable: true })
+	charging_when_closed: boolean;
 
-  @Column({ type: 'json', nullable: true })
-  images: IImage[];
+	@Column({ type: 'json', nullable: true })
+	images: IImage[];
 
-  @Column({ type: 'json', nullable: true })
-  energy_mix: IEnergyMix;
+	@Column({ type: 'json', nullable: true })
+	energy_mix: IEnergyMix;
 
-  @Column({ type: 'timestamptz' })
-  last_updated: Date;
+	@Column({ type: 'timestamptz' })
+	last_updated: Date;
 }
