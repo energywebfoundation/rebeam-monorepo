@@ -10,12 +10,12 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.enableCors();
   app.useGlobalPipes(
-	  new ValidationPipe({
-		  skipNullProperties: true,
-		  skipUndefinedProperties: true,
-		  enableDebugMessages: true
-	  })
-  )
+    new ValidationPipe({
+      skipNullProperties: true,
+      skipUndefinedProperties: true,
+      enableDebugMessages: true,
+    })
+  );
 
   const logger = app.get(LoggerService);
 

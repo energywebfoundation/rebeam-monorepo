@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { IBridge, stopBridge, CommandResultType } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
-import { HttpException, HttpStatus, CacheModule} from '@nestjs/common';
+import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
 import { ChargeService } from './charge.service';
 import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
@@ -21,7 +21,7 @@ describe('ChargeController', () => {
   let controller: ChargeController;
   let chargeService: ChargeService;
   let bridge: IBridge;
-  let ocnService: OcnService
+  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -56,7 +56,7 @@ describe('ChargeController', () => {
         LoggerService,
         OcnDbService,
         OcnApiService,
-		OcnService,
+        OcnService,
         OcnBridgeProvider,
         ChargeService,
       ],
@@ -71,7 +71,7 @@ describe('ChargeController', () => {
     controller = module.get<ChargeController>(ChargeController);
     chargeService = module.get<ChargeService>(ChargeService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-	ocnService = module.get<OcnService>(OcnService);
+    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {

@@ -59,7 +59,7 @@ describe('LocationController', () => {
         OcnApiService,
         LocationService,
         OcnDbService,
-		OcnService
+        OcnService,
       ],
       imports: [
         CacheModule.register({
@@ -72,7 +72,7 @@ describe('LocationController', () => {
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-	ocnService = module.get<OcnService>(OcnService);
+    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {

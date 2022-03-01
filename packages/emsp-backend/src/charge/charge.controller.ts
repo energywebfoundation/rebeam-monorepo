@@ -6,10 +6,7 @@ import {
   Body,
   Param,
   BadGatewayException,
-  UnprocessableEntityException,
   InternalServerErrorException,
-  UsePipes,
-  ValidationPipe
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
@@ -25,14 +22,13 @@ import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { ConnectionDto } from '../ocn/dtos/connection.dto';
 import { OcnService } from '../ocn/services/ocn.service';
 
-
 @ApiTags('Charge')
 @Controller('charge')
 export class ChargeController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: ChargeService,
-	private readonly ocnService: OcnService
+    private readonly ocnService: OcnService
   ) {}
 
   @Get('status')
@@ -137,17 +133,6 @@ export class ChargeController {
   async getChargeSessionData(
     @Body() body: SessionIdDTO
   ): Promise<ClientSessionDTO | null> {
-    try {
-      SessionIdDTO.validate(body);
-    } catch (err) {
-      throw new UnprocessableEntityException(
-        new ApiError(
-          ApiErrorCode.BAD_PAYLOAD,
-          'The request body for fetch session data failed validation',
-          err
-        )
-      );
-    }
     try {
       const sessionData = await this.service.fetchSessionData(body.sessionId);
       return sessionData;

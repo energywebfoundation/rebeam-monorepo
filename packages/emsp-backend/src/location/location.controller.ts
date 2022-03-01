@@ -1,4 +1,12 @@
-import { Controller, Get, HttpCode, BadGatewayException, InternalServerErrorException, UsePipes, ValidationPipe} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  BadGatewayException,
+  InternalServerErrorException,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
@@ -13,7 +21,7 @@ export class LocationController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: LocationService,
-	private readonly ocnService: OcnService,
+    private readonly ocnService: OcnService
   ) {}
 
   @Get('status')

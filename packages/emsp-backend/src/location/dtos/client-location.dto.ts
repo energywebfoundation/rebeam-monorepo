@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IEvse } from '@energyweb/ocn-bridge';
-import {IsString, IsNumber, IsNotEmpty} from "class-validator";
+import { IsString } from 'class-validator';
 
 export class Operator {
   @ApiProperty({ type: String })

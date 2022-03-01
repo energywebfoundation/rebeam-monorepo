@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import * as Joi from 'joi';
-import {IsString} from "class-validator";
+import { IsString } from 'class-validator';
 
 export class PresentationLinkDTO {
   @ApiProperty({ type: String })
