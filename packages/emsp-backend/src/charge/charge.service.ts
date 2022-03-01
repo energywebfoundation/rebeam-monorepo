@@ -52,10 +52,7 @@ export class ChargeService {
       country_code: 'DE',
       party_id: 'CPO',
     };
-    await this.bridge.requests.startSession(
-      recipient,
-      startSessionData
-    );
+    await this.bridge.requests.startSession(recipient, startSessionData);
     return mockOcpiToken;
   }
 
