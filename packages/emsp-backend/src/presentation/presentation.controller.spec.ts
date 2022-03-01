@@ -1,15 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PresentationController } from './presentation.controller';
 import { CacheModule, HttpException, HttpStatus } from '@nestjs/common';
-import { Cache } from 'cache-manager';
 import { ApiError, ApiErrorCode } from '../types/types';
-import { CACHE_MANAGER } from '@nestjs/common';
 
 import { LoggerService } from '../logger/logger.service';
 import { PresentationService } from './presentation.service';
 describe('PresentationController', () => {
   let presController: PresentationController;
-  let cache: Cache;
   let presService: PresentationService;
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({

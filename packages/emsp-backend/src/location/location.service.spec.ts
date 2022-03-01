@@ -21,14 +21,10 @@ import { LocationService } from './location.service';
 import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '@nestjs/common';
 
 describe('LocatiomService', () => {
   let locationService: LocationService;
   let bridge: IBridge;
-  let ocnDbService: OcnDbService;
-  let cache: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
