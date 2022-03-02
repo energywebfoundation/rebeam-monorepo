@@ -12,7 +12,6 @@ import {
 } from '@energyweb/ocn-bridge';
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { EVSE } from "./evse.schema"
 
 @Entity()
 export class Location {
