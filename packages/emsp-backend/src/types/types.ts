@@ -13,4 +13,5 @@ export enum ApiErrorCode {
   OCN_BRIDGE = 'ocn_bridge_failure',
   PRESENTATION = 'presentation_module_cache_failure',
   CHARGE_SESSION = 'charge_module_session_failure',
+  LOCATION_FETCH = 'fetch_locations_failure',
 }

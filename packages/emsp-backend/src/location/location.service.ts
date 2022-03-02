@@ -12,12 +12,10 @@ import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 export class LocationService {
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-    @InjectRepository(Location)
-    private readonly LocationRepository: Repository<Location>,
     @Inject(LocationDbService) private locationDbService: LocationDbService
   ) {}
 
-  async getCPOLocations(body: OcpiPartyDTO): Promise<void> {
+  async getCPOLocations(body: OcpiPartyDTO): Promise<boolean> {
     const recipient: IOcpiParty = {
       country_code: body.countryCode,
       party_id: body.partyId,
@@ -30,6 +28,7 @@ export class LocationService {
     });
     console.log(locationsFormatted, 'THE LOCATIONS FORMATTED');
     await this.locationDbService.insertLocations(locationsFormatted);
+    return true;
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {

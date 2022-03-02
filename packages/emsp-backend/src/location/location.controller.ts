@@ -23,11 +23,11 @@ import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 export class LocationController {
   constructor(
     private readonly logger: LoggerService,
-    private readonly service: LocationService,
+    private readonly service: LocationService
   ) {}
 
- //GET STORED LOCATIONS FOR CLIENT  
-@Get('get-client-locations/:cpo')
+  //GET STORED LOCATIONS FOR CLIENT
+  @Get('get-client-locations/:cpo')
   @HttpCode(200)
   @ApiOperation({
     summary:
@@ -44,8 +44,8 @@ export class LocationController {
       this.logger.error(`Cannot fetch locations for given CPO`);
       throw new InternalServerErrorException(
         new ApiError(
-          ApiErrorCode.OCN_BRIDGE,
-          'The OCN Bridge failed to fetch locations. Are the desired RPC and OCN Nodes available?',
+          ApiErrorCode.LOCATION_FETCH,
+          'Failed to fetch locations from database',
           err.message
         )
       );
@@ -59,9 +59,10 @@ export class LocationController {
     summary: 'Get list of locations for CPO and store in database',
   })
   @ApiResponse({ status: 200 })
-  async getCPOLocations(@Body() body: OcpiPartyDTO): Promise<void> {
+  async getCPOLocations(@Body() body: OcpiPartyDTO): Promise<boolean> {
     try {
-      await this.service.getCPOLocations(body);
+      const result = await this.service.getCPOLocations(body);
+      return result;
     } catch (err) {
       this.logger.error(`Cannot fetch locations for given CPO`);
       throw new BadGatewayException(
