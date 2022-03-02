@@ -8,14 +8,19 @@ export class Operator {
 export class Property {
   @ApiProperty({ type: String })
   id: string;
+
   @ApiProperty({ type: String })
   stationName: string;
+
   @ApiProperty({ type: String })
   formattedAddress: string;
+
   @ApiProperty({ type: String })
   country: string;
-  @ApiProperty({ type: Array })
-  evses: IEvse[];
+
+  @ApiProperty({ type: String })
+  evses: string;
+
   @ApiProperty({ type: Object })
   operator: Operator;
 }

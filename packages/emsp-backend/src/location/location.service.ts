@@ -6,16 +6,19 @@ import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { Repository } from 'typeorm';
 import { Location } from '../ocn/schemas/location.schema';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LocationDbService } from './location-db.service';
+import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 
 @Injectable()
-export class LocationService implements OnModuleInit {
+export class LocationService{
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @InjectRepository(Location)
-    private readonly LocationRepository: Repository<Location>
+    private readonly LocationRepository: Repository<Location>,
+	@Inject(LocationDbService) private locationDbService: LocationDbService
   ) {}
 
-  async onModuleInit(): Promise<void> {
+  async getCPOLocations(body: OcpiPartyDTO): Promise<void> {
     const recipient: IOcpiParty = {
       country_code: 'DE',
       party_id: 'CPO',
@@ -26,16 +29,8 @@ export class LocationService implements OnModuleInit {
       const evseStringified = JSON.stringify(data.evses);
       return { ...data, evses: evseStringified };
     });
-    locationsFormatted.map(async (loc) => {
-      const savedLocation = await this.LocationRepository.findOne({
-        id: loc.id,
-      });
-      if (savedLocation) {
-        await this.LocationRepository.update(savedLocation._id, loc);
-      } else {
-        await this.LocationRepository.insert(loc);
-      }
-    });
+	console.log(locationsFormatted, "THE LOCATIONS FORMATTED")
+	await this.locationDbService.insertLocations(locationsFormatted);
   }
 
   async getConnectionStatus() {
@@ -44,16 +39,10 @@ export class LocationService implements OnModuleInit {
     };
   }
 
-  async fetchLocations(): Promise<ClientLocationsDTO> {
-    const recipient: IOcpiParty = {
-      country_code: 'DE',
-      party_id: 'CPO',
-    };
-    const locations = await this.bridge.requests.getLocations(recipient);
-    const { data } = locations;
-
-    const formattedLocations = data.map((loc: ILocation) => {
-      console.log(typeof loc.evses, 'HE TYPE');
+  async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {
+	  try {
+	const cpoLocations = await this.locationDbService.getLocationsByPartyId(cpo.toUpperCase());
+    const formattedLocations = cpoLocations.map((loc: Location) => {
       return {
         type: 'Feature',
         properties: {
@@ -74,5 +63,8 @@ export class LocationService implements OnModuleInit {
     return {
       locations: formattedLocations,
     };
+} catch (e) {
+	console.log(e, "THE ERROR")
+}
   }
 }

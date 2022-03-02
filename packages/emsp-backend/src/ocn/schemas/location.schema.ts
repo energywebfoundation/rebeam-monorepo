@@ -93,6 +93,6 @@ export class Location {
   @Column({ type: 'json', nullable: true })
   energy_mix: IEnergyMix;
 
-  @Column({ type: 'timestamptz' })
-  last_updated: Date;
+  @Column()
+  last_updated: string;
 }
