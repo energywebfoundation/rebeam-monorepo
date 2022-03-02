@@ -115,43 +115,6 @@ describe('OcnController', () => {
       });
       await controller.register({ tokenA: actualToken, nodeURL: actualUrl });
     });
-    it('should return error if registration token invalid', async () => {
-      try {
-        await controller.register({
-          tokenA: 'abc123',
-          nodeURL: 'http://localhost:8080',
-        });
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(code).toBe(ApiErrorCode.BAD_PAYLOAD);
-        expect(message).toBe('The request body failed validation');
-        expect(error['details'][0]['context']['key']).toBe('tokenA');
-      }
-    });
-
-    it('should return error if registration url invalid', async () => {
-      try {
-        await controller.register({
-          tokenA: randomUUID(),
-          nodeURL: 'some-url',
-        });
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(code).toBe(ApiErrorCode.BAD_PAYLOAD);
-        expect(message).toBe('The request body failed validation');
-        expect(error['details'][0]['context']['key']).toBe('nodeURL');
-      }
-    });
 
     it('should return error if registration fails', async () => {
       jest.spyOn(service, 'register').mockImplementation(async () => {

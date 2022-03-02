@@ -6,7 +6,7 @@ import {
   Body,
   Param,
   BadGatewayException,
-  UnprocessableEntityException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
@@ -20,37 +20,16 @@ import { SessionIdDTO } from './dtos/session-id.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { ConnectionDto } from '../ocn/dtos/connection.dto';
+import { OcnService } from '../ocn/services/ocn.service';
 
 @ApiTags('Charge')
 @Controller('charge')
 export class ChargeController {
   constructor(
     private readonly logger: LoggerService,
-    private readonly service: ChargeService
+    private readonly service: ChargeService,
+    private readonly ocnService: OcnService
   ) {}
-
-  @Get('status')
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Determine connection status of OCN Bridge' })
-  @ApiResponse({ status: 200, type: ConnectionDto })
-  async getConnection() {
-    try {
-      const status = await this.service.getConnectionStatus();
-      return status;
-    } catch (err) {
-      this.logger.error(
-        `Cannot fetch OCN connection status: ${err.message}`,
-        ChargeController.name
-      );
-      throw new BadGatewayException(
-        new ApiError(
-          ApiErrorCode.OCN_BRIDGE,
-          'The OCN Bridge failed to fetch the status. Are the desired RPC and OCN Nodes available?',
-          err.message
-        )
-      );
-    }
-  }
 
   @Post('initiate')
   @HttpCode(200)
@@ -62,24 +41,13 @@ export class ChargeController {
     @Body() body: SelectedChargePointDTO
   ): Promise<InitiateChargeDTO> {
     try {
-      SelectedChargePointDTO.validate(body);
-    } catch (err) {
-      throw new UnprocessableEntityException(
-        new ApiError(
-          ApiErrorCode.BAD_PAYLOAD,
-          'The request body for startCharge failed validation',
-          err
-        )
-      );
-    }
-    try {
       const token = await this.service.initiate(body);
       return {
         ocpiToken: token,
       };
     } catch (err) {
       this.logger.error(`Cannot start charging session (START_SESSION)`);
-      throw new BadGatewayException(
+      throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.OCN_BRIDGE,
           'The OCN Bridge failed to start the charging session. Are the desired RPC and OCN Nodes available?',
@@ -143,24 +111,13 @@ export class ChargeController {
     @Body() body: SessionIdDTO
   ): Promise<ClientSessionDTO | null> {
     try {
-      SessionIdDTO.validate(body);
-    } catch (err) {
-      throw new UnprocessableEntityException(
-        new ApiError(
-          ApiErrorCode.BAD_PAYLOAD,
-          'The request body for fetch session data failed validation',
-          err
-        )
-      );
-    }
-    try {
       const sessionData = await this.service.fetchSessionData(body.sessionId);
       return sessionData;
     } catch (err) {
       this.logger.error(
         'Failure to fetch charge session data - check connection to database'
       );
-      throw new BadGatewayException(
+      throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.CHARGE_SESSION,
           'Failure to fetch charge session data - check connection to database',
@@ -184,7 +141,7 @@ export class ChargeController {
       return sessionData;
     } catch (err) {
       this.logger.error(`Cannot fetch session confirmation from cache`);
-      throw new BadGatewayException(
+      throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.CHARGE_SESSION,
           'Failure to fetch charge session confirmation',

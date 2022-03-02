@@ -72,7 +72,6 @@ const Map = (props: MapProps) => {
 
   const handleStartCharge = async () => {
     if (!token) {
-      console.log(selectedChargePoint, 'THE CHARGE POINT SELECTED');
       let evseParsed;
       if (selectedChargePoint?.evses) {
         evseParsed = JSON.parse(selectedChargePoint?.evses);
@@ -116,10 +115,7 @@ const Map = (props: MapProps) => {
       if (!selectedProperties) {
         return;
       } else {
-        console.log('making to else');
         const { properties } = selectedProperties;
-        console.log(JSON.stringify(properties), 'THE PROPERTIES!!!!!!!!!');
-        console.log(typeof properties.evses, 'WHAT IS THIS');
         setSelectedChargePoint(properties);
         setShowChargeStationModal(true);
       }

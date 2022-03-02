@@ -1,5 +1,4 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { ILocation } from '@energyweb/ocn-bridge';
 import { IBridge, IOcpiParty } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
@@ -20,8 +19,8 @@ export class LocationService {
 
   async getCPOLocations(body: OcpiPartyDTO): Promise<void> {
     const recipient: IOcpiParty = {
-      country_code: 'DE',
-      party_id: 'CPO',
+      country_code: body.countryCode,
+      party_id: body.partyId,
     };
     const locations = await this.bridge.requests.getLocations(recipient);
     const { data } = locations;
@@ -31,12 +30,6 @@ export class LocationService {
     });
     console.log(locationsFormatted, 'THE LOCATIONS FORMATTED');
     await this.locationDbService.insertLocations(locationsFormatted);
-  }
-
-  async getConnectionStatus() {
-    return {
-      connected: await this.bridge.registry.isConnectedToNode(),
-    };
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {

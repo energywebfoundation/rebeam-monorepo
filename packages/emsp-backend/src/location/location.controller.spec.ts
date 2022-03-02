@@ -16,11 +16,13 @@ import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
+import { OcnService } from '../ocn/services/ocn.service';
 
 describe('LocationController', () => {
   let controller: LocationController;
   let locationService: LocationService;
   let bridge: IBridge;
+  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -57,6 +59,7 @@ describe('LocationController', () => {
         OcnApiService,
         LocationService,
         OcnDbService,
+        OcnService,
       ],
       imports: [
         CacheModule.register({
@@ -69,6 +72,7 @@ describe('LocationController', () => {
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
+    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {
@@ -77,38 +81,6 @@ describe('LocationController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
-  describe('status', () => {
-    it('should get connection status', async () => {
-      jest
-        .spyOn(locationService, 'getConnectionStatus')
-        .mockResolvedValue({ connected: true });
-      const { connected } = await controller.getConnection();
-      expect(connected).toBe(true);
-    });
-
-    it('should return error if status check fails', async () => {
-      jest
-        .spyOn(locationService, 'getConnectionStatus')
-        .mockImplementation(async () => {
-          throw Error('Connection refused; localhost:8080');
-        });
-      try {
-        await controller.getConnection();
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.BAD_GATEWAY);
-        expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
-        expect(message).toBe(
-          'The OCN Bridge failed to fetch the status. Are the desired RPC and OCN Nodes available?'
-        );
-        expect(error).toBe('Connection refused; localhost:8080');
-      }
-    });
   });
   describe('get locations', () => {
     const mockLocations: ClientLocationsDTO = {
@@ -162,7 +134,7 @@ describe('LocationController', () => {
       const result = await controller.getLocations();
       expect(result).toEqual(mockLocations);
     });
-    it('should return a Bad Gateway error if the Get Locations request fails', async () => {
+    it('should return an Internal Server error if the Get Locations request fails', async () => {
       jest
         .spyOn(locationService, 'fetchLocations')
         .mockImplementation(async () => {
@@ -176,7 +148,7 @@ describe('LocationController', () => {
         const { code, message, error } = (
           err as HttpException
         ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.BAD_GATEWAY);
+        expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
         expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
         expect(message).toBe(
           'The OCN Bridge failed to fetch locations. Are the desired RPC and OCN Nodes available?'

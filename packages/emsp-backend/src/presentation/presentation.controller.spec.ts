@@ -1,15 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PresentationController } from './presentation.controller';
 import { CacheModule, HttpException, HttpStatus } from '@nestjs/common';
-import { Cache } from 'cache-manager';
 import { ApiError, ApiErrorCode } from '../types/types';
-import { CACHE_MANAGER } from '@nestjs/common';
 
 import { LoggerService } from '../logger/logger.service';
 import { PresentationService } from './presentation.service';
 describe('PresentationController', () => {
   let presController: PresentationController;
-  let cache: Cache;
   let presService: PresentationService;
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -23,7 +20,6 @@ describe('PresentationController', () => {
     }).compile();
 
     presController = app.get<PresentationController>(PresentationController);
-    cache = app.get<Cache>(CACHE_MANAGER);
     presService = app.get<PresentationService>(PresentationService);
   });
 
@@ -47,30 +43,7 @@ describe('PresentationController', () => {
       const result = await presController.cachePresentation(presentationInfo);
       expect(result).toEqual(presentationInfo);
     });
-    it('should return Bad Payload error if post body is invalid', async () => {
-      try {
-        await presController.cachePresentation({
-          presentationLink: {
-            type: 'string',
-            url: 'string',
-            ssiSession: 'string',
-          },
-          ocpiTokenUID: null,
-        });
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(code).toBe(ApiErrorCode.BAD_PAYLOAD);
-        expect(message).toBe(
-          'The cachePresentation request body failed validation'
-        );
-      }
-    });
-    it('should return a Bad Gateway error if the Start Session request fails', async () => {
+    it('should return an Internal Server error if the Start Session request fails', async () => {
       jest
         .spyOn(presService, 'cachePresentation')
         .mockImplementation(async () => {
@@ -84,7 +57,7 @@ describe('PresentationController', () => {
         const { code, message, error } = (
           err as HttpException
         ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.BAD_GATEWAY);
+        expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
         expect(code).toBe(ApiErrorCode.PRESENTATION);
         expect(message).toBe('Failure to cache presentation data for id test5');
         expect(error).toBe('Connection refused; localhost:8080');
@@ -101,7 +74,7 @@ describe('PresentationController', () => {
         presentationLinkEncoded: 'a base64 link encoded',
       });
     });
-    it('should return a Bad Gateway error if the cache fetch fails', async () => {
+    it('should return an Intenral Server error if the cache fetch fails', async () => {
       jest
         .spyOn(presService, 'fetchPresentation')
         .mockImplementation(async () => {
@@ -115,7 +88,7 @@ describe('PresentationController', () => {
         const { code, message, error } = (
           err as HttpException
         ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.BAD_GATEWAY);
+        expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
         expect(code).toBe(ApiErrorCode.PRESENTATION);
         expect(message).toBe('Failure to fetch presentation data for id 123');
         expect(error).toBe('Connection refused; localhost:8080');

@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   Post,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
@@ -52,17 +51,6 @@ export class OcnController {
   @ApiResponse({ status: 200 })
   async register(@Body() body: RegisterDto) {
     // TODO: authenticate
-    try {
-      RegisterDto.validate(body);
-    } catch (err) {
-      throw new UnprocessableEntityException(
-        new ApiError(
-          ApiErrorCode.BAD_PAYLOAD,
-          'The request body failed validation',
-          err
-        )
-      );
-    }
     try {
       const bs64TokenA = Buffer.from(body.tokenA).toString('base64');
       await this.ocnService.register(body.nodeURL, bs64TokenA);

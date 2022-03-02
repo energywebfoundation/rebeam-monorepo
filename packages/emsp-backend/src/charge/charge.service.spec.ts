@@ -79,13 +79,7 @@ describe('ChargeService', () => {
     expect(chargeService).toBeDefined();
   });
 
-  describe('status', () => {
-    it('should return connected status', async () => {
-      jest.spyOn(bridge.registry, 'isConnectedToNode').mockResolvedValue(true);
-      const { connected } = await chargeService.getConnectionStatus();
-      expect(connected).toBe(true);
-    });
-
+  describe('initiate session', () => {
     it('should return the OCPI token from initiate', async () => {
       jest.spyOn(bridge.requests, 'startSession').mockResolvedValue({
         status_code: '2000',

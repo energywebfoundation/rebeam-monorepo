@@ -1,20 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import * as Joi from 'joi';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class SelectedChargePointDTO {
   @ApiProperty({ type: String })
+  @IsString()
+  @IsNotEmpty()
   locationId: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   evseId: string;
-
-  static validate(dto: SelectedChargePointDTO) {
-    Joi.assert(
-      dto,
-      Joi.object({
-        locationId: Joi.string().required(),
-        evseId: Joi.string().required(),
-      })
-    );
-  }
 }

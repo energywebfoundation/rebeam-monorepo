@@ -124,20 +124,11 @@ export class OcnApiService implements IPluggableAPI {
           JSON.stringify(result),
           'THIS IS THE RETURN FROM ASYNC RESULT'
         );
-        this.logger.log('RECEIVING THE POST DATA!!!!!!!!!!!!!*******');
         const resultData = {
           command,
           result,
           uid,
         };
-        /*
-				{
-				  command: "START_SESSION",
-				  result: "ACCEPTED || "CANCELED_RESERVATION || FAILED || NOT_SUPPORTED || REJECTED || TIMEOUT",
-				  uid: "123cvb"
-				}
-		
-				*/
         await this.cacheManager.set(`${uid}-auth`, resultData);
         this.logger.log(
           `[POST commands] /${command}/${uid}: ${JSON.stringify(result)}}`,

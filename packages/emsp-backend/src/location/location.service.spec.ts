@@ -21,14 +21,10 @@ import { LocationService } from './location.service';
 import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '@nestjs/common';
 
 describe('LocatiomService', () => {
   let locationService: LocationService;
   let bridge: IBridge;
-  let ocnDbService: OcnDbService;
-  let cache: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -75,8 +71,6 @@ describe('LocatiomService', () => {
 
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-    ocnDbService = module.get<OcnDbService>(OcnDbService);
-    cache = module.get<Cache>(CACHE_MANAGER);
   });
 
   afterEach(async () => {
@@ -87,13 +81,6 @@ describe('LocatiomService', () => {
     expect(locationService).toBeDefined();
   });
 
-  describe('status', () => {
-    it('should return connected status', async () => {
-      jest.spyOn(bridge.registry, 'isConnectedToNode').mockResolvedValue(true);
-      const { connected } = await locationService.getConnectionStatus();
-      expect(connected).toBe(true);
-    });
-  });
   describe('fetch location data', () => {
     it('should return locations formatted for the client', async () => {
       const mockLocationReturn = {

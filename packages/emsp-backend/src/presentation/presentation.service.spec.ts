@@ -51,7 +51,6 @@ describe('ChargeService', () => {
       };
       await cache.set('test6-present', pres);
       const result = await presService.fetchPresentation('test6');
-      console.log(result, 'THE RESULT');
       expect(result).toBeTruthy();
     });
   });

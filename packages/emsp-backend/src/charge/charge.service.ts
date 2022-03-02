@@ -17,6 +17,7 @@ import { Cache } from 'cache-manager';
 import { Providers } from '../types/symbols';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class ChargeService {
   constructor(
@@ -24,14 +25,9 @@ export class ChargeService {
     private readonly SessionRepository: Repository<Session>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-    @Inject(OcnDbService) private dbService: OcnDbService
+    @Inject(OcnDbService) private dbService: OcnDbService,
+    private readonly config: ConfigService
   ) {}
-
-  async getConnectionStatus() {
-    return {
-      connected: await this.bridge.registry.isConnectedToNode(),
-    };
-  }
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
     const { locationId, evseId } = chargeData;
@@ -47,8 +43,8 @@ export class ChargeService {
       whitelist: 'ALWAYS',
       last_updated: new Date().toISOString(),
     };
-    const OCPIServerUrl = `${process.env.OCN_OCPI_SERVER_BASE_URL}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
-    console.log(process.env.OCN_OCPI_SERVER_BASE_URL, 'server url');
+    const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
+    const OCPIServerUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
     const startSessionData: IStartSession = {
       token,
       response_url: OCPIServerUrl,
@@ -59,11 +55,7 @@ export class ChargeService {
       country_code: 'DE',
       party_id: 'CPO',
     };
-    const value = await this.bridge.requests.startSession(
-      recipient,
-      startSessionData
-    );
-    console.log(value, 'Value returned from start session request');
+    await this.bridge.requests.startSession(recipient, startSessionData);
     return mockOcpiToken;
   }
 
@@ -105,7 +97,6 @@ export class ChargeService {
 
   async mockPostSessionData(data: SessionDTO) {
     const { id } = data;
-    console.log(id, 'getting id');
     const savedSession = await this.SessionRepository.findOne({
       cdr_token: {
         uid: id,
@@ -122,7 +113,6 @@ export class ChargeService {
       }
     } else {
       const insert = await this.SessionRepository.insert(data);
-      console.log(insert);
     }
   }
 
@@ -141,7 +131,6 @@ export class ChargeService {
     };
     await this.cacheManager.set(`${id}-auth`, resultData);
     const result = this.cacheManager.get(`${id}-auth`);
-    console.log(result, 'RESULT FROM AUTH CACHE FETCH');
     return result;
   }
 }
