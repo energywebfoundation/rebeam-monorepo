@@ -10,12 +10,12 @@ import { LocationDbService } from './location-db.service';
 import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 
 @Injectable()
-export class LocationService{
+export class LocationService {
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @InjectRepository(Location)
     private readonly LocationRepository: Repository<Location>,
-	@Inject(LocationDbService) private locationDbService: LocationDbService
+    @Inject(LocationDbService) private locationDbService: LocationDbService
   ) {}
 
   async getCPOLocations(body: OcpiPartyDTO): Promise<void> {
@@ -29,8 +29,8 @@ export class LocationService{
       const evseStringified = JSON.stringify(data.evses);
       return { ...data, evses: evseStringified };
     });
-	console.log(locationsFormatted, "THE LOCATIONS FORMATTED")
-	await this.locationDbService.insertLocations(locationsFormatted);
+    console.log(locationsFormatted, 'THE LOCATIONS FORMATTED');
+    await this.locationDbService.insertLocations(locationsFormatted);
   }
 
   async getConnectionStatus() {
@@ -40,31 +40,36 @@ export class LocationService{
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {
-	  try {
-	const cpoLocations = await this.locationDbService.getLocationsByPartyId(cpo.toUpperCase());
-    const formattedLocations = cpoLocations.map((loc: Location) => {
-      return {
-        type: 'Feature',
-        properties: {
-          id: loc.id,
-          stationName: loc.name,
-          formattedAddress: `${loc.address} ${loc.city}, ${loc.postal_code}`,
-          country: loc.country,
-          evses: loc.evses,
-          operator: loc.operator,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [+loc.coordinates.longitude, +loc.coordinates.latitude],
-        },
-      };
-    });
+    try {
+      const cpoLocations = await this.locationDbService.getLocationsByPartyId(
+        cpo.toUpperCase()
+      );
+      const formattedLocations = cpoLocations.map((loc: Location) => {
+        return {
+          type: 'Feature',
+          properties: {
+            id: loc.id,
+            stationName: loc.name,
+            formattedAddress: `${loc.address} ${loc.city}, ${loc.postal_code}`,
+            country: loc.country,
+            evses: loc.evses,
+            operator: loc.operator,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              +loc.coordinates.longitude,
+              +loc.coordinates.latitude,
+            ],
+          },
+        };
+      });
 
-    return {
-      locations: formattedLocations,
-    };
-} catch (e) {
-	console.log(e, "THE ERROR")
-}
+      return {
+        locations: formattedLocations,
+      };
+    } catch (e) {
+      console.log(e, 'THE ERROR');
+    }
   }
 }
