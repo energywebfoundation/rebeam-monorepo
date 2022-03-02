@@ -81,38 +81,6 @@ describe('ChargeController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  describe('status', () => {
-    it('should get connected status', async () => {
-      jest
-        .spyOn(ocnService, 'getConnectionStatus')
-        .mockResolvedValue({ connected: true });
-      const { connected } = await controller.getConnection();
-      expect(connected).toBe(true);
-    });
-
-    it('should return error if status check fails', async () => {
-      jest
-        .spyOn(ocnService, 'getConnectionStatus')
-        .mockImplementation(async () => {
-          throw Error('Connection refused; localhost:8080');
-        });
-      try {
-        await controller.getConnection();
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.BAD_GATEWAY);
-        expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
-        expect(message).toBe(
-          'The OCN Bridge failed to fetch the status. Are the desired RPC and OCN Nodes available?'
-        );
-        expect(error).toBe('Connection refused; localhost:8080');
-      }
-    });
-  });
   describe('initiate charge', () => {
     it('should get session token', async () => {
       jest.spyOn(chargeService, 'initiate').mockResolvedValue('mockToken');

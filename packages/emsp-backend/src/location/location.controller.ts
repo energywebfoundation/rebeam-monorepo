@@ -24,29 +24,6 @@ export class LocationController {
     private readonly ocnService: OcnService
   ) {}
 
-  @Get('status')
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Determine connection status of OCN Bridge' })
-  @ApiResponse({ status: 200, type: ConnectionDto })
-  async getConnection() {
-    try {
-      const status = await this.ocnService.getConnectionStatus();
-      return status;
-    } catch (err) {
-      this.logger.error(
-        `Cannot fetch OCN connection status: ${err.message}`,
-        LocationController.name
-      );
-      throw new BadGatewayException(
-        new ApiError(
-          ApiErrorCode.OCN_BRIDGE,
-          'The OCN Bridge failed to fetch the status. Are the desired RPC and OCN Nodes available?',
-          err.message
-        )
-      );
-    }
-  }
-
   @Get('get-locations')
   @HttpCode(200)
   @ApiOperation({
