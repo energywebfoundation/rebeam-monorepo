@@ -4,41 +4,38 @@ import { IBridge, IOcpiParty } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { Repository } from 'typeorm';
-import {Location} from "../ocn/schemas/location.schema";
+import { Location } from '../ocn/schemas/location.schema';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class LocationService implements OnModuleInit {
-  constructor(@Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-  @InjectRepository(Location)
-  private readonly LocationRepository: Repository<Location>
+  constructor(
+    @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
+    @InjectRepository(Location)
+    private readonly LocationRepository: Repository<Location>
   ) {}
 
-
   async onModuleInit(): Promise<void> {
-	const recipient: IOcpiParty = {
-		country_code: 'DE',
-		party_id: 'CPO',
-	  };
-	  const locations = await this.bridge.requests.getLocations(recipient);
-	  const { data } = locations;
-	  const locationsFormatted = data.map(data => {
-		  const evseStringified = JSON.stringify(data.evses)
-		  return {...data, evses: evseStringified};
-	  })
-	  locationsFormatted.map(async loc => {
-		  const savedLocation = await this.LocationRepository.findOne({
-			  id: loc.id
-		  })
-		  if(savedLocation) {
-			await this.LocationRepository.update(
-				savedLocation._id,
-				loc
-			)
-		  } else {
-			  await this.LocationRepository.insert(loc)
-		  }
-	  })
+    const recipient: IOcpiParty = {
+      country_code: 'DE',
+      party_id: 'CPO',
+    };
+    const locations = await this.bridge.requests.getLocations(recipient);
+    const { data } = locations;
+    const locationsFormatted = data.map((data) => {
+      const evseStringified = JSON.stringify(data.evses);
+      return { ...data, evses: evseStringified };
+    });
+    locationsFormatted.map(async (loc) => {
+      const savedLocation = await this.LocationRepository.findOne({
+        id: loc.id,
+      });
+      if (savedLocation) {
+        await this.LocationRepository.update(savedLocation._id, loc);
+      } else {
+        await this.LocationRepository.insert(loc);
+      }
+    });
   }
 
   async getConnectionStatus() {
@@ -54,7 +51,7 @@ export class LocationService implements OnModuleInit {
     };
     const locations = await this.bridge.requests.getLocations(recipient);
     const { data } = locations;
-	
+
     const formattedLocations = data.map((loc: ILocation) => {
       console.log(typeof loc.evses, 'HE TYPE');
       return {

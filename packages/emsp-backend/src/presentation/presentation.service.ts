@@ -17,7 +17,7 @@ export class PresentationService {
 
   async fetchPresentation(id: string): Promise<string | null> {
     const fetchedData = await this.cacheManager.get(`${id}-present`);
-	console.log(fetchedData, "THE FETCHED DATA")
+    console.log(fetchedData, 'THE FETCHED DATA');
     let transformedData = null;
     if (fetchedData) {
       const dataToString = JSON.stringify(fetchedData);
