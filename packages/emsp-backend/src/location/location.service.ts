@@ -2,18 +2,20 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { IBridge, IOcpiParty } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
-import { Repository } from 'typeorm';
 import { Location } from '../ocn/schemas/location.schema';
-import { InjectRepository } from '@nestjs/typeorm';
 import { LocationDbService } from './location-db.service';
 import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 
 @Injectable()
-export class LocationService {
+export class LocationService implements OnModuleInit {
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @Inject(LocationDbService) private locationDbService: LocationDbService
   ) {}
+
+  async onModuleInit() {
+    console.log('THE LOCATIONS IS RUNNING SECOND!!!');
+  }
 
   async getCPOLocations(body: OcpiPartyDTO): Promise<boolean> {
     const recipient: IOcpiParty = {
