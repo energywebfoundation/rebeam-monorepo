@@ -22,6 +22,8 @@ import { LocationDbService } from './location-db.service';
 describe('LocationController', () => {
   let controller: LocationController;
   let locationService: LocationService;
+  let bridge: IBridge;
+  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -71,11 +73,18 @@ describe('LocationController', () => {
 
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
+	bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
+    ocnService = module.get<OcnService>(OcnService);
   });
 
-  //   it('should be defined', () => {
-  //     expect(controller).toBeDefined();
-  //   });
+  afterEach(async () => {
+    await stopBridge(bridge);
+  });
+
+
+    it('should be defined', () => {
+      expect(controller).toBeDefined();
+    });
   describe('Get and store locations for a given CPO', () => {
     it('should fetch and store locations for a given CPO and country code', async () => {
       jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(true);
