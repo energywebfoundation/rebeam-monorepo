@@ -11,8 +11,9 @@ const useChargePoints = () => {
     useEffect(() => {
         (async () => {
             try {
+				const cpo = "cpo" //Where will this come from in the real application? 
                 setLoadingChargePoints(true);
-				const locationResult = await axios.get(`${process.env.REACT_APP_BACKEND_URL}location/get-locations`);
+				const locationResult = await axios.get(`${process.env.REACT_APP_BACKEND_URL}location/get-client-locations/${cpo}`);
 				if (locationResult?.data?.locations) {
 				const data = {
 					type: "FeatureCollection",
