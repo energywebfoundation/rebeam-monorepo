@@ -16,7 +16,7 @@ import { ApiError, ApiErrorCode } from '../types/types';
 import { LocationService } from './location.service';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
-import {LocationRecordsDTO} from './dtos/location-records.dto'
+import { LocationRecordsDTO } from './dtos/location-records.dto';
 
 @UsePipes(ValidationPipe)
 @ApiTags('Location')
@@ -27,19 +27,21 @@ export class LocationController {
     private readonly service: LocationService
   ) {}
 
-
   @Post('fetch-locations')
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Get list of locations for CPO from OCN bridge and store in database. Called on application init.',
+    summary:
+      'Get list of locations for CPO from OCN bridge and store in database. Called on application init.',
   })
   @ApiResponse({ status: 200 })
-  async getCPOLocations(@Body() body: OcpiPartyDTO): Promise<LocationRecordsDTO> {
+  async getCPOLocations(
+    @Body() body: OcpiPartyDTO
+  ): Promise<LocationRecordsDTO> {
     try {
       const result = await this.service.getCPOLocations(body);
       return {
-		  numLocations: result
-	  };
+        numLocations: result,
+      };
     } catch (err) {
       this.logger.error(`Cannot fetch locations for given CPO`);
       throw new BadGatewayException(
@@ -76,5 +78,4 @@ export class LocationController {
       );
     }
   }
-
 }

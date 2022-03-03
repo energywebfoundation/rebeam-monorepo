@@ -23,14 +23,12 @@ export class LocationDbService {
         }
       })
     );
-	return this.locationRepository.count();
+    return this.locationRepository.count();
   }
   async getLocationsByPartyId(partyId: string): Promise<Partial<Location>[]> {
-	
     const locations = await this.locationRepository.find({
-		party_id: partyId.toUpperCase()
-	});
+      party_id: partyId.toUpperCase(),
+    });
     return locations;
-
   }
 }

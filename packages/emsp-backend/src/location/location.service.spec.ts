@@ -95,7 +95,7 @@ describe('LocationService', () => {
         countryCode: 'DE',
         partyId: 'CPO',
       });
-      expect(result).toEqual(true);
+      expect(result).toEqual(1);
     });
   });
 

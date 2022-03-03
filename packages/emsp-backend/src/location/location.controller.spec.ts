@@ -98,8 +98,8 @@ describe('LocationController', () => {
         countryCode: 'DE',
       });
       expect(result).toEqual({
-		  numLocations: 1
-	  });
+        numLocations: 1,
+      });
     });
     it('should return a Bad Gateway error if the Get Locations request fails', async () => {
       jest

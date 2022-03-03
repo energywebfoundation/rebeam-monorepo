@@ -7,10 +7,10 @@ import { LocationDbService } from './location-db.service';
 import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 
 @Injectable()
-export class LocationService{
+export class LocationService {
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-    @Inject(LocationDbService) private locationDbService: LocationDbService,
+    @Inject(LocationDbService) private locationDbService: LocationDbService
   ) {}
 
   async getCPOLocations(body: OcpiPartyDTO): Promise<number> {
@@ -24,12 +24,13 @@ export class LocationService{
       const evseStringified = JSON.stringify(data.evses);
       return { ...data, evses: evseStringified };
     });
-    const insertResult = await this.locationDbService.insertLocations(locationsFormatted);
+    const insertResult = await this.locationDbService.insertLocations(
+      locationsFormatted
+    );
     return insertResult;
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {
-    try {
       const cpoLocations = await this.locationDbService.getLocationsByPartyId(
         cpo.toUpperCase()
       );
@@ -57,8 +58,5 @@ export class LocationService{
       return {
         locations: formattedLocations,
       };
-    } catch (e) {
-      console.log(e, 'THE ERROR');
-    }
   }
 }
