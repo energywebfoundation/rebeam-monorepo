@@ -7,7 +7,8 @@ import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
-import { CommandResultType } from '@energyweb/ocn-bridge';
+import { IBridge, stopBridge, CommandResultType } from '@energyweb/ocn-bridge';
+import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
 import { ChargeService } from './charge.service';
@@ -19,7 +20,8 @@ import { OcnService } from '../ocn/services/ocn.service';
 describe('ChargeController', () => {
   let controller: ChargeController;
   let chargeService: ChargeService;
- 
+  let bridge: IBridge;
+  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -68,9 +70,13 @@ describe('ChargeController', () => {
 
     controller = module.get<ChargeController>(ChargeController);
     chargeService = module.get<ChargeService>(ChargeService);
+    bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
+    ocnService = module.get<OcnService>(OcnService);
   });
 
-
+  afterEach(async () => {
+    await stopBridge(bridge);
+  });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
