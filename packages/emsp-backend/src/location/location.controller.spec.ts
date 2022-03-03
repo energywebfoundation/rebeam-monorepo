@@ -15,7 +15,6 @@ import { LocationService } from './location.service';
 import { Session } from '../ocn/schemas/session.schema';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
-import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { OcnService } from '../ocn/services/ocn.service';
 import { LocationDbService } from './location-db.service';
 import { Location } from '../ocn/schemas/location.schema';
@@ -93,12 +92,14 @@ describe('LocationController', () => {
   describe('Get and store locations for a given CPO', () => {
     it('should fetch and store locations for a given CPO and country code', async () => {
       expect(1).toEqual(1);
-      jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(true);
+      jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(1);
       const result = await controller.getCPOLocations({
         partyId: 'CPO',
         countryCode: 'DE',
       });
-      expect(result).toEqual(true);
+      expect(result).toEqual({
+		  numLocations: 1
+	  });
     });
     it('should return a Bad Gateway error if the Get Locations request fails', async () => {
       jest

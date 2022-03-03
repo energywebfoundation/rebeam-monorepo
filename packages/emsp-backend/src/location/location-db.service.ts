@@ -10,7 +10,7 @@ export class LocationDbService {
     private readonly locationRepository: Repository<Location>
   ) {}
 
-  async insertLocations(locations: Partial<Location>[]) {
+  async insertLocations(locations: Partial<Location>[]): Promise<number> {
     await Promise.all(
       locations.map(async (loc) => {
         const savedLocation = await this.locationRepository.findOne({
@@ -23,11 +23,14 @@ export class LocationDbService {
         }
       })
     );
+	return this.locationRepository.count();
   }
   async getLocationsByPartyId(partyId: string): Promise<Partial<Location>[]> {
+	
     const locations = await this.locationRepository.find({
-      party_id: partyId,
-    });
+		party_id: partyId.toUpperCase()
+	});
     return locations;
+
   }
 }

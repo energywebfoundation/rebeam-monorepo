@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IBridge, IOcpiParty } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
@@ -7,17 +7,13 @@ import { LocationDbService } from './location-db.service';
 import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
 
 @Injectable()
-export class LocationService implements OnModuleInit {
+export class LocationService{
   constructor(
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
-    @Inject(LocationDbService) private locationDbService: LocationDbService
+    @Inject(LocationDbService) private locationDbService: LocationDbService,
   ) {}
 
-  async onModuleInit() {
-    console.log('THE LOCATIONS IS RUNNING SECOND!!!');
-  }
-
-  async getCPOLocations(body: OcpiPartyDTO): Promise<boolean> {
+  async getCPOLocations(body: OcpiPartyDTO): Promise<number> {
     const recipient: IOcpiParty = {
       country_code: body.countryCode,
       party_id: body.partyId,
@@ -28,9 +24,8 @@ export class LocationService implements OnModuleInit {
       const evseStringified = JSON.stringify(data.evses);
       return { ...data, evses: evseStringified };
     });
-    console.log(locationsFormatted, 'THE LOCATIONS FORMATTED');
-    await this.locationDbService.insertLocations(locationsFormatted);
-    return true;
+    const insertResult = await this.locationDbService.insertLocations(locationsFormatted);
+    return insertResult;
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {

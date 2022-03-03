@@ -87,11 +87,10 @@ describe('LocationService', () => {
 
   describe('fetch location data from the Bridge given a CPO and partyId', () => {
     it('should return locations formatted for the client', async () => {
-      expect(1).toEqual(1);
       jest
         .spyOn(bridge.requests, 'getLocations')
         .mockResolvedValue(mockBridgeLocationReturn);
-      jest.spyOn(locationDbService, 'insertLocations').mockResolvedValue();
+      jest.spyOn(locationDbService, 'insertLocations').mockResolvedValue(1);
       const result = await locationService.getCPOLocations({
         countryCode: 'DE',
         partyId: 'CPO',
