@@ -12,12 +12,15 @@ import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { Session } from 'inspector';
+import { Session } from '../ocn/schemas/session.schema';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { OcnService } from '../ocn/services/ocn.service';
 import { LocationDbService } from './location-db.service';
+import {Location} from "../ocn/schemas/location.schema";
+import {mockClientFormattedLocations} from "./utils/spec-data-fixtures"
+
 
 describe('LocationController', () => {
   let controller: LocationController;
@@ -29,17 +32,21 @@ describe('LocationController', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(Session),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(Auth),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(Endpoint),
-          useClass: Repository,
-        },
+			provide: getRepositoryToken(Auth),
+			useClass: Repository,
+		  },
+		  {
+			provide: getRepositoryToken(Endpoint),
+			useClass: Repository,
+		  },
+		  {
+			provide: getRepositoryToken(Location),
+			useClass: Repository,
+		  },
+		  {
+			  provide: getRepositoryToken(Session),
+			  useClass: Repository,
+			},
         {
           provide: ConfigService,
           useValue: {
@@ -86,6 +93,7 @@ describe('LocationController', () => {
   });
   describe('Get and store locations for a given CPO', () => {
     it('should fetch and store locations for a given CPO and country code', async () => {
+		expect(1).toEqual(1)
       jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(true);
       const result = await controller.getCPOLocations({
         partyId: 'CPO',
@@ -120,57 +128,13 @@ describe('LocationController', () => {
     });
   });
 
-  describe('Get locations for a given CPO', () => {
-    const mockLocations: ClientLocationsDTO = {
-      locations: [
-        {
-          type: 'Feature',
-          properties: {
-            id: 'string',
-            stationName: 'Name',
-            formattedAddress: 'formatted address',
-            country: 'DE',
-            evses: JSON.stringify([
-              {
-                uid: '3256',
-                evse_id: 'BE*BEC*E041503001',
-                status: 'AVAILABLE',
-                status_schedule: [],
-                capabilities: ['RESERVABLE'],
-                connectors: [
-                  {
-                    id: '1',
-                    standard: 'IEC_62196_T2',
-                    format: 'CABLE',
-                    power_type: 'AC_3_PHASE',
-                    max_voltage: 220,
-                    max_amperage: 16,
-                    tariff_ids: ['11'],
-                    last_updated: '2015-06-29T20:39:09Z',
-                  },
-                ],
-                physical_reference: '1',
-                floor_level: '-1',
-                last_updated: '2015-06-29T20:39:09Z',
-              },
-            ]),
-            operator: {
-              name: 'BeCharged',
-            },
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [123, 456],
-          },
-        },
-      ],
-    };
+  describe('Get formatted locations for a given CPO', () => {
     it('should fetch and return formatted locations for a given CPO', async () => {
       jest
         .spyOn(locationService, 'fetchLocationsForClient')
-        .mockResolvedValue(mockLocations);
+        .mockResolvedValue(mockClientFormattedLocations);
       const result = await controller.getStoredLocations('CPO');
-      expect(result).toEqual(mockLocations);
+      expect(result).toEqual(mockClientFormattedLocations);
     });
     it('should return a Server Error error if the Get Stored Locations request fails', async () => {
       jest
