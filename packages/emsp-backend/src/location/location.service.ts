@@ -31,32 +31,29 @@ export class LocationService {
   }
 
   async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {
-      const cpoLocations = await this.locationDbService.getLocationsByPartyId(
-        cpo.toUpperCase()
-      );
-      const formattedLocations = cpoLocations.map((loc: Location) => {
-        return {
-          type: 'Feature',
-          properties: {
-            id: loc.id,
-            stationName: loc.name,
-            formattedAddress: `${loc.address} ${loc.city}, ${loc.postal_code}`,
-            country: loc.country,
-            evses: loc.evses,
-            operator: loc.operator,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [
-              +loc.coordinates.longitude,
-              +loc.coordinates.latitude,
-            ],
-          },
-        };
-      });
-
+    const cpoLocations = await this.locationDbService.getLocationsByPartyId(
+      cpo.toUpperCase()
+    );
+    const formattedLocations = cpoLocations.map((loc: Location) => {
       return {
-        locations: formattedLocations,
+        type: 'Feature',
+        properties: {
+          id: loc.id,
+          stationName: loc.name,
+          formattedAddress: `${loc.address} ${loc.city}, ${loc.postal_code}`,
+          country: loc.country,
+          evses: loc.evses,
+          operator: loc.operator,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [+loc.coordinates.longitude, +loc.coordinates.latitude],
+        },
       };
+    });
+
+    return {
+      locations: formattedLocations,
+    };
   }
 }

@@ -6,12 +6,9 @@ import {
   IGeoLocation,
   IHours,
   IImage,
-  IEvse,
   IPublishTokenType,
-  ILocation,
 } from '@energyweb/ocn-bridge';
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Location {
