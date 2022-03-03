@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   HttpCode,
-  BadGatewayException,
   InternalServerErrorException,
   UsePipes,
   ValidationPipe,
@@ -12,8 +11,7 @@ import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { LocationService } from './location.service';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
-import { ConnectionDto } from '../ocn/dtos/connection.dto';
-import { OcnService } from '../ocn/services/ocn.service';
+
 @UsePipes(ValidationPipe)
 @ApiTags('Location')
 @Controller('location')
@@ -21,7 +19,6 @@ export class LocationController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: LocationService,
-    private readonly ocnService: OcnService
   ) {}
 
   @Get('get-locations')

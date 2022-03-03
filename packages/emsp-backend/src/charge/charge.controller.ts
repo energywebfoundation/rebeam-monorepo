@@ -5,7 +5,6 @@ import {
   HttpCode,
   Body,
   Param,
-  BadGatewayException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -19,8 +18,7 @@ import { SessionDTO } from './dtos/session.dto';
 import { SessionIdDTO } from './dtos/session-id.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
-import { ConnectionDto } from '../ocn/dtos/connection.dto';
-import { OcnService } from '../ocn/services/ocn.service';
+
 
 @ApiTags('Charge')
 @Controller('charge')
@@ -28,7 +26,6 @@ export class ChargeController {
   constructor(
     private readonly logger: LoggerService,
     private readonly service: ChargeService,
-    private readonly ocnService: OcnService
   ) {}
 
   @Post('initiate')
