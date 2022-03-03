@@ -73,7 +73,7 @@ describe('LocationController', () => {
 
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
-	bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
+    bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
     ocnService = module.get<OcnService>(OcnService);
   });
 
@@ -81,10 +81,9 @@ describe('LocationController', () => {
     await stopBridge(bridge);
   });
 
-
-    it('should be defined', () => {
-      expect(controller).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
   describe('Get and store locations for a given CPO', () => {
     it('should fetch and store locations for a given CPO and country code', async () => {
       jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(true);
