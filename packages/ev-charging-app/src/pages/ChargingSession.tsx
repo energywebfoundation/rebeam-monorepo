@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonPage,
@@ -6,16 +6,16 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonImg,
+  IonLoading,
 } from '@ionic/react';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
 import { chevronBackOutline } from 'ionicons/icons';
-import ChargingStatusIcon from '../assets/ChargingStatusIcon.png';
 import ChargingStatus from '../components/ChargingStatus';
 import StopCharge from '../components/StopCharge';
 import { useHistory } from 'react-router-dom';
-
+import ChargeAuthorized from '../components/ChargeAuthorized';
+import axios from 'axios';
 const ChargingHeader = styled.h1`
   font-size: 21px;
   line-height: 25px;
@@ -24,12 +24,17 @@ const ChargingHeader = styled.h1`
   margin: 10px 0;
 `;
 
-const StatusImg = styled(IonImg)`
-  height: 242px;
-`;
-
 interface IChargingSessionProps {
   token: string;
+}
+
+export interface ISessionData {
+  kwh?: number;
+  formattedCost?: string;
+  start_date_time: string;
+  last_updated: string;
+  id: string;
+  formattedStartTime: string;
 }
 
 export interface IPresentationData {
@@ -37,10 +42,56 @@ export interface IPresentationData {
 }
 
 const ChargingSession: React.FC<IChargingSessionProps> = () => {
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [sessionData, setSessionData] = useState<ISessionData | null>(null);
   const history = useHistory();
   const handleBackClick = () => {
     history.push('/map');
   };
+
+  useEffect(() => {
+    if (!isAuthorized) {
+      const poll = setInterval(async () => {
+        const id = localStorage.getItem('ocpiToken');
+        const results = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}charge/session-conf/${id}`
+        );
+        if (results?.data) {
+          const data = results.data;
+          const { command, uid, result } = data;
+          if (
+            uid === id &&
+            result === 'ACCEPTED' &&
+            command === 'START_SESSION'
+          ) {
+            setIsAuthorized(true);
+          }
+          //QUESTION: Should we also set isAuthorized inlocal storage? in case user closes app?
+          return () => clearInterval();
+        }
+      }, 2000);
+      return () => clearInterval(poll);
+    }
+  }, [isAuthorized]);
+
+  useEffect(() => {
+    if (isAuthorized) {
+      const poll = setInterval(async () => {
+        const id = localStorage.getItem('ocpiToken');
+        const results = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}charge/fetch-session/`,
+          {
+            sessionId: id,
+          }
+        );
+        if (results?.data) {
+          const data = results.data;
+          setSessionData(data);
+        }
+      }, 500);
+      return () => clearInterval(poll);
+    }
+  }, [isAuthorized]);
 
   return (
     <IonPage>
@@ -63,15 +114,18 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
             <IonCol size="1" className=" ion-align-items-center"></IonCol>
           </IonRow>
         </IonGrid>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <StatusImg src={ChargingStatusIcon}></StatusImg>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-        <ChargingStatus />
-        <StopCharge />
+        {isAuthorized && !sessionData && <ChargeAuthorized />}
+        <IonLoading
+          isOpen={!isAuthorized}
+          message={strings.requestingChargeLoader}
+        />
+        {isAuthorized && sessionData && (
+          <>
+            <IonGrid></IonGrid>
+            <ChargingStatus chargeSessionData={sessionData} />
+            <StopCharge />
+          </>
+        )}
       </IonContent>
     </IonPage>
   );

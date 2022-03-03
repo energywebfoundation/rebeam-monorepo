@@ -7,7 +7,7 @@ import { ChargePoint } from '../App';
 
 const Header = styled.h1`
   font-weight: bold;
-  font-size: 21px;
+  font-size: 17px;
   color: #363636;
   margin: 2px 0;
   font-family: Arial;

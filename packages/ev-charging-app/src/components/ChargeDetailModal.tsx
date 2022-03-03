@@ -43,7 +43,7 @@ const ChargePointDetailModal = (props: DetailModalProps) => {
         <IonModal
           isOpen={isOpen}
           breakpoints={[0.1, 0.5, 1]}
-          initialBreakpoint={0.35}
+          initialBreakpoint={0.45}
           onDidDismiss={handleDismiss}
         >
           <IonContent>

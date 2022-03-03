@@ -1,15 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import {
   IChargeDetailRecord,
   ICommandResult,
   IPluggableAPI,
   ISession,
 } from '@energyweb/ocn-bridge';
+import { Session } from '../schemas/session.schema';
+import { InjectRepository } from '@nestjs/typeorm';
 import { LoggerService } from '../../logger/logger.service';
+import { OcnDbService } from './ocn-db.service';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {
-  constructor(private readonly logger: LoggerService) {}
+  constructor(
+    private readonly logger: LoggerService,
+    @InjectRepository(Session)
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
+    @Inject(OcnDbService) private dbService: OcnDbService
+  ) {}
 
   /**
    * LOCATIONS OCPI MODULE
@@ -28,10 +38,37 @@ export class OcnApiService implements IPluggableAPI {
     receiver: {
       // TODO: implement PUT method (save sessions in database)
       update: async (session: ISession): Promise<void> => {
+        const {
+          cdr_token: { uid },
+        } = session;
+        const sessionFormatted = Object.assign({}, session, {
+          sessionId: uid,
+        });
+        const savedSession = await this.dbService.getSession(uid);
         this.logger.log(
-          `[PUT sessions] ${JSON.stringify(session, null, 2)}`,
+          `[PUT session FORMATTED RETRIEVED] ${JSON.stringify(
+            savedSession,
+            null,
+            2
+          )}`,
           OcnApiService.name
         );
+        if (savedSession) {
+          await this.dbService.updateSession(
+            savedSession._id,
+            sessionFormatted
+          );
+        } else {
+          this.logger.log(
+            `[PUT session FORMATTED] ${JSON.stringify(
+              sessionFormatted,
+              null,
+              2
+            )}`,
+            OcnApiService.name
+          );
+          await this.dbService.insertSession(sessionFormatted);
+        }
         return;
       },
       // TODO: patch needs to be implemented in OCN-BRIDGE
@@ -66,11 +103,13 @@ export class OcnApiService implements IPluggableAPI {
       },
     },
   };
-
+  //Once you have the response for this, then start polling for session
+  //If we cache this asyc result from CPO, then we have proof that we will get session updates rather than polling for session updates and not knowing if the session has been authorized. Once we get this response, we can tell user charging will start soon
   /**
    * COMMANDS OCPI MODULE
    * sender interface allows CPO to send us charge start confirmation asychronously
    */
+  //Insert into cache manager here and then inject it into other service to get
   commands = {
     sender: {
       // TODO: implement POST method
@@ -79,6 +118,18 @@ export class OcnApiService implements IPluggableAPI {
         uid: string,
         result: ICommandResult
       ): Promise<void> => {
+        this.logger.log(
+          command,
+          uid,
+          JSON.stringify(result),
+          'THIS IS THE RETURN FROM ASYNC RESULT'
+        );
+        const resultData = {
+          command,
+          result,
+          uid,
+        };
+        await this.cacheManager.set(`${uid}-auth`, resultData);
         this.logger.log(
           `[POST commands] /${command}/${uid}: ${JSON.stringify(result)}}`,
           OcnApiService.name

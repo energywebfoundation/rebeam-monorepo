@@ -5,7 +5,7 @@ import {
   HttpCode,
   Get,
   Param,
-  UnprocessableEntityException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentationDTO } from './dtos/presentation.dto';
@@ -30,17 +30,6 @@ export class PresentationController {
     @Body() data: PresentationDTO
   ): Promise<PresentationDTO> {
     try {
-      PresentationDTO.validate(data);
-    } catch (err) {
-      throw new UnprocessableEntityException(
-        new ApiError(
-          ApiErrorCode.BAD_PAYLOAD,
-          'The request body failed validation',
-          err
-        )
-      );
-    }
-    try {
       //Cache the presentation data. The key is the OCPI token Id, the value is stringified presentation data:
       const cachedData = await this.service.cachePresentation(data);
       return cachedData;
@@ -48,10 +37,12 @@ export class PresentationController {
       this.logger.error(
         `Cannot cache presentation data for ${data.ocpiTokenUID}: ${err.message} `
       );
-      throw new ApiError(
-        ApiErrorCode.PRESENTATION,
-        'Failure to cache presentation data',
-        err.message
+      throw new InternalServerErrorException(
+        new ApiError(
+          ApiErrorCode.PRESENTATION,
+          `Failure to cache presentation data for id ${data.ocpiTokenUID}`,
+          err.message
+        )
       );
     }
   }
@@ -76,10 +67,12 @@ export class PresentationController {
       this.logger.error(
         `Cannot fetch cached presentation data for ${id}: ${err.message}`
       );
-      throw new ApiError(
-        ApiErrorCode.PRESENTATION,
-        'Failure to fetch presentation data',
-        err.message
+      throw new InternalServerErrorException(
+        new ApiError(
+          ApiErrorCode.PRESENTATION,
+          `Failure to fetch presentation data for id ${id}`,
+          err.message
+        )
       );
     }
   }

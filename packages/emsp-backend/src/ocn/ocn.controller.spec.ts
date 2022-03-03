@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { OcnController } from './ocn.controller';
 import { OcnBridgeProvider } from './providers/ocn-bridge.provider';
 import { Auth } from './schemas/auth.schema';
+import { Session } from './schemas/session.schema';
 import { Endpoint } from './schemas/endpoint.schema';
 import { OcnDbService } from './services/ocn-db.service';
 import { OcnService } from './services/ocn.service';
@@ -30,6 +31,10 @@ describe('OcnController', () => {
         },
         {
           provide: getRepositoryToken(Endpoint),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(Session),
           useClass: Repository,
         },
         {
@@ -109,43 +114,6 @@ describe('OcnController', () => {
         return;
       });
       await controller.register({ tokenA: actualToken, nodeURL: actualUrl });
-    });
-    it('should return error if registration token invalid', async () => {
-      try {
-        await controller.register({
-          tokenA: 'abc123',
-          nodeURL: 'http://localhost:8080',
-        });
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(code).toBe(ApiErrorCode.BAD_PAYLOAD);
-        expect(message).toBe('The request body failed validation');
-        expect(error['details'][0]['context']['key']).toBe('tokenA');
-      }
-    });
-
-    it('should return error if registration url invalid', async () => {
-      try {
-        await controller.register({
-          tokenA: randomUUID(),
-          nodeURL: 'some-url',
-        });
-        throw Error('Test should not have passed!');
-      } catch (err) {
-        const status = (err as HttpException).getStatus();
-        const { code, message, error } = (
-          err as HttpException
-        ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(code).toBe(ApiErrorCode.BAD_PAYLOAD);
-        expect(message).toBe('The request body failed validation');
-        expect(error['details'][0]['context']['key']).toBe('nodeURL');
-      }
     });
 
     it('should return error if registration fails', async () => {

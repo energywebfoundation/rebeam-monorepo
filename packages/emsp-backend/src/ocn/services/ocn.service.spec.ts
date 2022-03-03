@@ -7,6 +7,7 @@ import { OcnService } from './ocn.service';
 import { OcnBridgeProvider } from '../providers/ocn-bridge.provider';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Auth } from '../schemas/auth.schema';
+import { Session } from '../schemas/session.schema';
 import { Repository } from 'typeorm';
 import { Endpoint } from '../schemas/endpoint.schema';
 import { IBridge, stopBridge } from '@energyweb/ocn-bridge';
@@ -25,6 +26,10 @@ describe('OcnService', () => {
         },
         {
           provide: getRepositoryToken(Endpoint),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(Session),
           useClass: Repository,
         },
         OcnService,
