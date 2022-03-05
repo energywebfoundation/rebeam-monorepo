@@ -11,7 +11,7 @@ import { PresentationModule } from './presentation/presentation.module';
 import { ChargeModule } from './charge/charge.module';
 import loadConfig from './config/load';
 import envValidationSchema from './config/schema';
-import {SessionModule} from "./session/session.module"
+import { SessionModule } from './session/session.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
@@ -30,7 +30,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     PresentationModule,
     ChargeModule,
     LocationModule,
-	SessionModule,
+    SessionModule,
     CacheModule.register({
       ttl: +process.env.TTL_CACHE,
       isGlobal: true,

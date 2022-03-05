@@ -59,24 +59,24 @@ export class OcnApiService implements IPluggableAPI {
         //     sessionFormatted
         //   );
         // } else {
-          this.logger.log(
-            `[PUT session FORMATTED] ${JSON.stringify(
-              sessionFormatted,
-              null,
-              2
-            )}`,
-            OcnApiService.name
-          );
-          await this.dbService.insertSession(sessionFormatted);
-          const dbCOunt = await this.dbService.getCount()
-          this.logger.log(
-            `[PUT session FORMATTED] ${JSON.stringify(
-              `${dbCOunt} THE DB COUNT!!!!`,
-              null,
-              2
-            )}`,
-            OcnApiService.name
-          );
+        this.logger.log(
+          `[PUT session FORMATTED] ${JSON.stringify(
+            sessionFormatted,
+            null,
+            2
+          )}`,
+          OcnApiService.name
+        );
+        await this.dbService.insertSession(sessionFormatted);
+        const dbCOunt = await this.dbService.getCount();
+        this.logger.log(
+          `[PUT session FORMATTED] ${JSON.stringify(
+            `${dbCOunt} THE DB COUNT!!!!`,
+            null,
+            2
+          )}`,
+          OcnApiService.name
+        );
         // }
         return;
       },

@@ -59,8 +59,8 @@ export class OcnDbService implements IPluggableDB {
     return found?.url ?? '';
   }
 
-  async getCount( ): Promise<number> {
-   const count = await this.sessionRepository.count()
+  async getCount(): Promise<number> {
+    const count = await this.sessionRepository.count();
     return count;
   }
 
@@ -78,10 +78,7 @@ export class OcnDbService implements IPluggableDB {
       sessionId: string;
     }
   ) {
-   
-  
-      await this.sessionRepository.insert(session);
-   
+    await this.sessionRepository.insert(session);
   }
 
   async getSession(sessionID: string) {
