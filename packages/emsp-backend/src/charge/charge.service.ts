@@ -61,8 +61,13 @@ export class ChargeService {
 
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
     const sessionData = await this.dbService.getSession(sessionId);
-    if (sessionData) {
-      const data = sessionData;
+    // const latestSession = sessionData.map(session => {
+    //     const lastUpdated  = session.last_updated;
+    // })
+    const mostRecentSession = sessionData.reduce((acc,curr, index) => (curr.last_updated > acc.last_updated) && index ? curr : acc)
+    console.log(mostRecentSession, "IS THERE A MOST RECENT SESSION")
+    if (mostRecentSession) {
+      const data = mostRecentSession;
       const {
         start_date_time,
         kwh,
