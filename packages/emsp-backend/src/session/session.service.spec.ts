@@ -7,14 +7,12 @@ import { SessionService } from './session.service';
 import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
-import {SessionDbService} from "./session-db.service";
-import {mockSessionDbData} from "./spec-data/session-service-mock-data";
-
-
+import { SessionDbService } from './session-db.service';
+import { mockSessionDbData } from './spec-data/session-service-mock-data';
 
 describe('SessionService', () => {
   let sessionService: SessionService;
-  let sessionDbService: SessionDbService
+  let sessionDbService: SessionDbService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -48,7 +46,7 @@ describe('SessionService', () => {
         },
         LoggerService,
         SessionService,
-        SessionDbService
+        SessionDbService,
       ],
     }).compile();
 
@@ -56,25 +54,33 @@ describe('SessionService', () => {
     sessionDbService = module.get<SessionDbService>(SessionDbService);
   });
 
-
-
   it('should be defined', () => {
     expect(sessionService).toBeDefined();
   });
 
   describe('fetch and parse session data', () => {
     it('should fetch seession data and return parsed data for CSV if there are sessions that meet the date requirements', async () => {
-        jest.spyOn(sessionDbService, 'getSessionsByDates').mockResolvedValue(mockSessionDbData);
-        const result = await sessionService.getSessionFile(new Date(), new Date());
-        expect(result.data).toContain('_id,country_code,party_id,id,sessionId,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated');
+      jest
+        .spyOn(sessionDbService, 'getSessionsByDates')
+        .mockResolvedValue(mockSessionDbData);
+      const result = await sessionService.getSessionFile(
+        new Date(),
+        new Date()
+      );
+      expect(result.data).toContain(
+        '_id,country_code,party_id,id,sessionId,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated'
+      );
     });
     it('should return no data message if no data is found for given dates', async () => {
-        jest.spyOn(sessionDbService, 'getSessionsByDates').mockResolvedValue([]);
-        const result = await sessionService.getSessionFile(new Date(), new Date());
-        expect(result).toEqual({
-            dataLength: 0,
-            data: "No data found for the dates given"
-        });
+      jest.spyOn(sessionDbService, 'getSessionsByDates').mockResolvedValue([]);
+      const result = await sessionService.getSessionFile(
+        new Date(),
+        new Date()
+      );
+      expect(result).toEqual({
+        dataLength: 0,
+        data: 'No data found for the dates given',
+      });
     });
   });
 });

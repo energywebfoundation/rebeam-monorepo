@@ -5,7 +5,8 @@ import {
   Param,
   InternalServerErrorException,
   Response,
-  ValidationPipe, UsePipes
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
@@ -33,18 +34,20 @@ export class SessionController {
     @Response() res: ExpressResponse
   ): Promise<ExpressResponse> {
     try {
-      const result =  await this.sessionService.getSessionFile(startDate, endDate);
-      console.log(result, "THE RESULT")
-      const {data, dataLength } = result;
+      const result = await this.sessionService.getSessionFile(
+        startDate,
+        endDate
+      );
+      console.log(result, 'THE RESULT');
+      const { data, dataLength } = result;
       if (dataLength > 0) {
-          console.log(dataLength, "shouldnt be length!!!!!")
+        console.log(dataLength, 'shouldnt be length!!!!!');
         res.set('Content-Type', 'text/csv');
         return res.send(data);
       } else {
-          console.log("in this else")
-          res.send(result)
+        console.log('in this else');
+        res.send(result);
       }
-     
     } catch (err) {
       console.log(err, 'THE ERR');
       this.logger.error(err);
