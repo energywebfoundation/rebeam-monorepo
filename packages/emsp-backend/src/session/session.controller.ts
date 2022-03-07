@@ -36,19 +36,16 @@ export class SessionController {
     @Res() res
   ): Promise<ExpressResponse> {
     try {
-      const file = await this.sessionService.getSessionFile(
-        startDate,
-        endDate
-      );
+      const file = await this.sessionService.getSessionFile(startDate, endDate);
       res.set('Content-Type', 'text/csv');
       return res.send(file);
     } catch (err) {
       console.log(err, 'THE ERR');
-      this.logger.error(`Cannot fetch cached presentation data`);
+      this.logger.error(`Cannot generate CSV file for session information`);
       throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.PRESENTATION,
-          `Failure to fetch presentation data for`,
+          `Failure to generate CSV file for session information`,
           err.message
         )
       );
