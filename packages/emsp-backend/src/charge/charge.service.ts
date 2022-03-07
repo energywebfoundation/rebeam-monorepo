@@ -119,7 +119,7 @@ export class ChargeService {
         console.log(e, 'THE ERROR');
       }
     } else {
-      const insert = await this.SessionRepository.insert(data);
+      await this.SessionRepository.insert(data);
     }
   }
 

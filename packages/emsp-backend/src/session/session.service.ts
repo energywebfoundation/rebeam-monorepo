@@ -1,8 +1,6 @@
 import { Providers } from '../types/symbols';
-import { Inject, Injectable, CACHE_MANAGER } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as fs from 'fs';
-import { promisify } from 'util';
 import * as papaparse from 'papaparse';
 import { IBridge } from '@energyweb/ocn-bridge';
 import { SessionDbService } from './session-db.service';

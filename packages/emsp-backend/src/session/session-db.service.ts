@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IPluggableDB, IVersionDetail, ISession } from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';

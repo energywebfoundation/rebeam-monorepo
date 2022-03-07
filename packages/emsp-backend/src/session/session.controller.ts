@@ -1,7 +1,5 @@
 import {
-  Body,
   Controller,
-  Post,
   HttpCode,
   Get,
   Param,
@@ -12,10 +10,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { Response as ExpressResponse } from 'express';
-
 import { SessionService } from './session.service';
-import { fstat } from 'fs';
-//import { SessionService } from './session.service';
 @ApiTags('Session')
 @Controller('session')
 export class SessionController {
