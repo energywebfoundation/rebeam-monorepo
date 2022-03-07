@@ -19,7 +19,7 @@ import { ClientLocationsDTO } from './dtos/client-location.dto';
 export class LocationController {
   constructor(
     private readonly logger: LoggerService,
-    private readonly service: LocationService,
+    private readonly service: LocationService
   ) {}
 
   @Get('get-locations')
