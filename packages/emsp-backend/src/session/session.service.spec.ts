@@ -8,7 +8,7 @@ import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { SessionDbService } from './session-db.service';
-import { mockSessionDbData } from './spec-data/session-service-mock-data';
+import { mockSessionDbData } from './spec-data/session-mock-data';
 
 describe('SessionService', () => {
   let sessionService: SessionService;
