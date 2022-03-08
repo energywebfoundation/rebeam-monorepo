@@ -5,9 +5,7 @@ import { SessionDataDTO } from './dtos/session-data.dto';
 
 @Injectable()
 export class SessionService {
-  constructor(
-    private readonly sessionDbService: SessionDbService
-  ) {}
+  constructor(private readonly sessionDbService: SessionDbService) {}
 
   async getSessionFile(
     startDate: Date,
