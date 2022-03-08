@@ -25,11 +25,11 @@ export class SessionController {
   @Get('/:startDate/:endDate')
   @HttpCode(200)
   @ApiOperation({
-    summary: 'Fetch cached charging session presentation information',
+    summary: 'Fetch cached charging session presentation information. Dates must follow RFC 3339 and be in UTC.',
   })
   @ApiResponse({ status: 200 })
   async fetchSessionData(
-    @Param('startDate') startDate: Date,
+    @Param('startDate',) startDate: Date,
     @Param('endDate') endDate: Date,
     @Response() res: ExpressResponse
   ): Promise<ExpressResponse> {

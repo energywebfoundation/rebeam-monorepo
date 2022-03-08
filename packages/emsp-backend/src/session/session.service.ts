@@ -1,16 +1,11 @@
-import { Providers } from '../types/symbols';
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 import * as papaparse from 'papaparse';
-import { IBridge } from '@energyweb/ocn-bridge';
 import { SessionDbService } from './session-db.service';
-import * as fs from 'fs';
 import { SessionDataDTO } from './dtos/session-data.dto';
 
 @Injectable()
 export class SessionService {
   constructor(
-    private readonly config: ConfigService,
     private readonly sessionDbService: SessionDbService
   ) {}
 
@@ -22,23 +17,18 @@ export class SessionService {
       startDate,
       endDate
     );
-    console.log(JSON.stringify(allSessions), 'SESSIONS RETURNed');
-    if (allSessions?.length > 0) {
+    const dataLength = allSessions?.length;
+    if (dataLength && dataLength > 0) {
       const csv = papaparse.unparse(allSessions, {
         header: true,
       });
-      // fs.writeFileSync("./mock-data.json", csv)
-
-      console.log(csv, 'THE CSV New');
-
       return {
-        dataLength: allSessions.length,
+        dataLength,
         data: csv,
       };
     } else {
-      console.log('IN THIS ELSE');
       return {
-        dataLength: allSessions.length,
+        dataLength,
         data: 'No data found for the dates given',
       };
     }

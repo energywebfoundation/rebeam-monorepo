@@ -5,10 +5,6 @@ import { Repository } from 'typeorm';
 import { Session } from '../ocn/schemas/session.schema';
 
 @Injectable()
-/**
- * Generic database wrapper used to set/get OCPI authentication tokens and
- * endpoints used in OCPI requests (server and client)
- */
 export class SessionDbService {
   constructor(
     @InjectRepository(Session)
