@@ -9,9 +9,12 @@ import { Endpoint } from './schemas/endpoint.schema';
 import { OcnController } from './ocn.controller';
 import { OcnBridgeProvider } from './providers/ocn-bridge.provider';
 import { Providers } from '../types/symbols';
+import { ChargeDetailRecord } from './schemas/cdr.schema';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Auth, Endpoint, Session])],
+  imports: [
+    TypeOrmModule.forFeature([Auth, Endpoint, Session, ChargeDetailRecord]),
+  ],
   providers: [OcnApiService, OcnDbService, OcnService, OcnBridgeProvider],
   exports: [
     TypeOrmModule,

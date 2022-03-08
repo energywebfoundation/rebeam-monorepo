@@ -42,7 +42,7 @@ export class OcnApiService implements IPluggableAPI {
           cdr_token: { uid },
         } = session;
         const sessionFormatted = Object.assign({}, session, {
-          sessionId: uid,
+          session_token: uid,
         });
         const savedSession = await this.dbService.getSession(uid);
         this.logger.log(
@@ -95,6 +95,13 @@ export class OcnApiService implements IPluggableAPI {
       },
       // TODO: implement POST method (save cdrs to database)
       create: async (cdr: IChargeDetailRecord): Promise<void> => {
+        const {
+          cdr_token: { uid },
+        } = cdr;
+        const cdrFormatted = Object.assign({}, cdr, {
+          session_token: uid,
+        });
+        await this.dbService.insertCDR(cdrFormatted);
         this.logger.log(
           `[POST cdrs] ${JSON.stringify(cdr, null, 2)}`,
           OcnApiService.name
@@ -118,6 +125,7 @@ export class OcnApiService implements IPluggableAPI {
         uid: string,
         result: ICommandResult
       ): Promise<void> => {
+        console.log('getting here', command, '**********');
         this.logger.log(
           command,
           uid,
@@ -131,7 +139,9 @@ export class OcnApiService implements IPluggableAPI {
         };
         await this.cacheManager.set(`${uid}-auth`, resultData);
         this.logger.log(
-          `[POST commands] /${command}/${uid}: ${JSON.stringify(result)}}`,
+          `[POST commands AUTH ETC] /${command}/${uid}: ${JSON.stringify(
+            result
+          )}}`,
           OcnApiService.name
         );
         return;
