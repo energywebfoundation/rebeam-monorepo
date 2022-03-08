@@ -63,7 +63,7 @@ export class ChargeService {
     const sessionData: Session[] = await this.dbService.getSession(sessionId);
     let mostRecentSession: Session;
     if (Array.isArray(sessionData) && sessionData.length) {
-        mostRecentSession = sessionData.reduce((acc, curr, index) =>
+      mostRecentSession = sessionData.reduce((acc, curr, index) =>
         curr.last_updated > acc.last_updated && index ? curr : acc
       );
     }
