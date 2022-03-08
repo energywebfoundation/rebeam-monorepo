@@ -6,7 +6,20 @@ import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
-import { IBridge, stopBridge, tokenType } from '@energyweb/ocn-bridge';
+import {
+  IBridge,
+  IConnector,
+  IOcpiResponse,
+  IStopSession,
+  IToken,
+  ITokenType,
+  stopBridge,
+  tokenType,
+  IChargeDetailRecord,
+  connectorStandard,
+  connectorFormat,
+  connectorPowerType,
+} from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { CacheModule } from '@nestjs/common';
 import { ChargeService } from './charge.service';
@@ -15,12 +28,15 @@ import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/common';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
+import { ChargeDbService } from './charge-db.service';
 
 describe('ChargeService', () => {
   let chargeService: ChargeService;
   let bridge: IBridge;
   let ocnDbService: OcnDbService;
   let cache: Cache;
+  let chargeDbService: ChargeDbService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,6 +51,10 @@ describe('ChargeService', () => {
         },
         {
           provide: getRepositoryToken(Session),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ChargeDetailRecord),
           useClass: Repository,
         },
         {
@@ -57,6 +77,7 @@ describe('ChargeService', () => {
         ChargeService,
         OcnApiService,
         LoggerService,
+        ChargeDbService,
       ],
       imports: [
         CacheModule.register({
@@ -69,6 +90,7 @@ describe('ChargeService', () => {
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
     ocnDbService = module.get<OcnDbService>(OcnDbService);
     cache = module.get<Cache>(CACHE_MANAGER);
+    chargeDbService = module.get<ChargeDbService>(ChargeDbService);
   });
 
   afterEach(async () => {
@@ -99,7 +121,7 @@ describe('ChargeService', () => {
       country_code: 'DE',
       party_id: 'CPO',
       id: 'c63cc282-0235-4081-a337-ac256e658299',
-      sessionId: '7e42736a-4287-4c1e-b883-9ff03ea622b5',
+      session_token: '7e42736a-4287-4c1e-b883-9ff03ea622b5',
       currency: 'EUR',
       start_date_time: mockDate,
       end_date_time: null,
@@ -165,6 +187,114 @@ describe('ChargeService', () => {
         '7e42736a-4287-4c1e-b883-9ff03ea622b5'
       );
       expect(result).toEqual(resultData);
+    });
+  });
+  describe('stop session', () => {
+    it('should return the OCPI response from stop session', async () => {
+      const mockResultData = {
+        data: {
+          result: 'ACCEPTED',
+          timeout: 30,
+        },
+        status_code: '1000',
+        timestamp: '2022-03-08T22:00:32.719Z',
+      };
+      jest
+        .spyOn(bridge.requests, 'stopSession')
+        .mockResolvedValue(mockResultData as IOcpiResponse<undefined>);
+
+      const result = await chargeService.stopSession({
+        id: 'mockId',
+        token: 'mockToken',
+      });
+
+      expect(result).toEqual(mockResultData);
+    });
+  });
+  describe('fetch and format cdr data', () => {
+    it('should fetch and format cdr data from the client', async () => {
+      const mockResultData = {
+        _id: 4,
+        country_code: 'DE',
+        party_id: 'CPO',
+        id: '257b6ba8-e40a-4b92-8633-f79af596bc32',
+        start_date_time: new Date('2022-03-08T22:29:18.904Z'),
+        end_date_time: new Date('2022-03-08T22:30:52.922Z'),
+        session_id: 'c2890d35-8686-4e4e-b44d-8b72e11a2fb2',
+        session_token: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
+        cdr_token: {
+          uid: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
+          type: 'AD_HOC_USER' as ITokenType,
+          contract_id: 'DE-REB-c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
+        },
+        auth_method: 'COMMAND',
+        authorization_reference: null,
+        token: null,
+        cdr_location: {
+          id: 'Loc14',
+          address: 'Scharnhorststrasse 34-37',
+          city: 'Berlin',
+          postal_code: '10115',
+          country: 'DEU',
+          coordinates: { latitude: '52.54154', longitude: '13.38588' },
+          evse_uid: 'CH-CPO-S14E100001',
+          evse_id: 'CH-CPO-S14E100001',
+          connector_id: 'S14E1Con1',
+          connector_standard: 'IEC_62196_T2' as connectorStandard,
+          connector_format: 'SOCKET' as connectorFormat,
+          connector_power_type: 'AC_3_PHASE' as connectorPowerType,
+        },
+        meter_id: null,
+        currency: 'EUR',
+        charging_periods: [
+          {
+            start_date_time: '2022-03-08T22:29:18.904Z',
+            dimensions: [{ type: 'TIME', volume: 0.02611611 }],
+            tariff_id: '3',
+          },
+        ],
+        tariffs: [
+          {
+            country_code: 'DE',
+            party_id: 'CPO',
+            id: '3',
+            currency: 'CHF',
+            elements: [
+              {
+                price_components: [
+                  { type: 'FLAT', price: 8, vat: 0.077, step_size: 1 },
+                ],
+              },
+            ],
+            last_updated: '2022-03-08T21:43:15.860Z',
+          },
+        ],
+        signed_data: null,
+        total_cost: { excl_vat: 8, incl_vat: 8.62 },
+        total_fixed_cost: null,
+        total_energy: 0.57,
+        total_energy_cost: null,
+        total_time: 0.03,
+        total_time_cost: null,
+        total_parking_time: null,
+        total_parking_cost: null,
+        total_reservation_cost: null,
+        remark: null,
+        invoice_reference_id: null,
+        credit: null,
+        credit_reference_id: null,
+        last_updated: '2022-03-08T22:30:52.922Z',
+      };
+      jest
+        .spyOn(chargeDbService, 'getSessionCDR')
+        .mockResolvedValue(mockResultData);
+
+      const result = await chargeService.stopSession({
+        id: 'mockId',
+        token: 'mockToken',
+      });
+
+      expect(result).toEqual(mockResultData);
     });
   });
 });
