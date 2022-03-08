@@ -39,18 +39,14 @@ export class SessionController {
         startDate,
         endDate
       );
-      console.log(result, 'THE RESULT');
       const { data, dataLength } = result;
       if (dataLength > 0) {
-        console.log(dataLength, 'shouldnt be length!!!!!');
         res.set('Content-Type', 'text/csv');
         return res.send(data);
       } else {
-        console.log('in this else');
         res.send(result);
       }
     } catch (err) {
-      console.log(err, 'THE ERR');
       this.logger.error(err);
       throw new InternalServerErrorException(
         new ApiError(
