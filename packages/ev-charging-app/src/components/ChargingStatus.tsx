@@ -43,7 +43,7 @@ const PaddedRow = styled(IonRow)`
 
 interface IChargingStatusProps {
   chargeSessionData: ISessionData;
-  cdrData?: ICdrData
+  cdrData?: ICdrData;
 }
 
 export const ChargingStatus = (props: IChargingStatusProps) => {
@@ -67,7 +67,7 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
               </PaddedRow>
               <IonRow>
                 <IonCol>
-                  <DataValue>{kwh ||  '...'}</DataValue>
+                  <DataValue>{kwh || '...'}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>

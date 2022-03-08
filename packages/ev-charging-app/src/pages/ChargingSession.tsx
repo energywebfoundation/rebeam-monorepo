@@ -38,11 +38,11 @@ export interface ISessionData {
 }
 
 export interface ICdrData {
-    formattedCost?: string;
-    id: string;
-    formattedEndTime: string;
-    sessionToken: string
-  }
+  formattedCost?: string;
+  id: string;
+  formattedEndTime: string;
+  sessionToken: string;
+}
 
 export interface IPresentationData {
   prentationLinkEncoded: string;
@@ -54,26 +54,26 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const [sessionEnded, endSession] = useState(false);
   const [cdrData, setcdrData] = useState<ICdrData | undefined>(undefined);
   const history = useHistory();
-  
+
   const handleBackClick = () => {
     history.push('/map');
   };
 
   const handleStopSessionClick = async () => {
-      console.log(
-          "in handle stop charge"
-      )
+    console.log('in handle stop charge');
     const requestStopBody = {
-        token: localStorage.getItem('ocpiToken'),
-        id: sessionData?.id
-    }
-    const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}charge/stop-session/`, requestStopBody);
-    console.log(result, "THE RESULT!!")
+      token: localStorage.getItem('ocpiToken'),
+      id: sessionData?.id,
+    };
+    const result = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}charge/stop-session/`,
+      requestStopBody
+    );
+    console.log(result, 'THE RESULT!!');
     if (result.status === 200) {
-        endSession(true)
+      endSession(true);
     }
   };
-
 
   useEffect(() => {
     if (!isAuthorized) {
@@ -120,23 +120,23 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   }, [isAuthorized, sessionEnded]);
 
   useEffect(() => {
-      try {
-    if (sessionEnded && !cdrData) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
-        );
-        if (results?.data) {
-          const data = results.data;
-          setcdrData(data);
-        }
-      }, 500);
-      return () => clearInterval(poll);
+    try {
+      if (sessionEnded && !cdrData) {
+        const poll = setInterval(async () => {
+          const id = localStorage.getItem('ocpiToken');
+          const results = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
+          );
+          if (results?.data) {
+            const data = results.data;
+            setcdrData(data);
+          }
+        }, 500);
+        return () => clearInterval(poll);
+      }
+    } catch (e) {
+      console.log(e, 'THE ERROR');
     }
-} catch (e) {
-    console.log(e, "THE ERROR")
-}
   }, [sessionEnded, cdrData]);
 
   return (
@@ -169,7 +169,10 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
           <>
             <IonGrid></IonGrid>
             <ChargingStatus chargeSessionData={sessionData} cdrData={cdrData} />
-            <StopCharge handleStopCharge={handleStopSessionClick} sessionEnded={sessionEnded}/>
+            <StopCharge
+              handleStopCharge={handleStopSessionClick}
+              sessionEnded={sessionEnded}
+            />
           </>
         )}
       </IonContent>

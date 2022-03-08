@@ -24,18 +24,23 @@ const StopButton = styled(IonButton)`
 `;
 
 interface IStopChargeProps {
-    handleStopCharge: () => void
-    sessionEnded: boolean
+  handleStopCharge: () => void;
+  sessionEnded: boolean;
 }
 
 export const StopCharge = (props: IStopChargeProps) => {
-    const {handleStopCharge, sessionEnded} = props
+  const { handleStopCharge, sessionEnded } = props;
   return (
     <div>
       <IonGrid>
         <IonRow>
           <IonCol>
-            <StopButton color="danger" expand="block" onClick={handleStopCharge} disabled={sessionEnded}>
+            <StopButton
+              color="danger"
+              expand="block"
+              onClick={handleStopCharge}
+              disabled={sessionEnded}
+            >
               {strings.stopCharging}
             </StopButton>
           </IonCol>
