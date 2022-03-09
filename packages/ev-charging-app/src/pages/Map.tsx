@@ -49,7 +49,8 @@ const Map = (props: MapProps) => {
   const { chargePoints, loadingChargePoints, setLoadingChargePoints } =
     getChargingPoints();
   const mapRef = useRef<MapRef>(null);
-  const {presentation, chargeProcessLoading, setChargeProcessLoading} = usePollForPresentationData(setSupplierModalOpen)
+  const { presentation, chargeProcessLoading, setChargeProcessLoading } =
+    usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
     ///FIX THIS LOGIC

@@ -50,9 +50,8 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
     history.push('/map');
   };
 
-usePollForSessionAuth(isAuthorized, setIsAuthorized);
-usePollForSessionUpdates(isAuthorized, setSessionData);
-
+  usePollForSessionAuth(isAuthorized, setIsAuthorized);
+  usePollForSessionUpdates(isAuthorized, setSessionData);
 
   return (
     <IonPage>
