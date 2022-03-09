@@ -7,11 +7,12 @@ import { ChargePoint } from '../App';
 
 const Header = styled.h1`
   font-weight: bold;
-  font-size: 17px;
+  font-size: 15px;
   color: #363636;
-  margin: 2px 0;
+  margin: 0;
   font-family: Arial;
   text-align: left;
+  padding: 0;
 `;
 
 const Address = styled.p`
@@ -23,7 +24,6 @@ const Address = styled.p`
   padding: 0;
   text-align: left;
 `;
-const MapIcon = styled(IonImg)``;
 
 const MapInfo = styled.p`
   font-style: normal;
@@ -36,25 +36,8 @@ const MapInfo = styled.p`
   text-align: left;
 `;
 
-const RowContainer = styled(IonRow)`
-  height: 110px;
-`;
-
-const ImgCol = styled(IonCol)`
-  margin-right: 14px;
-`;
-
-const HeaderRow = styled(IonRow)`
-  height: 35px;
-`;
-
-const AddressRow = styled(IonRow)`
-  height: 17px;
-`;
-
-const MapPinRow = styled(IonRow)`
-  height: 17px;
-  margin-top: 5px;
+const GridContainer = styled.div`
+  margin: 20px 18px 15px;
 `;
 
 interface StationHeaderProps {
@@ -64,10 +47,10 @@ interface StationHeaderProps {
 const StationHeader = (props: StationHeaderProps) => {
   const { selectedChargePoint } = props;
   return (
-    <div>
+    <GridContainer>
       <IonGrid>
-        <RowContainer>
-          <ImgCol size="3">
+        <IonRow>
+          <IonCol size="3">
             <div
               style={{
                 borderRadius: '10px',
@@ -79,30 +62,30 @@ const StationHeader = (props: StationHeaderProps) => {
                 margin: '0 auto',
               }}
             ></div>
-          </ImgCol>
+          </IonCol>
           <IonCol>
             <IonGrid>
-              <HeaderRow>
+              <IonRow>
                 <IonCol>
                   <Header>{selectedChargePoint.stationName}</Header>
                 </IonCol>
-              </HeaderRow>
-              <AddressRow>
+              </IonRow>
+              <IonRow>
                 <IonCol>
                   <Address>{selectedChargePoint.formattedAddress}</Address>
                 </IonCol>
-              </AddressRow>
-              <MapPinRow>
-                <MapIcon src={ModalPinIcon}></MapIcon>
+              </IonRow>
+              <IonRow>
+                <IonImg src={ModalPinIcon}></IonImg>
                 <IonCol>
                   <MapInfo>{'450m/5m'}</MapInfo>
                 </IonCol>
-              </MapPinRow>
+              </IonRow>
             </IonGrid>
           </IonCol>
-        </RowContainer>
+        </IonRow>
       </IonGrid>
-    </div>
+    </GridContainer>
   );
 };
 
