@@ -118,19 +118,19 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   }, [isAuthorized, sessionEnded]);
 
   useEffect(() => {
-      if (sessionEnded && !cdrData) {
-        const poll = setInterval(async () => {
-          const id = localStorage.getItem('ocpiToken');
-          const results = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
-          );
-          if (results?.data) {
-            const data = results.data;
-            setcdrData(data);
-          }
-        }, 500);
-        return () => clearInterval(poll);
-      }
+    if (sessionEnded && !cdrData) {
+      const poll = setInterval(async () => {
+        const id = localStorage.getItem('ocpiToken');
+        const results = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
+        );
+        if (results?.data) {
+          const data = results.data;
+          setcdrData(data);
+        }
+      }, 500);
+      return () => clearInterval(poll);
+    }
   }, [sessionEnded, cdrData]);
 
   return (
