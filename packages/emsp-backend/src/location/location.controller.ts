@@ -5,7 +5,6 @@ import {
   BadGatewayException,
   Body,
   Post,
-  Param,
   InternalServerErrorException,
   UsePipes,
   ValidationPipe,
