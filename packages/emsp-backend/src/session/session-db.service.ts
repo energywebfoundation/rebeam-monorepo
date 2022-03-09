@@ -12,10 +12,10 @@ export class SessionDbService {
   ) {}
 
   async getSessionsByDates(startDate: Date, endDate: Date): Promise<Session[]> {
-      const sessions = await this.sessionRepository.query(
-        'SELECT * from Session WHERE start_date_time > $1::timestamptz AND start_date_time < $2::timestamptz',
-        [startDate, endDate]
-      );
-      return sessions;
+    const sessions = await this.sessionRepository.query(
+      'SELECT * from Session WHERE start_date_time > $1::timestamptz AND start_date_time < $2::timestamptz',
+      [startDate, endDate]
+    );
+    return sessions;
   }
 }
