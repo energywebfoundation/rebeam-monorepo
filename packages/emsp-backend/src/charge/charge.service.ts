@@ -67,7 +67,6 @@ export class ChargeService {
         curr.last_updated > acc.last_updated && index ? curr : acc
       );
     }
-    // console.log(mostRecentSession, 'IS THERE A MOST RECENT SESSION');
     if (mostRecentSession) {
       const data = mostRecentSession;
       const {
