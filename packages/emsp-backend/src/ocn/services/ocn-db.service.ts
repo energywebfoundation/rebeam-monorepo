@@ -67,6 +67,11 @@ export class OcnDbService implements IPluggableDB {
     return found?.url ?? '';
   }
 
+  async getCount(): Promise<number> {
+    const count = await this.sessionRepository.count();
+    return count;
+  }
+
   private async updateAuth(update: Partial<Auth>) {
     const existent = await this.authRepository.findOne({ id: 0 });
     if (existent) {
@@ -81,17 +86,7 @@ export class OcnDbService implements IPluggableDB {
       session_token: string;
     }
   ) {
-    const existent = await this.sessionRepository.findOne({
-      id: session.id,
-    });
-    if (existent) {
-      await this.sessionRepository.update({ _id: existent._id }, session);
-      await this.sessionRepository.findOne({
-        id: session.id,
-      });
-    } else {
-      await this.sessionRepository.insert(session);
-    }
+    await this.sessionRepository.insert(session);
   }
 
   async getSession(sessionID: string) {

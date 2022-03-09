@@ -23,7 +23,7 @@ import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 
-describe('LocatiomService', () => {
+describe('LocationService', () => {
   let locationService: LocationService;
   let bridge: IBridge;
 

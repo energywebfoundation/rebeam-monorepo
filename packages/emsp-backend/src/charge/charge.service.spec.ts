@@ -140,7 +140,7 @@ describe('ChargeService', () => {
     };
 
     it('should fetch session data for a given session id and format data', async () => {
-      jest.spyOn(ocnDbService, 'getSession').mockResolvedValue(mockSession);
+      jest.spyOn(ocnDbService, 'getSession').mockResolvedValue([mockSession]);
       const result = {
         start_date_time: mockDate,
         kwh: 0.73,
@@ -162,7 +162,7 @@ describe('ChargeService', () => {
       });
       jest
         .spyOn(ocnDbService, 'getSession')
-        .mockResolvedValue(mockDataWithCost);
+        .mockResolvedValue([mockDataWithCost]);
       const formattedResult = await chargeService.fetchSessionData(
         '7e42736a-4287-4c1e-b883-9ff03ea622b5'
       );

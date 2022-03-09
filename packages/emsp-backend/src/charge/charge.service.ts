@@ -65,9 +65,15 @@ export class ChargeService {
   }
 
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
-    const sessionData = await this.dbService.getSession(sessionId);
-    if (sessionData) {
-      const data = sessionData;
+    const sessionData: Session[] = await this.dbService.getSession(sessionId);
+    let mostRecentSession: Session;
+    if (Array.isArray(sessionData) && sessionData.length) {
+      mostRecentSession = sessionData.reduce((acc, curr, index) =>
+        curr.last_updated > acc.last_updated && index ? curr : acc
+      );
+    }
+    if (mostRecentSession) {
+      const data = mostRecentSession;
       const {
         start_date_time,
         kwh,
@@ -117,7 +123,7 @@ export class ChargeService {
         console.log(e, 'THE ERROR');
       }
     } else {
-      const insert = await this.SessionRepository.insert(data);
+      await this.SessionRepository.insert(data);
     }
   }
 
