@@ -6,7 +6,7 @@ import {
   Body,
   Param,
   InternalServerErrorException,
-  BadGatewayException
+  BadGatewayException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';

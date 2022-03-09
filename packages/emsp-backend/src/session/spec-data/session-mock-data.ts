@@ -6,7 +6,7 @@ export const mockSessionDbData = [
     country_code: 'DE',
     party_id: 'CPO',
     id: 'e6cf5f5b-910b-4dfc-857d-432765762281',
-    sessionId: '6d6313b9-4134-40ef-b338-45b7116084c3',
+    session_token: '6d6313b9-4134-40ef-b338-45b7116084c3',
     currency: 'EUR',
     start_date_time: new Date('2022-03-07T19:00:58.485Z'),
     end_date_time: null,
@@ -32,7 +32,7 @@ export const mockSessionDbData = [
     country_code: 'DE',
     party_id: 'CPO',
     id: 'e6cf5f5b-910b-4dfc-857d-432765762281',
-    sessionId: '6d6313b9-4134-40ef-b338-45b7116084c3',
+    session_token: '6d6313b9-4134-40ef-b338-45b7116084c3',
     currency: 'EUR',
     start_date_time: new Date('2022-03-07T19:00:58.485Z'),
     end_date_time: null,
@@ -58,7 +58,7 @@ export const mockSessionDbData = [
     country_code: 'DE',
     party_id: 'CPO',
     id: 'e6cf5f5b-910b-4dfc-857d-432765762281',
-    sessionId: '6d6313b9-4134-40ef-b338-45b7116084c3',
+    session_token: '6d6313b9-4134-40ef-b338-45b7116084c3',
     currency: 'EUR',
     start_date_time: new Date('2022-03-07T19:00:58.485Z'),
     end_date_time: null,
@@ -84,7 +84,7 @@ export const mockSessionDbData = [
     country_code: 'DE',
     party_id: 'CPO',
     id: 'e6cf5f5b-910b-4dfc-857d-432765762281',
-    sessionId: '6d6313b9-4134-40ef-b338-45b7116084c3',
+    session_token: '6d6313b9-4134-40ef-b338-45b7116084c3',
     currency: 'EUR',
     start_date_time: new Date('2022-03-07T19:00:58.485Z'),
     end_date_time: null,
@@ -110,7 +110,7 @@ export const mockSessionDbData = [
     country_code: 'DE',
     party_id: 'CPO',
     id: 'e6cf5f5b-910b-4dfc-857d-432765762281',
-    sessionId: '6d6313b9-4134-40ef-b338-45b7116084c3',
+    session_token: '6d6313b9-4134-40ef-b338-45b7116084c3',
     currency: 'EUR',
     start_date_time: new Date('2022-03-07T19:00:58.485Z'),
     end_date_time: null,
@@ -133,7 +133,7 @@ export const mockSessionDbData = [
   },
 ];
 
-export const mockCsvData = `_id,country_code,party_id,id,sessionId,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated
+export const mockCsvData = `_id,country_code,party_id,id,session_token,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated
 1,DE,CPO,e6cf5f5b-910b-4dfc-857d-432765762281,6d6313b9-4134-40ef-b338-45b7116084c3,EUR,2022-03-07T19:00:58.485Z,,0.01,[object Object],COMMAND,,Loc14,CH-CPO-S14E100001,S14E1Con1,,,,ACTIVE,2022-03-07T19:00:59.489Z
 2,DE,CPO,e6cf5f5b-910b-4dfc-857d-432765762281,6d6313b9-4134-40ef-b338-45b7116084c3,EUR,2022-03-07T19:00:58.485Z,,0.09,[object Object],COMMAND,,Loc14,CH-CPO-S14E100001,S14E1Con1,,,,ACTIVE,2022-03-07T19:01:13.451Z
 3,DE,CPO,e6cf5f5b-910b-4dfc-857d-432765762281,6d6313b9-4134-40ef-b338-45b7116084c3,EUR,2022-03-07T19:00:58.485Z,,0.18,[object Object],COMMAND,,Loc14,CH-CPO-S14E100001,S14E1Con1,,,,ACTIVE,2022-03-07T19:01:28.453Z

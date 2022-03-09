@@ -68,7 +68,7 @@ describe('SessionService', () => {
         new Date()
       );
       expect(result.data).toContain(
-        '_id,country_code,party_id,id,sessionId,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated'
+        '_id,country_code,party_id,id,session_token,currency,start_date_time,end_date_time,kwh,cdr_token,auth_method,authorization_method,location_id,evse_uid,connector_id,meter_id,charging_periods,total_cost,status,last_updated'
       );
     });
     it('should return no data message if no data is found for given dates', async () => {

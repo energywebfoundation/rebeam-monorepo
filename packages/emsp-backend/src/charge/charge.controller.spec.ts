@@ -255,7 +255,7 @@ describe('ChargeController', () => {
   describe('get CDR data', () => {
     it('should fetch and return the formatted cdr data', async () => {
       const mockResultData = {
-        formattedEndTime: 'March 8th, 2022 10:30pm',
+        formattedEndTime: 'March 8th, 2022 5:30pm',
         formattedCost: '8,00 €',
         sessionToken: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
         id: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
