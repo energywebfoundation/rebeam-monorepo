@@ -22,7 +22,6 @@ describe('LocationController', () => {
   let controller: LocationController;
   let locationService: LocationService;
   let bridge: IBridge;
-  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -72,7 +71,6 @@ describe('LocationController', () => {
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {

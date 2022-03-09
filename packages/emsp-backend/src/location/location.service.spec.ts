@@ -22,7 +22,7 @@ import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 
-describe('LocatiomService', () => {
+describe('LocationService', () => {
   let locationService: LocationService;
   let bridge: IBridge;
 
