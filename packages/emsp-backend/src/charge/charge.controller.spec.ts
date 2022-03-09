@@ -7,7 +7,12 @@ import { OcnBridgeProvider } from '../ocn/providers/ocn-bridge.provider';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
-import { IBridge, stopBridge, CommandResultType } from '@energyweb/ocn-bridge';
+import {
+  IBridge,
+  stopBridge,
+  CommandResultType,
+  IOcpiResponse,
+} from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
@@ -16,6 +21,8 @@ import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { OcnService } from '../ocn/services/ocn.service';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
+import { ChargeDbService } from './charge-db.service';
 
 describe('ChargeController', () => {
   let controller: ChargeController;
@@ -39,6 +46,10 @@ describe('ChargeController', () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(ChargeDetailRecord),
+          useClass: Repository,
+        },
+        {
           provide: ConfigService,
           useValue: {
             get: (key: string) =>
@@ -59,6 +70,7 @@ describe('ChargeController', () => {
         OcnService,
         OcnBridgeProvider,
         ChargeService,
+        ChargeDbService,
       ],
       imports: [
         CacheModule.register({
@@ -105,7 +117,7 @@ describe('ChargeController', () => {
         const { code, message, error } = (
           err as HttpException
         ).getResponse() as ApiError;
-        expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+        expect(status).toBe(HttpStatus.BAD_GATEWAY);
         expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
         expect(message).toBe(
           'The OCN Bridge failed to start the charging session. Are the desired RPC and OCN Nodes available?'
@@ -192,6 +204,86 @@ describe('ChargeController', () => {
         expect(code).toBe(ApiErrorCode.CHARGE_SESSION);
         expect(message).toBe('Failure to fetch charge session confirmation');
         expect(error).toBe('No Connection to Cache');
+      }
+    });
+  });
+
+  describe('stop session', () => {
+    it('should initiate the stop session and return the stop session confirmation', async () => {
+      const mockResultData = {
+        data: {
+          result: 'ACCEPTED',
+          timeout: 30,
+        },
+        status_code: '1000',
+        timestamp: '2022-03-08T22:00:32.719Z',
+      };
+      jest
+        .spyOn(chargeService, 'stopSession')
+        .mockResolvedValue(mockResultData as IOcpiResponse<undefined>);
+      const sessionData = await controller.stopChargeSession({
+        id: 'mockId',
+        token: 'mockToken',
+      });
+      expect(sessionData).toEqual(mockResultData);
+    });
+    it('should return an Internal Server error if the stop session request fails', async () => {
+      jest.spyOn(chargeService, 'stopSession').mockImplementation(async () => {
+        throw Error('No Connection to OCN Bridge');
+      });
+      try {
+        await controller.stopChargeSession({
+          id: 'mockId',
+          token: 'mockToken',
+        });
+        throw Error('Test should not have passed!');
+      } catch (err) {
+        const status = (err as HttpException).getStatus();
+        const { code, message, error } = (
+          err as HttpException
+        ).getResponse() as ApiError;
+        expect(status).toBe(HttpStatus.BAD_GATEWAY);
+        expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
+        expect(message).toBe(
+          'The OCN Bridge failed to stop the charging session. Are the desired RPC and OCN Nodes available?'
+        );
+        expect(error).toBe('No Connection to OCN Bridge');
+      }
+    });
+  });
+
+  describe('get CDR data', () => {
+    it('should fetch and return the formatted cdr data', async () => {
+      const mockResultData = {
+        formattedEndTime: 'March 8th, 2022 5:30pm',
+        formattedCost: '8,00 €',
+        sessionToken: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
+        id: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
+      };
+      jest
+        .spyOn(chargeService, 'fetchSessionCdr')
+        .mockResolvedValue(mockResultData);
+      const sessionData = await controller.getChargeSessionCDR('mockId');
+      expect(sessionData).toEqual(mockResultData);
+    });
+    it('should return an Internal Server error if the request for cdr data fails', async () => {
+      jest
+        .spyOn(chargeService, 'fetchSessionCdr')
+        .mockImplementation(async () => {
+          throw Error('No connection to database');
+        });
+      try {
+        await controller.getChargeSessionCDR('mockId');
+        throw Error('Test should not have passed!');
+      } catch (err) {
+        const status = (err as HttpException).getStatus();
+        const { code, message, error } = (
+          err as HttpException
+        ).getResponse() as ApiError;
+        expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+        expect(code).toBe(ApiErrorCode.CHARGE_SESSION);
+        expect(message).toBe('Failure to fetch cdr data from database');
+        expect(error).toBe('No connection to database');
       }
     });
   });

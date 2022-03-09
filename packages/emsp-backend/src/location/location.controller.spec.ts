@@ -17,6 +17,7 @@ import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { OcnService } from '../ocn/services/ocn.service';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 
 describe('LocationController', () => {
   let controller: LocationController;
@@ -36,6 +37,10 @@ describe('LocationController', () => {
         },
         {
           provide: getRepositoryToken(Endpoint),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ChargeDetailRecord),
           useClass: Repository,
         },
         {

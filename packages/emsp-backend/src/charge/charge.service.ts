@@ -3,13 +3,15 @@ import { randomUUID } from 'crypto';
 import { SessionDTO } from './dtos/session.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { Session } from '../ocn/schemas/session.schema';
-import { formatCurrency, formatStartTime } from './utils/formatters';
+import { formatCurrency, formatTime } from './utils/formatters';
 import {
   IBridge,
   IStartSession,
   ITokenType,
   ICommandResult,
   IOcpiParty,
+  IStopSession,
+  IOcpiResponse,
 } from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -18,6 +20,8 @@ import { Providers } from '../types/symbols';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { ConfigService } from '@nestjs/config';
+import { ChargeSessionDTO } from './dtos/charge-session-dto';
+import { ChargeDbService } from './charge-db.service';
 @Injectable()
 export class ChargeService {
   constructor(
@@ -26,7 +30,8 @@ export class ChargeService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
     @Inject(OcnDbService) private dbService: OcnDbService,
-    private readonly config: ConfigService
+    private readonly config: ConfigService,
+    @Inject(ChargeDbService) private chargeDbService: ChargeDbService
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
@@ -78,7 +83,7 @@ export class ChargeService {
         id,
         country_code,
       } = data;
-      const formattedStartTime = formatStartTime(start_date_time);
+      const formattedStartTime = formatTime(start_date_time);
       let formattedCost: string;
       if (total_cost?.excl_vat) {
         formattedCost = formatCurrency(
@@ -138,5 +143,51 @@ export class ChargeService {
     await this.cacheManager.set(`${id}-auth`, resultData);
     const result = this.cacheManager.get(`${id}-auth`);
     return result;
+  }
+
+  async stopSession(args: ChargeSessionDTO): Promise<IOcpiResponse<undefined>> {
+    const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
+    const OcpiResponseUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands`;
+    const recipient: IOcpiParty = {
+      country_code: 'DE',
+      party_id: 'CPO',
+    };
+    const body: IStopSession = {
+      session_id: args.id,
+      response_url: OcpiResponseUrl,
+    };
+    const response = await this.bridge.requests.stopSession(recipient, body);
+    return response;
+  }
+
+  async fetchSessionCdr(id: string) {
+    const cdr = await this.chargeDbService.getSessionCDR(id);
+    if (cdr) {
+      const {
+        end_date_time,
+        total_cost,
+        currency,
+        country_code,
+        session_token,
+      } = cdr;
+      const formattedEndTime = formatTime(end_date_time);
+      let formattedCost: string;
+      if (total_cost?.excl_vat) {
+        formattedCost = formatCurrency(
+          country_code,
+          total_cost?.excl_vat,
+          currency
+        );
+      }
+      const formattedData = {
+        formattedEndTime,
+        formattedCost,
+        sessionToken: session_token,
+        id,
+      };
+      console.log(formattedData, "WHATS COMING BCK")
+      return formattedData;
+    }
+    return;
   }
 }

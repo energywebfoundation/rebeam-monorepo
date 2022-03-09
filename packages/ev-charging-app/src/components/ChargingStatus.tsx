@@ -3,7 +3,7 @@ import BMWIcon from '../assets/bmwIcon.png';
 import { IonGrid, IonRow, IonCol, IonImg } from '@ionic/react';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
-import { ISessionData } from '../pages/ChargingSession';
+import { ICdrData, ISessionData } from '../pages/ChargingSession';
 const CarImg = styled(IonImg)``;
 
 const StartTime = styled.h3`
@@ -43,11 +43,12 @@ const PaddedRow = styled(IonRow)`
 
 interface IChargingStatusProps {
   chargeSessionData: ISessionData;
+  cdrData?: ICdrData;
 }
 
 export const ChargingStatus = (props: IChargingStatusProps) => {
-  const { chargeSessionData } = props;
-  const { kwh, formattedCost, formattedStartTime } = chargeSessionData;
+  const { chargeSessionData, cdrData } = props;
+  const { kwh, formattedStartTime } = chargeSessionData;
   return (
     <div>
       <IonGrid>
@@ -66,7 +67,7 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
               </PaddedRow>
               <IonRow>
                 <IonCol>
-                  <DataValue>{kwh ? kwh : '...'}</DataValue>
+                  <DataValue>{kwh || '...'}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>
@@ -76,12 +77,22 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
               </PaddedRow>
               <IonRow>
                 <IonCol>
-                  <DataValue>{formattedCost ? formattedCost : '...'}</DataValue>
+                  <DataValue>{cdrData?.formattedCost || '...'}</DataValue>
                 </IonCol>
               </IonRow>
               <PaddedRow>
                 <IonCol>
                   <DataType>{strings.cost}</DataType>
+                </IonCol>
+              </PaddedRow>
+              <IonRow>
+                <IonCol>
+                  <StartTime>{cdrData?.formattedEndTime || '...'}</StartTime>
+                </IonCol>
+              </IonRow>
+              <PaddedRow>
+                <IonCol>
+                  <DataType>{strings.sessionEndTime}</DataType>
                 </IonCol>
               </PaddedRow>
             </IonGrid>

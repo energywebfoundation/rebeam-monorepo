@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IPluggableDB, IVersionDetail, ISession } from '@energyweb/ocn-bridge';
+import {
+  IPluggableDB,
+  IVersionDetail,
+  ISession,
+  IChargeDetailRecord,
+} from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from '../schemas/auth.schema';
 import { Repository } from 'typeorm';
 import { Endpoint } from '../schemas/endpoint.schema';
 import { Session } from '../schemas/session.schema';
+import { ChargeDetailRecord } from '../schemas/cdr.schema';
 
 @Injectable()
 /**
@@ -18,7 +24,9 @@ export class OcnDbService implements IPluggableDB {
     @InjectRepository(Endpoint)
     private readonly endpointRepository: Repository<Endpoint>,
     @InjectRepository(Session)
-    private readonly sessionRepository: Repository<Session>
+    private readonly sessionRepository: Repository<Session>,
+    @InjectRepository(ChargeDetailRecord)
+    private readonly cdrRepository: Repository<ChargeDetailRecord>
   ) {}
 
   async getTokenB(): Promise<string> {
@@ -75,7 +83,7 @@ export class OcnDbService implements IPluggableDB {
 
   async insertSession(
     session: ISession & {
-      sessionId: string;
+      session_token: string;
     }
   ) {
     await this.sessionRepository.insert(session);
@@ -83,9 +91,18 @@ export class OcnDbService implements IPluggableDB {
 
   async getSession(sessionID: string) {
     const sessionData = await this.sessionRepository.find({
-      sessionId: sessionID,
+      session_token: sessionID,
     });
     return sessionData;
+  }
+
+  async insertCDR(
+    record: IChargeDetailRecord & {
+      session_token: string;
+    }
+  ) {
+    const cdr = await this.cdrRepository.insert(record);
+    return cdr;
   }
 
   async updateSession(id: number, session: ISession) {

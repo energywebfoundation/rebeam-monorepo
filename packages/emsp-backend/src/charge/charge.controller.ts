@@ -6,6 +6,7 @@ import {
   Body,
   Param,
   InternalServerErrorException,
+  BadGatewayException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
@@ -19,6 +20,7 @@ import { SessionIdDTO } from './dtos/session-id.dto';
 import { ClientSessionDTO } from './dtos/client-session.dto';
 import { SelectedChargePointDTO } from './dtos/selected-charge-point.dto';
 import { OcnService } from '../ocn/services/ocn.service';
+import { ChargeSessionDTO } from './dtos/charge-session-dto';
 
 @ApiTags('Charge')
 @Controller('charge')
@@ -45,7 +47,7 @@ export class ChargeController {
       };
     } catch (err) {
       this.logger.error(`Cannot start charging session (START_SESSION)`);
-      throw new InternalServerErrorException(
+      throw new BadGatewayException(
         new ApiError(
           ApiErrorCode.OCN_BRIDGE,
           'The OCN Bridge failed to start the charging session. Are the desired RPC and OCN Nodes available?',
@@ -125,6 +127,30 @@ export class ChargeController {
     }
   }
 
+  @Post('stop-session')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Stop charging session',
+  })
+  @ApiResponse({ status: 200 })
+  async stopChargeSession(@Body() body: ChargeSessionDTO): Promise<any> {
+    try {
+      const stopSession = await this.service.stopSession(body);
+      return stopSession;
+    } catch (err) {
+      this.logger.error(
+        'Failure to stop session - check connection to database'
+      );
+      throw new BadGatewayException(
+        new ApiError(
+          ApiErrorCode.OCN_BRIDGE,
+          'The OCN Bridge failed to stop the charging session. Are the desired RPC and OCN Nodes available?',
+          err.message
+        )
+      );
+    }
+  }
+
   @Get('session-conf/:id')
   @HttpCode(200)
   @ApiOperation({
@@ -143,6 +169,27 @@ export class ChargeController {
         new ApiError(
           ApiErrorCode.CHARGE_SESSION,
           'Failure to fetch charge session confirmation',
+          err.message
+        )
+      );
+    }
+  }
+
+  @Get('session-cdr/:id')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Fetch start charge session confirmation',
+  })
+  @ApiResponse({ status: 200, type: Session })
+  async getChargeSessionCDR(@Param('id') id: string) {
+    try {
+      const sessionData = await this.service.fetchSessionCdr(id);
+      return sessionData;
+    } catch (err) {
+      throw new InternalServerErrorException(
+        new ApiError(
+          ApiErrorCode.CHARGE_SESSION,
+          'Failure to fetch cdr data from database',
           err.message
         )
       );
