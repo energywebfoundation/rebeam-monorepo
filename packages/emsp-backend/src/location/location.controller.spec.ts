@@ -133,7 +133,7 @@ describe('LocationController', () => {
       jest
         .spyOn(locationService, 'fetchLocationsForClient')
         .mockResolvedValue(mockClientFormattedLocations);
-      const result = await controller.getStoredLocations('CPO');
+      const result = await controller.getStoredLocations();
       expect(result).toEqual(mockClientFormattedLocations);
     });
     it('should return a Server Error error if the Get Stored Locations request fails', async () => {
@@ -143,7 +143,7 @@ describe('LocationController', () => {
           throw Error('Connection refused; localhost:8080');
         });
       try {
-        await controller.getStoredLocations('CPO');
+        await controller.getStoredLocations();
         throw Error('Test should not have passed!');
       } catch (err) {
         const status = (err as HttpException).getStatus();

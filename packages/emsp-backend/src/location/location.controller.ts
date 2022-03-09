@@ -61,14 +61,12 @@ export class LocationController {
       'Get list of locations for a given party id from database and format for client',
   })
   @ApiResponse({ status: 200 })
-  async getStoredLocations(
-    @Param('cpo') cpo: string
-  ): Promise<ClientLocationsDTO> {
+  async getStoredLocations(): Promise<ClientLocationsDTO> {
     try {
-      const locations = await this.service.fetchLocationsForClient(cpo);
+      const locations = await this.service.fetchLocationsForClient();
       return locations;
     } catch (err) {
-      this.logger.error(`Cannot fetch locations for given CPO`);
+      this.logger.error(`Cannot fetch locations`);
       throw new InternalServerErrorException(
         new ApiError(
           ApiErrorCode.LOCATION_FETCH,

@@ -30,10 +30,8 @@ export class LocationService {
     return insertResult;
   }
 
-  async fetchLocationsForClient(cpo: string): Promise<ClientLocationsDTO> {
-    const cpoLocations = await this.locationDbService.getLocationsByPartyId(
-      cpo.toUpperCase()
-    );
+  async fetchLocationsForClient(): Promise<ClientLocationsDTO> {
+    const cpoLocations = await this.locationDbService.getLocationsByPartyId("CPO");
     const formattedLocations = cpoLocations.map((loc: Location) => {
       return {
         type: 'Feature',
