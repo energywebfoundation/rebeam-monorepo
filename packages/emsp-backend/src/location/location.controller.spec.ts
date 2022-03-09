@@ -19,12 +19,12 @@ import { OcnService } from '../ocn/services/ocn.service';
 import { LocationDbService } from './location-db.service';
 import { Location } from '../ocn/schemas/location.schema';
 import { mockClientFormattedLocations } from './utils/spec-data-fixtures';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 
 describe('LocationController', () => {
   let controller: LocationController;
   let locationService: LocationService;
   let bridge: IBridge;
-  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -43,6 +43,10 @@ describe('LocationController', () => {
         },
         {
           provide: getRepositoryToken(Session),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ChargeDetailRecord),
           useClass: Repository,
         },
         {
@@ -79,7 +83,6 @@ describe('LocationController', () => {
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {

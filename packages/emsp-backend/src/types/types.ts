@@ -14,4 +14,5 @@ export enum ApiErrorCode {
   PRESENTATION = 'presentation_module_cache_failure',
   CHARGE_SESSION = 'charge_module_session_failure',
   LOCATION_FETCH = 'fetch_locations_failure',
+  SESSION = 'session_module_failure',
 }

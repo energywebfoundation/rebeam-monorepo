@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IPluggableDB, IVersionDetail, ISession } from '@energyweb/ocn-bridge';
+import {
+  IPluggableDB,
+  IVersionDetail,
+  ISession,
+  IChargeDetailRecord,
+} from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auth } from '../schemas/auth.schema';
 import { Repository } from 'typeorm';
 import { Endpoint } from '../schemas/endpoint.schema';
 import { Session } from '../schemas/session.schema';
+import { ChargeDetailRecord } from '../schemas/cdr.schema';
 
 @Injectable()
 /**
@@ -18,7 +24,9 @@ export class OcnDbService implements IPluggableDB {
     @InjectRepository(Endpoint)
     private readonly endpointRepository: Repository<Endpoint>,
     @InjectRepository(Session)
-    private readonly sessionRepository: Repository<Session>
+    private readonly sessionRepository: Repository<Session>,
+    @InjectRepository(ChargeDetailRecord)
+    private readonly cdrRepository: Repository<ChargeDetailRecord>
   ) {}
 
   async getTokenB(): Promise<string> {
@@ -59,6 +67,11 @@ export class OcnDbService implements IPluggableDB {
     return found?.url ?? '';
   }
 
+  async getCount(): Promise<number> {
+    const count = await this.sessionRepository.count();
+    return count;
+  }
+
   private async updateAuth(update: Partial<Auth>) {
     const existent = await this.authRepository.findOne({ id: 0 });
     if (existent) {
@@ -70,27 +83,26 @@ export class OcnDbService implements IPluggableDB {
 
   async insertSession(
     session: ISession & {
-      sessionId: string;
+      session_token: string;
     }
   ) {
-    const existent = await this.sessionRepository.findOne({
-      id: session.id,
-    });
-    if (existent) {
-      await this.sessionRepository.update({ _id: existent._id }, session);
-      await this.sessionRepository.findOne({
-        id: session.id,
-      });
-    } else {
-      await this.sessionRepository.insert(session);
-    }
+    await this.sessionRepository.insert(session);
   }
 
   async getSession(sessionID: string) {
-    const sessionData = await this.sessionRepository.findOne({
-      sessionId: sessionID,
+    const sessionData = await this.sessionRepository.find({
+      session_token: sessionID,
     });
     return sessionData;
+  }
+
+  async insertCDR(
+    record: IChargeDetailRecord & {
+      session_token: string;
+    }
+  ) {
+    const cdr = await this.cdrRepository.insert(record);
+    return cdr;
   }
 
   async updateSession(id: number, session: ISession) {
