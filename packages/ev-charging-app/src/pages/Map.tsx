@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactMapGL, { Layer, MapEvent, MapRef, Source } from 'react-map-gl';
 import { FeatureCollection } from 'geojson';
 import { IonPage, IonLoading, IonContent } from '@ionic/react';
@@ -14,8 +14,9 @@ import {
 } from '../constants/map-constants';
 import WalletPopover from '../components/WalletPopover';
 import axios from 'axios';
+import usePollForPresentationData from '../hooks/usePollForPresentationData';
 interface MapProps {
-  setSelectedChargePoint: (x: ChargePoint) => void;
+  setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
   setToken: (x: string) => void;
   token?: string;
@@ -35,9 +36,7 @@ const Map = (props: MapProps) => {
   const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
     props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
-  const [chargeProcessLoading, setChargeProcessLoading] = useState(false);
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
-  const [presentation, setPresentation] = useState<string>();
   const [viewport, setViewport] = useState({
     latitude: 52.54154,
     longitude: 13.38588,
@@ -50,27 +49,10 @@ const Map = (props: MapProps) => {
   const { chargePoints, loadingChargePoints, setLoadingChargePoints } =
     getChargingPoints();
   const mapRef = useRef<MapRef>(null);
-
-  useEffect(() => {
-    if (!presentation && chargeProcessLoading) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}presentation/${id}`
-        );
-        if (results?.data?.presentationLinkEncoded) {
-          setChargeProcessLoading(false);
-          setPresentation(results.data.presentationLinkEncoded);
-          setSupplierModalOpen(true);
-          localStorage.setItem(results.data.ocpiTokenUID, results.data);
-          return () => clearInterval();
-        }
-      }, 2000);
-      return () => clearInterval(poll);
-    }
-  }, [presentation, chargeProcessLoading]);
+  const {presentation, chargeProcessLoading, setChargeProcessLoading} = usePollForPresentationData(setSupplierModalOpen)
 
   const handleStartCharge = async () => {
+    ///FIX THIS LOGIC
     if (!token) {
       let evseParsed;
       if (selectedChargePoint?.evses) {
@@ -193,6 +175,7 @@ const Map = (props: MapProps) => {
               handleStartCharge={handleStartCharge}
               showModal={setShowChargeStationModal}
               setToken={setToken}
+              setSelectedChargePoint={setSelectedChargePoint}
             />
           )}
           {presentation && (

@@ -15,7 +15,8 @@ import ChargingStatus from '../components/ChargingStatus';
 import StopCharge from '../components/StopCharge';
 import { useHistory } from 'react-router-dom';
 import ChargeAuthorized from '../components/ChargeAuthorized';
-import axios from 'axios';
+import usePollForSessionAuth from '../hooks/usePollForSessionAuthorization';
+import usePollForSessionUpdates from '../hooks/usePollForSessionUpdates';
 const ChargingHeader = styled.h1`
   font-size: 21px;
   line-height: 25px;
@@ -49,49 +50,9 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
     history.push('/map');
   };
 
-  useEffect(() => {
-    if (!isAuthorized) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-conf/${id}`
-        );
-        if (results?.data) {
-          const data = results.data;
-          const { command, uid, result } = data;
-          if (
-            uid === id &&
-            result === 'ACCEPTED' &&
-            command === 'START_SESSION'
-          ) {
-            setIsAuthorized(true);
-          }
-          //QUESTION: Should we also set isAuthorized inlocal storage? in case user closes app?
-          return () => clearInterval();
-        }
-      }, 2000);
-      return () => clearInterval(poll);
-    }
-  }, [isAuthorized]);
+usePollForSessionAuth(isAuthorized, setIsAuthorized);
+usePollForSessionUpdates(isAuthorized, setSessionData);
 
-  useEffect(() => {
-    if (isAuthorized) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}charge/fetch-session/`,
-          {
-            sessionId: id,
-          }
-        );
-        if (results?.data) {
-          const data = results.data;
-          setSessionData(data);
-        }
-      }, 500);
-      return () => clearInterval(poll);
-    }
-  }, [isAuthorized]);
 
   return (
     <IonPage>
