@@ -90,7 +90,7 @@ export class OcnDbService implements IPluggableDB {
   }
 
   async getSession(sessionID: string) {
-    const sessionData = await this.sessionRepository.findOne({
+    const sessionData = await this.sessionRepository.find({
       session_token: sessionID,
     });
     return sessionData;

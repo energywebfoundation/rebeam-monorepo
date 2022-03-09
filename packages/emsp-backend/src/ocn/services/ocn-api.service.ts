@@ -44,21 +44,6 @@ export class OcnApiService implements IPluggableAPI {
         const sessionFormatted = Object.assign({}, session, {
           session_token: uid,
         });
-        // const savedSession = await this.dbService.getSession(uid);
-        // this.logger.log(
-        //   `[PUT session FORMATTED RETRIEVED] ${JSON.stringify(
-        //     savedSession,
-        //     null,
-        //     2
-        //   )}`,
-        //   OcnApiService.name
-        // );
-        // if (savedSession) {
-        //   await this.dbService.updateSession(
-        //     savedSession._id,
-        //     sessionFormatted
-        //   );
-        // } else {
         this.logger.log(
           `[PUT session FORMATTED] ${JSON.stringify(
             sessionFormatted,
@@ -68,16 +53,6 @@ export class OcnApiService implements IPluggableAPI {
           OcnApiService.name
         );
         await this.dbService.insertSession(sessionFormatted);
-        const dbCOunt = await this.dbService.getCount();
-        this.logger.log(
-          `[PUT session FORMATTED] ${JSON.stringify(
-            `${dbCOunt} THE DB COUNT!!!!`,
-            null,
-            2
-          )}`,
-          OcnApiService.name
-        );
-        // }
         return;
       },
       // TODO: patch needs to be implemented in OCN-BRIDGE
