@@ -25,10 +25,7 @@ export class LocationDbService {
     );
     return this.locationRepository.count();
   }
-  async getLocationsByPartyId(partyId: string): Promise<Partial<Location>[]> {
-    const locations = await this.locationRepository.find({
-      party_id: partyId.toUpperCase(),
-    });
-    return locations;
+  async getAllLocations(): Promise<Partial<Location>[]> {
+    return await this.locationRepository.find();
   }
 }

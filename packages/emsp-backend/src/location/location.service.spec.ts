@@ -103,7 +103,7 @@ describe('LocationService', () => {
     it('should return locations formatted for the client', async () => {
       expect(1).toEqual(1);
       jest
-        .spyOn(locationDbService, 'getLocationsByPartyId')
+        .spyOn(locationDbService, 'getAllLocations')
         .mockResolvedValue(mockDbLocationsReturn);
       const result = await locationService.fetchLocationsForClient();
       expect(result).toEqual({
