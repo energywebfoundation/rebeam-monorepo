@@ -53,7 +53,6 @@ const Map = (props: MapProps) => {
     usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
-    ///FIX THIS LOGIC
     if (!token) {
       let evseParsed;
       if (selectedChargePoint?.evses) {
