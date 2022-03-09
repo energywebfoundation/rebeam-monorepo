@@ -34,8 +34,8 @@ describe('OcnService', () => {
           useClass: Repository,
         },
         {
-            provide: getRepositoryToken(ChargeDetailRecord),
-            useClass: Repository,
+          provide: getRepositoryToken(ChargeDetailRecord),
+          useClass: Repository,
         },
         OcnService,
         LoggerService,

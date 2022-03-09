@@ -43,8 +43,8 @@ describe('LocatiomService', () => {
           useClass: Repository,
         },
         {
-            provide: getRepositoryToken(ChargeDetailRecord),
-            useClass: Repository,
+          provide: getRepositoryToken(ChargeDetailRecord),
+          useClass: Repository,
         },
         {
           provide: ConfigService,
