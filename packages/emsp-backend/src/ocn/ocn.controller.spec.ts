@@ -16,6 +16,7 @@ import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import { ChargeDetailRecord } from './schemas/cdr.schema';
 
 describe('OcnController', () => {
   let controller: OcnController;
@@ -36,6 +37,10 @@ describe('OcnController', () => {
         {
           provide: getRepositoryToken(Session),
           useClass: Repository,
+        },
+        {
+            provide: getRepositoryToken(ChargeDetailRecord),
+            useClass: Repository,
         },
         {
           provide: ConfigService,

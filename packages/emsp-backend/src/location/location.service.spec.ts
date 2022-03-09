@@ -21,6 +21,7 @@ import { LocationService } from './location.service';
 import { Session } from 'inspector';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 
 describe('LocatiomService', () => {
   let locationService: LocationService;
@@ -40,6 +41,10 @@ describe('LocatiomService', () => {
         {
           provide: getRepositoryToken(Session),
           useClass: Repository,
+        },
+        {
+            provide: getRepositoryToken(ChargeDetailRecord),
+            useClass: Repository,
         },
         {
           provide: ConfigService,
