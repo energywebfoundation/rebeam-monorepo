@@ -57,7 +57,7 @@ export class ChargeDetailRecord {
   currency: string;
 
   @Column({ type: 'json', nullable: true })
-  charging_periods: IChargingPeriod[];
+  charging_periods?: IChargingPeriod[];
 
   @Column({ type: 'json', nullable: true })
   tariffs: ITariff[];

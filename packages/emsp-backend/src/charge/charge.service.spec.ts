@@ -246,13 +246,7 @@ describe('ChargeService', () => {
         },
         meter_id: null,
         currency: 'EUR',
-        charging_periods: [
-          {
-            start_date_time: '2022-03-08T22:29:18.904Z',
-            dimensions: [{ type: 'TIME', volume: 0.02611611 }],
-            tariff_id: '3',
-          },
-        ],
+  
         tariffs: [
           {
             country_code: 'DE',
@@ -287,14 +281,11 @@ describe('ChargeService', () => {
       };
       jest
         .spyOn(chargeDbService, 'getSessionCDR')
-        .mockResolvedValue(mockResultData);
+        .mockResolvedValue(mockResultData as ChargeDetailRecord);
 
-      const result = await chargeService.stopSession({
-        id: 'mockId',
-        token: 'mockToken',
-      });
-
-      expect(result).toEqual(mockResultData);
+      const result = await chargeService.fetchSessionCdr('c2402e36-0cca-4eb9-b5cd-32eed50ebf63');
+      const mockFormattedResult = {"formattedEndTime":"March 8th, 2022 5:30pm","formattedCost":"8,00 €","sessionToken":"c2402e36-0cca-4eb9-b5cd-32eed50ebf63","id":"c2402e36-0cca-4eb9-b5cd-32eed50ebf63"}
+      expect(result).toEqual(mockFormattedResult);
     });
   });
 });
