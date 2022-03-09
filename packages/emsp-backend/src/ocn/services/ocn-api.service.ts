@@ -125,7 +125,6 @@ export class OcnApiService implements IPluggableAPI {
         uid: string,
         result: ICommandResult
       ): Promise<void> => {
-        console.log('getting here', command, '**********');
         this.logger.log(
           command,
           uid,

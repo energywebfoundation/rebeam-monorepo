@@ -137,7 +137,6 @@ export class ChargeController {
   async stopChargeSession(@Body() body: ChargeSessionDTO): Promise<any> {
     try {
       const stopSession = await this.service.stopSession(body);
-      console.log(JSON.stringify(stopSession), 'grab the stop session return');
       return stopSession;
     } catch (err) {
       this.logger.error(
@@ -186,10 +185,6 @@ export class ChargeController {
   async getChargeSessionCDR(@Param('id') id: string) {
     try {
       const sessionData = await this.service.fetchSessionCdr(id);
-      console.log(
-        JSON.stringify(sessionData),
-        'GRAB THE SESSION DATA RESULT FOR TEST'
-      );
       return sessionData;
     } catch (err) {
       throw new InternalServerErrorException(

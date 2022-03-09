@@ -60,7 +60,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   };
 
   const handleStopSessionClick = async () => {
-    console.log('in handle stop charge');
     const requestStopBody = {
       token: localStorage.getItem('ocpiToken'),
       id: sessionData?.id,
@@ -69,7 +68,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       `${process.env.REACT_APP_BACKEND_URL}charge/stop-session/`,
       requestStopBody
     );
-    console.log(result, 'THE RESULT!!');
     if (result.status === 200) {
       endSession(true);
     }
@@ -120,7 +118,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   }, [isAuthorized, sessionEnded]);
 
   useEffect(() => {
-    try {
       if (sessionEnded && !cdrData) {
         const poll = setInterval(async () => {
           const id = localStorage.getItem('ocpiToken');
@@ -134,9 +131,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
         }, 500);
         return () => clearInterval(poll);
       }
-    } catch (e) {
-      console.log(e, 'THE ERROR');
-    }
   }, [sessionEnded, cdrData]);
 
   return (

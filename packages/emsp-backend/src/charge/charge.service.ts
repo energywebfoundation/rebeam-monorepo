@@ -11,8 +11,6 @@ import {
   ICommandResult,
   IOcpiParty,
   IStopSession,
-  ISession,
-  IChargeDetailRecord,
   IOcpiResponse,
 } from '@energyweb/ocn-bridge';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -159,7 +157,6 @@ export class ChargeService {
   async fetchSessionCdr(id: string) {
     const cdr = await this.chargeDbService.getSessionCDR(id);
     if (cdr) {
-      console.log(JSON.stringify(cdr), 'GRAB MOCK VALUE OF CDR FOR DB');
       const {
         end_date_time,
         total_cost,
@@ -182,10 +179,6 @@ export class ChargeService {
         sessionToken: session_token,
         id,
       };
-      console.log(
-        JSON.stringify(formattedData),
-        'GRAB MOCK VALUE OF FORMATTED DATA FOR DB'
-      );
       return formattedData;
     }
     return;

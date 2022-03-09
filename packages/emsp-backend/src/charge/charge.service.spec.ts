@@ -8,14 +8,10 @@ import { LoggerService } from '../logger/logger.service';
 import { ConfigService } from '@nestjs/config';
 import {
   IBridge,
-  IConnector,
   IOcpiResponse,
-  IStopSession,
-  IToken,
   ITokenType,
   stopBridge,
   tokenType,
-  IChargeDetailRecord,
   connectorStandard,
   connectorFormat,
   connectorPowerType,
