@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -63,7 +63,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   usePollForSessionAuth(isAuthorized, setIsAuthorized);
   usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
-  const {cdrData} = usePollForCDR(sessionEnded)
+  const { cdrData } = usePollForCDR(sessionEnded);
 
   const handleStopSessionClick = async () => {
     const requestStopBody = {
@@ -75,7 +75,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
-        console.log(result.status)
+      console.log(result.status);
       endSession(true);
     }
   };

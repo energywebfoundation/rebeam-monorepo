@@ -53,7 +53,7 @@ export class LocationController {
     }
   }
 
-  @Get('get-client-locations/:cpo')
+  @Get('get-client-locations')
   @HttpCode(200)
   @ApiOperation({
     summary:
