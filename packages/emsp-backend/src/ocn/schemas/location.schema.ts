@@ -22,6 +22,9 @@ export class Location {
   party_id: string;
 
   @Column()
+  evses: string;
+
+  @Column()
   id: string;
 
   @Column()
@@ -57,8 +60,6 @@ export class Location {
   @Column({ nullable: true })
   parking_type: string;
 
-  // TODO: one to many evses
-
   @Column({ type: 'json', nullable: true })
   directions: IDisplayText[];
 
@@ -89,6 +90,6 @@ export class Location {
   @Column({ type: 'json', nullable: true })
   energy_mix: IEnergyMix;
 
-  @Column({ type: 'timestamptz' })
-  last_updated: Date;
+  @Column()
+  last_updated: string;
 }

@@ -185,7 +185,6 @@ export class ChargeService {
         sessionToken: session_token,
         id,
       };
-      console.log(formattedData, "WHATS COMING BCK")
       return formattedData;
     }
     return;

@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IEvse } from '@energyweb/ocn-bridge';
 import { IsString } from 'class-validator';
 
 export class Operator {
@@ -24,8 +23,8 @@ export class Property {
   @IsString()
   country: string;
 
-  @ApiProperty({ type: Array })
-  evses: IEvse[];
+  @ApiProperty({ type: String })
+  evses: string;
 
   @ApiProperty({ type: Object })
   operator: Operator;

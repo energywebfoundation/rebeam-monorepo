@@ -1,20 +1,38 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ILocation } from '@energyweb/ocn-bridge';
 import { IBridge, IOcpiParty } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ClientLocationsDTO } from './dtos/client-location.dto';
+import { Location } from '../ocn/schemas/location.schema';
+import { LocationDbService } from './location-db.service';
+import { OcpiPartyDTO } from './dtos/ocpi-party.dto';
+
 @Injectable()
 export class LocationService {
-  constructor(@Inject(Providers.OCN_BRIDGE) private bridge: IBridge) {}
+  constructor(
+    @Inject(Providers.OCN_BRIDGE) private bridge: IBridge,
+    @Inject(LocationDbService) private locationDbService: LocationDbService
+  ) {}
 
-  async fetchLocations(): Promise<ClientLocationsDTO> {
+  async getCPOLocations(body: OcpiPartyDTO): Promise<number> {
     const recipient: IOcpiParty = {
-      country_code: 'DE',
-      party_id: 'CPO',
+      country_code: body.countryCode,
+      party_id: body.partyId,
     };
     const locations = await this.bridge.requests.getLocations(recipient);
     const { data } = locations;
-    const formattedLocations = data.map((loc: ILocation) => {
+    const locationsFormatted = data.map((data) => {
+      const evseStringified = JSON.stringify(data.evses);
+      return { ...data, evses: evseStringified };
+    });
+    const insertResult = await this.locationDbService.insertLocations(
+      locationsFormatted
+    );
+    return insertResult;
+  }
+
+  async fetchLocationsForClient(): Promise<ClientLocationsDTO> {
+    const locations = await this.locationDbService.getAllLocations();
+    const formattedLocations = locations.map((loc: Location) => {
       return {
         type: 'Feature',
         properties: {
