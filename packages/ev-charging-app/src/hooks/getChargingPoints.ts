@@ -12,7 +12,7 @@ const useChargePoints = () => {
         (async () => {
             try {
                 setLoadingChargePoints(true);
-				const locationResult = await axios.get(`${process.env.REACT_APP_BACKEND_URL}location/get-locations`);
+				const locationResult = await axios.get(`${process.env.REACT_APP_BACKEND_URL}location/get-client-locations`);
 				if (locationResult?.data?.locations) {
 				const data = {
 					type: "FeatureCollection",

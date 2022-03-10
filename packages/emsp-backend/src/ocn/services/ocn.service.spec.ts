@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { Endpoint } from '../schemas/endpoint.schema';
 import { IBridge, stopBridge } from '@energyweb/ocn-bridge';
 import { Providers } from '../../types/symbols';
+import { ChargeDetailRecord } from '../schemas/cdr.schema';
 
 describe('OcnService', () => {
   let service: OcnService;
@@ -30,6 +31,10 @@ describe('OcnService', () => {
         },
         {
           provide: getRepositoryToken(Session),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ChargeDetailRecord),
           useClass: Repository,
         },
         OcnService,

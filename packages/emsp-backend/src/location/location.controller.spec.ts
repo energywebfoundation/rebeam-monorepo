@@ -12,31 +12,41 @@ import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
 import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { Session } from 'inspector';
+import { Session } from '../ocn/schemas/session.schema';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
-import { ClientLocationsDTO } from './dtos/client-location.dto';
 import { OcnService } from '../ocn/services/ocn.service';
+import { LocationDbService } from './location-db.service';
+import { Location } from '../ocn/schemas/location.schema';
+import { mockClientFormattedLocations } from './utils/spec-data-fixtures';
+import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 
 describe('LocationController', () => {
   let controller: LocationController;
   let locationService: LocationService;
   let bridge: IBridge;
-  let ocnService: OcnService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        {
-          provide: getRepositoryToken(Session),
-          useClass: Repository,
-        },
         {
           provide: getRepositoryToken(Auth),
           useClass: Repository,
         },
         {
           provide: getRepositoryToken(Endpoint),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(Location),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(Session),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ChargeDetailRecord),
           useClass: Repository,
         },
         {
@@ -60,6 +70,7 @@ describe('LocationController', () => {
         LocationService,
         OcnDbService,
         OcnService,
+        LocationDbService,
       ],
       imports: [
         CacheModule.register({
@@ -72,7 +83,6 @@ describe('LocationController', () => {
     controller = module.get<LocationController>(LocationController);
     locationService = module.get<LocationService>(LocationService);
     bridge = module.get<IBridge>(Providers.OCN_BRIDGE);
-    ocnService = module.get<OcnService>(OcnService);
   });
 
   afterEach(async () => {
@@ -82,66 +92,61 @@ describe('LocationController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  describe('get locations', () => {
-    const mockLocations: ClientLocationsDTO = {
-      locations: [
-        {
-          type: 'Feature',
-          properties: {
-            id: 'string',
-            stationName: 'Name',
-            formattedAddress: 'formatted address',
-            country: 'DE',
-            evses: [
-              {
-                uid: '3256',
-                evse_id: 'BE*BEC*E041503001',
-                status: 'AVAILABLE',
-                status_schedule: [],
-                capabilities: ['RESERVABLE'],
-                connectors: [
-                  {
-                    id: '1',
-                    standard: 'IEC_62196_T2',
-                    format: 'CABLE',
-                    power_type: 'AC_3_PHASE',
-                    max_voltage: 220,
-                    max_amperage: 16,
-                    tariff_ids: ['11'],
-                    last_updated: '2015-06-29T20:39:09Z',
-                  },
-                ],
-                physical_reference: '1',
-                floor_level: '-1',
-                last_updated: '2015-06-29T20:39:09Z',
-              },
-            ],
-            operator: {
-              name: 'BeCharged',
-            },
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [123, 456],
-          },
-        },
-      ],
-    };
-    it('should fetch locations', async () => {
-      jest
-        .spyOn(locationService, 'fetchLocations')
-        .mockResolvedValue(mockLocations);
-      const result = await controller.getLocations();
-      expect(result).toEqual(mockLocations);
+  describe('Get and store locations for a given CPO', () => {
+    it('should fetch and store locations for a given CPO and country code', async () => {
+      expect(1).toEqual(1);
+      jest.spyOn(locationService, 'getCPOLocations').mockResolvedValue(1);
+      const result = await controller.getCPOLocations({
+        partyId: 'CPO',
+        countryCode: 'DE',
+      });
+      expect(result).toEqual({
+        numLocations: 1,
+      });
     });
-    it('should return an Internal Server error if the Get Locations request fails', async () => {
+    it('should return a Bad Gateway error if the Get Locations request fails', async () => {
       jest
-        .spyOn(locationService, 'fetchLocations')
+        .spyOn(locationService, 'getCPOLocations')
         .mockImplementation(async () => {
           throw Error('Connection refused; localhost:8080');
         });
       try {
-        await controller.getLocations();
+        await controller.getCPOLocations({
+          partyId: 'CPO',
+          countryCode: 'DE',
+        });
+        throw Error('Test should not have passed!');
+      } catch (err) {
+        const status = (err as HttpException).getStatus();
+        const { code, message, error } = (
+          err as HttpException
+        ).getResponse() as ApiError;
+        expect(status).toBe(HttpStatus.BAD_GATEWAY);
+        expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
+        expect(message).toBe(
+          'The OCN Bridge failed to fetch locations. Are the desired RPC and OCN Nodes available?'
+        );
+        expect(error).toBe('Connection refused; localhost:8080');
+      }
+    });
+  });
+
+  describe('Get formatted locations for a given CPO', () => {
+    it('should fetch and return formatted locations for a given CPO', async () => {
+      jest
+        .spyOn(locationService, 'fetchLocationsForClient')
+        .mockResolvedValue(mockClientFormattedLocations);
+      const result = await controller.getStoredLocations();
+      expect(result).toEqual(mockClientFormattedLocations);
+    });
+    it('should return a Server Error error if the Get Stored Locations request fails', async () => {
+      jest
+        .spyOn(locationService, 'fetchLocationsForClient')
+        .mockImplementation(async () => {
+          throw Error('Connection refused; localhost:8080');
+        });
+      try {
+        await controller.getStoredLocations();
         throw Error('Test should not have passed!');
       } catch (err) {
         const status = (err as HttpException).getStatus();
@@ -149,10 +154,8 @@ describe('LocationController', () => {
           err as HttpException
         ).getResponse() as ApiError;
         expect(status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-        expect(code).toBe(ApiErrorCode.OCN_BRIDGE);
-        expect(message).toBe(
-          'The OCN Bridge failed to fetch locations. Are the desired RPC and OCN Nodes available?'
-        );
+        expect(code).toBe(ApiErrorCode.LOCATION_FETCH);
+        expect(message).toBe('Failed to fetch locations from database');
         expect(error).toBe('Connection refused; localhost:8080');
       }
     });

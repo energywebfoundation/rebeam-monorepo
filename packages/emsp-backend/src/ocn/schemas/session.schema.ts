@@ -12,7 +12,7 @@ export class Session {
   @Column()
   id: string;
   @Column({ nullable: true })
-  sessionId: string;
+  session_token: string;
   @Column({ nullable: true })
   currency: string;
   @Column({ type: 'timestamptz' })
