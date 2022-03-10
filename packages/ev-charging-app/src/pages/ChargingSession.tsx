@@ -75,7 +75,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
-      console.log(result.status);
       endSession(true);
     }
   };
