@@ -8,7 +8,7 @@ import {
   IonCol,
   IonLoading,
 } from '@ionic/react';
-import axios from "axios";
+import axios from 'axios';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import ChargeAuthorized from '../components/ChargeAuthorized';
 import usePollForSessionAuth from '../hooks/usePollForSessionAuthorization';
 import usePollForSessionUpdates from '../hooks/usePollForSessionUpdates';
+import usePollForCDR from '../hooks/usePollForCDR';
 const ChargingHeader = styled.h1`
   font-size: 21px;
   line-height: 25px;
@@ -54,7 +55,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
   const [sessionEnded, endSession] = useState(false);
-  const [cdrData, setcdrData] = useState<ICdrData | undefined>(undefined);
   const history = useHistory();
 
   const handleBackClick = () => {
@@ -62,7 +62,8 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   };
 
   usePollForSessionAuth(isAuthorized, setIsAuthorized);
-  usePollForSessionUpdates(isAuthorized, setSessionData);
+  usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
+  const {cdrData} = usePollForCDR(sessionEnded)
 
   const handleStopSessionClick = async () => {
     const requestStopBody = {
@@ -74,29 +75,11 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
+        console.log(result.status)
       endSession(true);
     }
   };
-
-
-
-useEffect(() => {
-    if (sessionEnded && !cdrData) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
-        );
-        if (results?.data) {
-          const data = results.data;
-          setcdrData(data);
-        }
-      }, 500);
-      return () => clearInterval(poll);
-    }
-  }, [sessionEnded, cdrData]);  
-
-return (
+  return (
     <IonPage>
       <IonContent>
         <IonGrid>
