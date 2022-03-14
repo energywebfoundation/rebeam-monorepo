@@ -12,5 +12,6 @@ export default (): {
     ocpiServerPort: process.env.OCN_OCPI_SERVER_PORT,
     signer: process.env.OCN_SIGNER,
     environment: process.env.OCN_ENVIRONMENT as OcnEnvironmentName,
+    useSignatures: process.env.NODE_ENV === "local" ? false : true
   },
 });
