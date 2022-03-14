@@ -24,7 +24,7 @@ services:
     container_name: ocn-node
     build:
       context: ./docker/ocn-node
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.${ENV}
     ports:
       - 8080:8080
     depends_on:
@@ -100,7 +100,7 @@ services:
       - CPO_NAME=MockCPO
       - CPO_PREQUALIFY_ASSETS=false
       - CPO_CREATE_DIDS=false
-      - CPO_SIGNATURES=false 
+      - CPO_SIGNATURES=${USE_SIGNATURES} 
     command: ['node', 'dist/index.js', 'mock', '--cpo']
 
 volumes:
