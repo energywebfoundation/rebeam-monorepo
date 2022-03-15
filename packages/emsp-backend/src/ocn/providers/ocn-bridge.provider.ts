@@ -68,7 +68,7 @@ export const OcnBridgeProvider: FactoryProvider<Promise<IBridge>> = {
       // log incoming requests
       logger: true,
     });
-    console.log(ocnConfig.useSignatures, "SIGNATURES")
+    console.log(ocnConfig.useSignatures, 'SIGNATURES');
     logger.log(
       `Started OCPI Server on port ${ocnConfig.ocpiServerPort}`,
       Providers.OCN_BRIDGE
