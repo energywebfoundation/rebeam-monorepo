@@ -109,6 +109,12 @@ async function main() {
     tokenA: mspToken,
     nodeURL: registeredUrl
   })
+
+  console.log("fetching locations...")
+  await axios.post('http://localhost:3000/api/location/fetch-locations', {
+      countryCode: "DE",
+      partyId: "CPO"
+  })
   console.log('Registered eMSP. Setup complete!')
 }
 

@@ -141,7 +141,7 @@ export class ChargeService {
       result: 'ACCEPTED',
     };
     await this.cacheManager.set(`${id}-auth`, resultData);
-    const result = this.cacheManager.get(`${id}-auth`);
+    const result = await this.cacheManager.get(`${id}-auth`);
     return result;
   }
 

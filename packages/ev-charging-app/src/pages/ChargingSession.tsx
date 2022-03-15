@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -8,6 +8,7 @@ import {
   IonCol,
   IonLoading,
 } from '@ionic/react';
+import axios from 'axios';
 import styled from 'styled-components';
 import strings from '../constants/strings.json';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -15,7 +16,9 @@ import ChargingStatus from '../components/ChargingStatus';
 import StopCharge from '../components/StopCharge';
 import { useHistory } from 'react-router-dom';
 import ChargeAuthorized from '../components/ChargeAuthorized';
-import axios from 'axios';
+import usePollForSessionAuth from '../hooks/usePollForSessionAuthorization';
+import usePollForSessionUpdates from '../hooks/usePollForSessionUpdates';
+import usePollForCDR from '../hooks/usePollForCDR';
 const ChargingHeader = styled.h1`
   font-size: 21px;
   line-height: 25px;
@@ -52,12 +55,15 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
   const [sessionEnded, endSession] = useState(false);
-  const [cdrData, setcdrData] = useState<ICdrData | undefined>(undefined);
   const history = useHistory();
 
   const handleBackClick = () => {
     history.push('/map');
   };
+
+  usePollForSessionAuth(isAuthorized, setIsAuthorized);
+  usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
+  const { cdrData } = usePollForCDR(sessionEnded);
 
   const handleStopSessionClick = async () => {
     const requestStopBody = {
@@ -72,67 +78,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       endSession(true);
     }
   };
-
-  useEffect(() => {
-    if (!isAuthorized) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-conf/${id}`
-        );
-        if (results?.data) {
-          const data = results.data;
-          const { command, uid, result } = data;
-          if (
-            uid === id &&
-            result === 'ACCEPTED' &&
-            command === 'START_SESSION'
-          ) {
-            setIsAuthorized(true);
-          }
-          //QUESTION: Should we also set isAuthorized inlocal storage? in case user closes app?
-          return () => clearInterval();
-        }
-      }, 2000);
-      return () => clearInterval(poll);
-    }
-  }, [isAuthorized]);
-
-  useEffect(() => {
-    if (isAuthorized && !sessionEnded) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}charge/fetch-session/`,
-          {
-            sessionId: id,
-          }
-        );
-        if (results?.data) {
-          const data = results.data;
-          setSessionData(data);
-        }
-      }, 500);
-      return () => clearInterval(poll);
-    }
-  }, [isAuthorized, sessionEnded]);
-
-  useEffect(() => {
-    if (sessionEnded && !cdrData) {
-      const poll = setInterval(async () => {
-        const id = localStorage.getItem('ocpiToken');
-        const results = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}charge/session-cdr/${id}`
-        );
-        if (results?.data) {
-          const data = results.data;
-          setcdrData(data);
-        }
-      }, 500);
-      return () => clearInterval(poll);
-    }
-  }, [sessionEnded, cdrData]);
-
   return (
     <IonPage>
       <IonContent>
