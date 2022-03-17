@@ -14,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { IBridge, stopBridge } from '@energyweb/ocn-bridge';
 import { Providers } from '../types/symbols';
 import { ApiError, ApiErrorCode } from '../types/types';
-import { HttpException, HttpStatus, CacheModule, } from '@nestjs/common';
+import { HttpException, HttpStatus, CacheModule } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ChargeDetailRecord } from './schemas/cdr.schema';
 
