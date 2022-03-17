@@ -19,7 +19,7 @@ const usePollForSessionAuth = (isAuthorized: boolean, setIsAuthorized: (x: boole
                       const { command, uid, result } = data;
                       if (
                         uid === id &&
-                        result === 'ACCEPTED' &&
+                        result?.result === 'ACCEPTED' &&
                         command === 'START_SESSION'
                       ) {
                         setIsAuthorized(true);

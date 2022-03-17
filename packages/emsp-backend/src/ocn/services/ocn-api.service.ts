@@ -6,8 +6,6 @@ import {
   IPluggableAPI,
   ISession,
 } from '@energyweb/ocn-bridge';
-import { Session } from '../schemas/session.schema';
-import { InjectRepository } from '@nestjs/typeorm';
 import { LoggerService } from '../../logger/logger.service';
 import { OcnDbService } from './ocn-db.service';
 
@@ -15,9 +13,7 @@ import { OcnDbService } from './ocn-db.service';
 export class OcnApiService implements IPluggableAPI {
   constructor(
     private readonly logger: LoggerService,
-    @InjectRepository(Session)
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject(OcnDbService) private dbService: OcnDbService
   ) {}
 
@@ -103,7 +99,6 @@ export class OcnApiService implements IPluggableAPI {
   //Insert into cache manager here and then inject it into other service to get
   commands = {
     sender: {
-      // TODO: implement POST method
       asyncResult: async (
         command: string,
         uid: string,
@@ -113,7 +108,7 @@ export class OcnApiService implements IPluggableAPI {
           command,
           uid,
           JSON.stringify(result),
-          'THIS IS THE RETURN FROM ASYNC RESULT'
+          'Authorization Async Result'
         );
         const resultData = {
           command,
