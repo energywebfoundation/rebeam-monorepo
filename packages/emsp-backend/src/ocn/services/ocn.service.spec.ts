@@ -13,7 +13,7 @@ import { Endpoint } from '../schemas/endpoint.schema';
 import { IBridge, stopBridge } from '@energyweb/ocn-bridge';
 import { Providers } from '../../types/symbols';
 import { ChargeDetailRecord } from '../schemas/cdr.schema';
-
+import { CacheModule } from '@nestjs/common';
 describe('OcnService', () => {
   let service: OcnService;
   let bridge: IBridge;
@@ -57,6 +57,11 @@ describe('OcnService', () => {
           },
         },
         OcnBridgeProvider,
+      ],
+      imports: [
+        CacheModule.register({
+          ttl: +process.env.TTL_CACHE,
+        }),
       ],
     }).compile();
 
