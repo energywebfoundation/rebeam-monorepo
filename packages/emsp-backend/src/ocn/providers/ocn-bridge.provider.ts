@@ -66,7 +66,7 @@ export const OcnBridgeProvider: FactoryProvider<Promise<IBridge>> = {
       // defines the port the embedded OCPI server runs on
       port: +ocnConfig.ocpiServerPort,
       // log incoming requests
-      logger: true,
+      logger: ocnConfig.loggingEnabled,
     });
     logger.log(
       `Started OCPI Server on port ${ocnConfig.ocpiServerPort}`,
