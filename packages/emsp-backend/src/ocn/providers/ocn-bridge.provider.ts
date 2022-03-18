@@ -60,7 +60,7 @@ export const OcnBridgeProvider: FactoryProvider<Promise<IBridge>> = {
         ocnConfig.signer
       ),
       // sign OCPI messages with signer key
-      signatures: false,
+      signatures: ocnConfig.useSignatures,
       // private key used to sign messages
       signer: ocnConfig.signer,
       // defines the port the embedded OCPI server runs on

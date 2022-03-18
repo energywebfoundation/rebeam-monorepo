@@ -9,4 +9,5 @@ export type OcnConfig = {
   ocpiServerPort: string;
   signer: string;
   environment: OcnEnvironmentName;
+  useSignatures: boolean;
 };
