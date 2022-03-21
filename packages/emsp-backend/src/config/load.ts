@@ -13,5 +13,6 @@ export default (): {
     signer: process.env.OCN_SIGNER,
     environment: process.env.OCN_ENVIRONMENT as OcnEnvironmentName,
     useSignatures: process.env.OCN_SIGNATURES === 'true',
+    loggingEnabled: process.env.LOGGING_ENABLED === 'true',
   },
 });

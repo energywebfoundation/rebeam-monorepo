@@ -10,4 +10,5 @@ export type OcnConfig = {
   signer: string;
   environment: OcnEnvironmentName;
   useSignatures: boolean;
+  loggingEnabled: boolean;
 };
