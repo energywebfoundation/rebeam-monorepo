@@ -42,7 +42,7 @@ export class LocationController {
         numLocations: result,
       };
     } catch (err) {
-      this.logger.error(`Cannot fetch locations for given CPO`);
+      this.logger.error(`Cannot fetch locations for given CPO: ${err.message}`);
       throw new BadGatewayException(
         new ApiError(
           ApiErrorCode.OCN_BRIDGE,
