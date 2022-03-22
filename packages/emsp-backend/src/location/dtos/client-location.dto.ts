@@ -31,9 +31,7 @@ export class Property {
 }
 
 export class ClientLocation {
-  @ApiProperty({ type: String })
-  @IsString()
-  type: string;
+ 
 
   @ApiProperty({ type: Object })
   properties: Property;
@@ -43,10 +41,6 @@ export class ClientLocation {
 }
 
 export class Geometry {
-  @ApiProperty({ type: String })
-  @IsString()
-  type: string;
-
   @ApiProperty({ type: Array })
   coordinates: number[];
 }

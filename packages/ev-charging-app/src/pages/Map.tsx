@@ -11,6 +11,7 @@ import MapPinSelected from '../assets/MapPinSelected.png';
 import WalletPopover from '../components/WalletPopover';
 import axios from 'axios';
 import usePollForPresentationData from '../hooks/usePollForPresentationData';
+import {LocationProperties} from "../hooks/getChargingPoints";
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
@@ -80,7 +81,7 @@ const Map = (props: MapProps) => {
     }
   };
 
-  const handleMarkerClick = (properties: any) => {
+  const handleMarkerClick = (properties: LocationProperties) => {
     setSelectedChargePoint(properties);
     setShowChargeStationModal(true);
   };

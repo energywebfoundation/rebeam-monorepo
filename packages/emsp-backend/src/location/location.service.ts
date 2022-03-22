@@ -34,7 +34,6 @@ export class LocationService {
     const locations = await this.locationDbService.getAllLocations();
     const formattedLocations = locations.map((loc: Location) => {
       return {
-        type: 'Feature',
         properties: {
           id: loc.id,
           stationName: loc.name,
@@ -44,7 +43,6 @@ export class LocationService {
           operator: loc.operator,
         },
         geometry: {
-          type: 'Point',
           coordinates: [+loc.coordinates.longitude, +loc.coordinates.latitude],
         },
       };
