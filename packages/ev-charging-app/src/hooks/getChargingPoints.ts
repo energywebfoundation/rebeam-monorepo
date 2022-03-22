@@ -5,8 +5,28 @@ import axios from 'axios';
     Hook to retrieve charging points. 
     Will be called only on initial render as it does not depend on any state variables.
 */
+
+interface Location {
+    type: string;
+    properties: {
+        id: string;
+        stationName: string;
+        formattedAddress: string;
+        country: string;
+        evses: string;
+        operator: string;
+    };
+    geometry: {
+        type: string;
+        coordinates: number[]
+    }
+}
+interface ChargePoints {
+    type: string;
+    features: Location[]
+}
 const useChargePoints = () => {
-    const [chargePoints, setChargePoints] = useState({});
+    const [chargePoints, setChargePoints] = useState<ChargePoints | null>(null);
     const [loadingChargePoints, setLoadingChargePoints] = useState(false);
     useEffect(() => {
         (async () => {

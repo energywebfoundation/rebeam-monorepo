@@ -20,7 +20,7 @@ export class LocationService {
     };
     const locations = await this.bridge.requests.getLocations(recipient);
     const { data } = locations;
-    const locationsFormatted = data.map((data) => {
+    const locationsFormatted = data?.map((data) => {
       const evseStringified = JSON.stringify(data.evses);
       return { ...data, evses: evseStringified };
     });
