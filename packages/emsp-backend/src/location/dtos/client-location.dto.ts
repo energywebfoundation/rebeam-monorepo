@@ -31,8 +31,6 @@ export class Property {
 }
 
 export class ClientLocation {
- 
-
   @ApiProperty({ type: Object })
   properties: Property;
 

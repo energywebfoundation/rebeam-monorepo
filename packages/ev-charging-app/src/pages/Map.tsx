@@ -11,7 +11,7 @@ import MapPinSelected from '../assets/MapPinSelected.png';
 import WalletPopover from '../components/WalletPopover';
 import axios from 'axios';
 import usePollForPresentationData from '../hooks/usePollForPresentationData';
-import {LocationProperties} from "../hooks/getChargingPoints";
+import { LocationProperties } from '../hooks/getChargingPoints';
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
