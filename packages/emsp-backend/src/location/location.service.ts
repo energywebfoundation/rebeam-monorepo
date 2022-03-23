@@ -20,21 +20,23 @@ export class LocationService {
     };
     const locations = await this.bridge.requests.getLocations(recipient);
     const { data } = locations;
-    const locationsFormatted = data.map((data) => {
-      const evseStringified = JSON.stringify(data.evses);
-      return { ...data, evses: evseStringified };
-    });
-    const insertResult = await this.locationDbService.insertLocations(
-      locationsFormatted
-    );
-    return insertResult;
+    if (data) {
+        const locationsFormatted = data?.map((data) => {
+            const evseStringified = JSON.stringify(data.evses);
+            return { ...data, evses: evseStringified };
+          });
+          const insertResult = await this.locationDbService.insertLocations(
+            locationsFormatted
+          );
+          return insertResult;
+    } else throw new Error("No locations found for given country code and party id")
+ 
   }
 
   async fetchLocationsForClient(): Promise<ClientLocationsDTO> {
     const locations = await this.locationDbService.getAllLocations();
     const formattedLocations = locations.map((loc: Location) => {
       return {
-        type: 'Feature',
         properties: {
           id: loc.id,
           stationName: loc.name,
@@ -44,7 +46,6 @@ export class LocationService {
           operator: loc.operator,
         },
         geometry: {
-          type: 'Point',
           coordinates: [+loc.coordinates.longitude, +loc.coordinates.latitude],
         },
       };

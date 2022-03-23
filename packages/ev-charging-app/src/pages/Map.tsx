@@ -1,20 +1,17 @@
 import React, { useRef, useState } from 'react';
-import ReactMapGL, { Layer, MapEvent, MapRef, Source } from 'react-map-gl';
-import { FeatureCollection } from 'geojson';
+import ReactMapGL, { MapRef, Marker } from 'react-map-gl';
 import { IonPage, IonLoading, IonContent } from '@ionic/react';
 import getChargingPoints from '../hooks/getChargingPoints';
 import ChargePointDetailModal from '../components/ChargeDetailModal';
 import strings from '../constants/strings.json';
 import styled from 'styled-components';
 import { ChargePoint } from '../App';
-import {
-  CHG_POINTS_SOURCE_ID,
-  CHG_POINTS_LAYER_ID,
-  SOURCE_DATA_TYPE,
-} from '../constants/map-constants';
+import MapPin from '../assets/MapPin.png';
+import MapPinSelected from '../assets/MapPinSelected.png';
 import WalletPopover from '../components/WalletPopover';
 import axios from 'axios';
 import usePollForPresentationData from '../hooks/usePollForPresentationData';
+import { LocationProperties } from '../hooks/getChargingPoints';
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
@@ -83,29 +80,18 @@ const Map = (props: MapProps) => {
       setSupplierModalOpen(true);
     }
   };
-  const handleMapOnClick = (event: MapEvent) => {
-    event.preventDefault();
-    const map = mapRef.current;
-    if (map) {
-      const features = map.queryRenderedFeatures(event.point);
-      const selectedProperties = features?.[0];
-      const { layer } = selectedProperties;
-      const { id } = layer;
-      if (id !== CHG_POINTS_LAYER_ID) {
-        return;
-      }
-      if (!selectedProperties) {
-        return;
-      } else {
-        const { properties } = selectedProperties;
-        setSelectedChargePoint(properties);
-        setShowChargeStationModal(true);
-      }
-    } else {
-      return;
-    }
+
+  const handleMarkerClick = (properties: LocationProperties) => {
+    setSelectedChargePoint(properties);
+    setShowChargeStationModal(true);
   };
 
+  const determineIsSelected = (selectedId: string) => {
+    if (!selectedChargePoint) {
+      return false;
+    }
+    return selectedId === selectedChargePoint.id;
+  };
   return (
     <IonPage>
       <IonContent>
@@ -127,44 +113,29 @@ const Map = (props: MapProps) => {
               mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
               width="100%"
               height="100%"
-              onClick={handleMapOnClick}
-              interactiveLayerIds={[CHG_POINTS_LAYER_ID]}
               onViewportChange={setViewport}
             >
-              {chargePoints && (
-                <div>
-                  <Source
-                    type={SOURCE_DATA_TYPE}
-                    id={CHG_POINTS_SOURCE_ID}
-                    data={chargePoints as FeatureCollection}
-                  >
-                    <div>
-                      <Layer
-                        id={CHG_POINTS_LAYER_ID}
-                        source={CHG_POINTS_SOURCE_ID}
-                        type="circle"
-                        paint={{
-                          'circle-radius': [
-                            'case',
-                            ['boolean', ['feature-state', 'hover'], false],
-                            15, // on hover
-                            10,
-                          ],
-                          'circle-blur': [
-                            'case',
-                            ['boolean', ['feature-state', 'hover'], false],
-                            0.5, // on hover
-                            0,
-                          ],
-                          'circle-color': '#A466FF',
-                          'circle-stroke-width': 2,
-                          'circle-stroke-color': '#fff',
+              {chargePoints &&
+                chargePoints.features.map((cp, i) => {
+                  const isSelected = determineIsSelected(cp.properties.id);
+                  return (
+                    <Marker
+                      key={i}
+                      longitude={cp.geometry.coordinates[0]}
+                      latitude={cp.geometry.coordinates[1]}
+                      offsetLeft={-20}
+                      offsetTop={-10}
+                    >
+                      <img
+                        src={isSelected ? MapPinSelected : MapPin}
+                        style={{
+                          height: '40px',
                         }}
-                      ></Layer>
-                    </div>
-                  </Source>
-                </div>
-              )}
+                        onClick={() => handleMarkerClick(cp.properties)}
+                      />
+                    </Marker>
+                  );
+                })}
             </ReactMapGL>
           )}
 

@@ -112,7 +112,6 @@ export const mockDbLocationsReturn: Partial<Location>[] = [
 
 export const formattedLocations: ClientLocation[] = [
   {
-    type: 'Feature',
     properties: {
       id: 'LOC1',
       stationName: 'Gent Zuid',
@@ -125,7 +124,6 @@ export const formattedLocations: ClientLocation[] = [
       },
     },
     geometry: {
-      type: 'Point',
       coordinates: [3.729944, 51.047599],
     },
   },
@@ -134,7 +132,6 @@ export const formattedLocations: ClientLocation[] = [
 export const mockClientFormattedLocations: ClientLocationsDTO = {
   locations: [
     {
-      type: 'Feature',
       properties: {
         id: 'string',
         stationName: 'Name',
@@ -169,7 +166,6 @@ export const mockClientFormattedLocations: ClientLocationsDTO = {
         },
       },
       geometry: {
-        type: 'Point',
         coordinates: [123, 456],
       },
     },
