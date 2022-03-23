@@ -35,8 +35,8 @@ const Map = (props: MapProps) => {
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [viewport, setViewport] = useState({
-    latitude: 52.54154,
-    longitude: 13.38588,
+    latitude: 48.7400511,
+    longitude: 9.0963999,
     zoom: 15,
     minZoom: 2.1,
     bearing: 0,
