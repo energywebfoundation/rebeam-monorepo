@@ -154,6 +154,7 @@ const Map = (props: MapProps) => {
               isOpen={supplierModalOpen}
               presentationDataEncoded={presentation}
               setSupplierModal={setSupplierModalOpen}
+              setShowChargeStationModal={setShowChargeStationModal}
             />
           )}
         </MapContainer>
