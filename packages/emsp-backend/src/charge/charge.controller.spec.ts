@@ -99,6 +99,8 @@ describe('ChargeController', () => {
       const { ocpiToken } = await controller.startCharge({
         locationId: 'locationId',
         evseId: 'eveseId',
+        countryCode: 'DE',
+        partyId: 'CPO'
       });
       expect(ocpiToken).toEqual('mockToken');
     });
@@ -110,6 +112,8 @@ describe('ChargeController', () => {
         await controller.startCharge({
           locationId: 'locationId',
           evseId: 'eveseId',
+          countryCode: 'DE',
+        partyId: 'CPO'
         });
         throw Error('Test should not have passed!');
       } catch (err) {

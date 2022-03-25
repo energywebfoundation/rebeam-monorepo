@@ -114,8 +114,8 @@ export const formattedLocations: ClientLocation[] = [
   {
     properties: {
       id: 'LOC1',
-      partyId: 'CPO',
-      countryCode: 'DE',
+      partyId: 'BEC',
+      countryCode: 'BE',
       stationName: 'Gent Zuid',
       formattedAddress: 'F.Rooseveltlaan 3A Gent, 9000',
       country: 'BEL',
