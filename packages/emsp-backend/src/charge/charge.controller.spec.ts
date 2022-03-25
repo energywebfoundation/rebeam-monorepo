@@ -100,7 +100,7 @@ describe('ChargeController', () => {
         locationId: 'locationId',
         evseId: 'eveseId',
         countryCode: 'DE',
-        partyId: 'CPO'
+        partyId: 'CPO',
       });
       expect(ocpiToken).toEqual('mockToken');
     });
@@ -113,7 +113,7 @@ describe('ChargeController', () => {
           locationId: 'locationId',
           evseId: 'eveseId',
           countryCode: 'DE',
-        partyId: 'CPO'
+          partyId: 'CPO',
         });
         throw Error('Test should not have passed!');
       } catch (err) {
