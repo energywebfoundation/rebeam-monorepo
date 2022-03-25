@@ -4,7 +4,7 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 ion-popover  {
---width: 350px;
+--width: 325px;
 }
 
 ion-popover::part(content) {

@@ -23,8 +23,8 @@ const SupplierItem = styled(IonItem)`
 `;
 
 const StyledHeader = styled(IonHeader)`
-  font-size: 16px;
-  margin: 13px 0 13px 20px;
+  font-size: 15px;
+  margin: 10px;
 `;
 
 const SupplierHeader = styled(IonHeader)`
