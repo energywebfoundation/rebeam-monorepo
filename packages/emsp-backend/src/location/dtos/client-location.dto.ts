@@ -13,6 +13,14 @@ export class Property {
 
   @ApiProperty({ type: String })
   @IsString()
+  partyId: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
+  countryCode: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
   stationName: string;
 
   @ApiProperty({ type: String })

@@ -114,6 +114,8 @@ export const formattedLocations: ClientLocation[] = [
   {
     properties: {
       id: 'LOC1',
+      partyId: "CPO",
+      countryCode: "DE",
       stationName: 'Gent Zuid',
       formattedAddress: 'F.Rooseveltlaan 3A Gent, 9000',
       country: 'BEL',
@@ -133,6 +135,8 @@ export const mockClientFormattedLocations: ClientLocationsDTO = {
   locations: [
     {
       properties: {
+        countryCode: "DE",
+        partyId: "CPO",
         id: 'string',
         stationName: 'Name',
         formattedAddress: 'formatted address',

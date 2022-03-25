@@ -7,6 +7,8 @@ import axios from 'axios';
 */
 export interface LocationProperties {
     id: string;
+    partyId: string;
+    countryCode: string;
     stationName: string;
     formattedAddress: string;
     country: string;

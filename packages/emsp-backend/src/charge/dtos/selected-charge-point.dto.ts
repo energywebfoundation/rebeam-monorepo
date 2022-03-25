@@ -10,4 +10,12 @@ export class SelectedChargePointDTO {
   @ApiProperty({ type: String })
   @IsString()
   evseId: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
+  countryCode: string;
+
+  @ApiProperty({ type: String })
+  @IsString()
+  partyId: string;
 }
