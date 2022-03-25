@@ -244,11 +244,4 @@ ion-popover::part(content) {
 
     --ion-card-background: #1e1e1e;
   }
-  .supplier .popover-content {
-    --top: 50% !important;
-    --left: 50% !important;
-    --transform: translate(-50%, -50%) !important;
-    border: 1px solid red;
-
-}
 }
