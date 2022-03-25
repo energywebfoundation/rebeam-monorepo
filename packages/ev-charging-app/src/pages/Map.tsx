@@ -53,7 +53,7 @@ const Map = (props: MapProps) => {
     if (!token) {
       let evseParsed;
       if (selectedChargePoint?.evses) {
-          const {countryCode, partyId} = selectedChargePoint;
+        const { countryCode, partyId } = selectedChargePoint;
         evseParsed = JSON.parse(selectedChargePoint?.evses);
         const selectedChargePointData = {
           locationId: selectedChargePoint?.id,
