@@ -73,13 +73,9 @@ const WalletPopover = (props: IWalletPopoverProps) => {
   return (
     <>
       <IonPopover
-        alignment="end"
-        side="end"
         isOpen={isOpen}
-        size={'cover'}
-        trigger="start-charging"
         showBackdrop={true}
-        reference="trigger"
+        onDidDismiss={() => setSupplierModal(false)}
       >
         {/* <div> */}
         <IonContent>
