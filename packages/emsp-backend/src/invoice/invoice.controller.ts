@@ -1,16 +1,10 @@
-import {
-  Body,
-  Controller,
-  Post,
-  HttpCode,
-} from '@nestjs/common';
+import { Body, Controller, Post, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
 import { PresentationDTO } from '../presentation/dtos/presentation.dto';
 
 @ApiTags('Invoice')
 @Controller('invoice')
-
 export class InvoiceController {
   constructor(private readonly logger: LoggerService) {}
   @Post()

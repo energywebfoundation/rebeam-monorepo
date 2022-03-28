@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { OcnModule } from './ocn/ocn.module';
-import {InvoiceModule} from "./invoice/invoice.module";
+import { InvoiceModule } from './invoice/invoice.module';
 import { LocationModule } from './location/location.module';
 import { PresentationModule } from './presentation/presentation.module';
 import { ChargeModule } from './charge/charge.module';
