@@ -50,6 +50,7 @@ export class ChargeService {
       whitelist: 'ALWAYS',
       last_updated: new Date().toISOString(),
     };
+    this.logger.log(`[Initiate Charge EVSE ID]: ${evseId}`)
     const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
     const OCPIServerUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands/START_SESSION/${mockOcpiToken}`;
     const startSessionData: IStartSession = {
