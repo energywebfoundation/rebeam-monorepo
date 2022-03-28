@@ -22,7 +22,7 @@ import { OcnDbService } from '../ocn/services/ocn-db.service';
 import { ConfigService } from '@nestjs/config';
 import { ChargeSessionDTO } from './dtos/charge-session-dto';
 import { ChargeDbService } from './charge-db.service';
-import {LoggerService} from "../logger/logger.service";
+import { LoggerService } from '../logger/logger.service';
 @Injectable()
 export class ChargeService {
   constructor(
@@ -33,8 +33,7 @@ export class ChargeService {
     @Inject(OcnDbService) private dbService: OcnDbService,
     private readonly config: ConfigService,
     @Inject(ChargeDbService) private chargeDbService: ChargeDbService,
-    private readonly logger: LoggerService,
-
+    private readonly logger: LoggerService
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
@@ -63,7 +62,9 @@ export class ChargeService {
       country_code: 'DE',
       party_id: 'CPO',
     };
-    this.logger.debug(`Initiating session request to recipient with counry code ${recipient.country_code} and party id ${recipient.party_id}`)
+    this.logger.debug(
+      `Initiating session request to recipient with counry code ${recipient.country_code} and party id ${recipient.party_id}`
+    );
     await this.bridge.requests.startSession(recipient, startSessionData);
     return mockOcpiToken;
   }
@@ -77,7 +78,7 @@ export class ChargeService {
       );
     }
     if (mostRecentSession) {
-    this.logger.debug(`Recent session data found for ${sessionId}`)
+      this.logger.debug(`Recent session data found for ${sessionId}`);
       const data = mostRecentSession;
       const {
         start_date_time,
@@ -137,7 +138,11 @@ export class ChargeService {
   ): Promise<ICommandResult | null> {
     const chargeConfirmation = await this.cacheManager.get(`${sessionId}-auth`);
     if (chargeConfirmation) {
-        this.logger.debug(`Session confirmation found for ${sessionId}: ${JSON.stringify(chargeConfirmation )}`)
+      this.logger.debug(
+        `Session confirmation found for ${sessionId}: ${JSON.stringify(
+          chargeConfirmation
+        )}`
+      );
     }
     return chargeConfirmation as ICommandResult;
   }
@@ -171,7 +176,7 @@ export class ChargeService {
   async fetchSessionCdr(id: string) {
     const cdr = await this.chargeDbService.getSessionCDR(id);
     if (cdr) {
-        this.logger.debug(`Session CDR found for ${id}: ${JSON.stringify(cdr)}`)
+      this.logger.debug(`Session CDR found for ${id}: ${JSON.stringify(cdr)}`);
       const {
         end_date_time,
         total_cost,

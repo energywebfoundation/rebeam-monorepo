@@ -3,7 +3,7 @@ import { CacheModule } from '@nestjs/common';
 import { PresentationService } from './presentation.service';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/common';
-import {LoggerService} from "../logger/logger.service";
+import { LoggerService } from '../logger/logger.service';
 
 describe('ChargeService', () => {
   let presService: PresentationService;
