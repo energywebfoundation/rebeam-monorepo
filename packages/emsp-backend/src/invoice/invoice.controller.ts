@@ -1,10 +1,15 @@
-import { Body, Controller, Post, HttpCode } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpCode,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
-import { PresentationDTO } from '../presentation/dtos/presentation.dto';
 
 @ApiTags('Invoice')
 @Controller('invoice')
+
 export class InvoiceController {
   constructor(private readonly logger: LoggerService) {}
   @Post()
@@ -12,7 +17,8 @@ export class InvoiceController {
   @ApiOperation({
     summary: 'Log received invoice information',
   })
-  async logInvoice(@Body() data: PresentationDTO) {
+  @ApiResponse({ status: 200 })
+  async logInvoice(@Body() data: {[key: string]: any}) {
     this.logger.log(`Invoice Data: ${JSON.stringify(data)}`);
   }
 }
