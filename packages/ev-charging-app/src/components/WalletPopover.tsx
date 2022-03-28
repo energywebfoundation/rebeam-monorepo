@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import WalletQRCode from '../assets/smallQRCode.png';
 import EnergyWebIcon from '../assets/svgs/energyweb-logo.svg';
 import { closeOutline, chevronForwardOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 import strings from '../constants/strings.json';
 const SupplierItem = styled(IonItem)`
   --inner-padding-bottom: 10px;
@@ -51,6 +52,7 @@ interface IWalletPopoverProps {
   isOpen: boolean;
   presentationDataEncoded: string;
   setSupplierModal: (x: boolean) => void;
+  setShowChargeStationModal: (x: boolean) => void;
 }
 
 export interface IPresentationData {
@@ -58,12 +60,24 @@ export interface IPresentationData {
 }
 
 const WalletPopover = (props: IWalletPopoverProps) => {
-  const { presentationDataEncoded, isOpen, setSupplierModal } = props;
+  const history = useHistory();
+  const {
+    presentationDataEncoded,
+    isOpen,
+    setSupplierModal,
+    setShowChargeStationModal,
+  } = props;
 
   const handleSelectSwitchboard = () => {
     window.open(
       `${process.env.REACT_APP_SWITCHBOARD_URL}${presentationDataEncoded}`
     );
+
+    setTimeout(() => {
+      setSupplierModal(false);
+      setShowChargeStationModal(false);
+      history.push('/charge');
+    }, 5000);
   };
 
   const handleDismiss = () => {
