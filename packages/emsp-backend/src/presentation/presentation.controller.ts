@@ -30,6 +30,7 @@ export class PresentationController {
     @Body() data: PresentationDTO
   ): Promise<PresentationDTO> {
     try {
+    this.logger.debug(`Presentation data to cache: ${data}`)
       //Cache the presentation data. The key is the OCPI token Id, the value is stringified presentation data:
       const cachedData = await this.service.cachePresentation(data);
       return cachedData;
