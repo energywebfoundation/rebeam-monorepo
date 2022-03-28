@@ -44,7 +44,7 @@ export class ChargeService {
       party_id: 'REB',
       uid: mockOcpiToken,
       type: 'AD_HOC_USER' as ITokenType,
-      contract_id: `DE-REB-${mockOcpiToken}`,
+      contract_id: mockOcpiToken,
       issuer: 'ReBeam eMSP',
       valid: true,
       whitelist: 'ALWAYS',
