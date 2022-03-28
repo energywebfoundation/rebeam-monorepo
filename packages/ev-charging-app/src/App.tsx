@@ -29,6 +29,8 @@ setupIonicReact();
 
 export interface ChargePoint {
   id: string;
+  countryCode: string;
+  partyId: string;
   stationName: string;
   formattedAddress?: string;
   img?: string;

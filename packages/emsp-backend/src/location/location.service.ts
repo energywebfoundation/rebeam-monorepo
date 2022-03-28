@@ -38,6 +38,8 @@ export class LocationService {
     const formattedLocations = locations.map((loc: Location) => {
       return {
         properties: {
+          partyId: loc.party_id,
+          countryCode: loc.country_code,
           id: loc.id,
           stationName: loc.name,
           formattedAddress: `${loc.address} ${loc.city}, ${loc.postal_code}`,

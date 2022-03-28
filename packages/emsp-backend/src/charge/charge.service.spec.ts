@@ -106,6 +106,8 @@ describe('ChargeService', () => {
       const result = await chargeService.initiate({
         locationId: '7e42736a-4287-4c1e-b883-9ff03ea622b5',
         evseId: '123',
+        partyId: 'CPO',
+        countryCode: 'DE',
       });
       expect(result).toBeTruthy();
     });

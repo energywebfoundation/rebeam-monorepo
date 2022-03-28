@@ -35,7 +35,7 @@ export class ChargeService {
   ) {}
 
   async initiate(chargeData: SelectedChargePointDTO): Promise<string> {
-    const { locationId, evseId } = chargeData;
+    const { locationId, evseId, countryCode, partyId } = chargeData;
     const mockOcpiToken = randomUUID();
     const token = {
       country_code: 'DE',
@@ -57,8 +57,8 @@ export class ChargeService {
       evse_uid: evseId,
     };
     const recipient: IOcpiParty = {
-      country_code: 'DE',
-      party_id: 'CPO',
+      country_code: countryCode,
+      party_id: partyId,
     };
     await this.bridge.requests.startSession(recipient, startSessionData);
     return mockOcpiToken;
