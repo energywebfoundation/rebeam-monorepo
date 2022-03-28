@@ -66,7 +66,9 @@ export class ChargeService {
     this.logger.debug(
       `Initiating session request to recipient with counry code ${recipient.country_code} and party id ${recipient.party_id}`
     );
-    this.logger.debug(`[Session Data for Start Charge]: ${JSON.stringify(startSessionData)}`)
+    this.logger.debug(
+      `[Session Data for Start Charge]: ${JSON.stringify(startSessionData)}`
+    );
     await this.bridge.requests.startSession(recipient, startSessionData);
     return mockOcpiToken;
   }
