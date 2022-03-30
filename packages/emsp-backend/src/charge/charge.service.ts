@@ -165,9 +165,12 @@ export class ChargeService {
   async stopSession(args: ChargeSessionDTO): Promise<IOcpiResponse<undefined>> {
     const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
     const OcpiResponseUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands`;
+    const session = await this.SessionRepository.findOneOrFail({
+      session_token: args.id,
+    });
     const recipient: IOcpiParty = {
-      country_code: 'DE',
-      party_id: 'CPO',
+      country_code: session.country_code,
+      party_id: session.party_id,
     };
     const body: IStopSession = {
       session_id: args.id,
