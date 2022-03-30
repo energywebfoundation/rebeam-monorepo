@@ -1,6 +1,7 @@
 import { ITokenType } from '@energyweb/ocn-bridge';
+import { Session } from '../../ocn/schemas/session.schema';
 
-export const mockSessionDbData = [
+export const mockSessionDbData: Session[] = [
   {
     _id: 1,
     country_code: 'DE',
