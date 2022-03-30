@@ -92,24 +92,21 @@ const presentation = {
   holder: holderDIDDoc.id,
 };
 
-const options = {
-  method: "POST",
-};
-const postData = JSON.stringify(presentation);
-
 //https://nodejs.org/api/http.html#httprequestoptions-callback
-async function request(url, options) {
+async function request(url, options, postData) {
   return new Promise((resolve, reject) => {
+    let data;
     const req = https.request(url, options, (res) => {
       console.log(`STATUS: ${res.statusCode}`);
       // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
       res.setEncoding("utf8");
       res.on("data", (chunk) => {
         console.log(`BODY: ${chunk}`);
+        data = chunk;
       });
       res.on("end", () => {
         console.log("No more data in response.");
-        resolve();
+        resolve(JSON.parse(data));
       });
     });
 
@@ -119,12 +116,64 @@ async function request(url, options) {
     });
 
     // Write data to request body
-    //req.write(postData);
+    if (postData) {
+      req.write(postData);
+    }
     req.end();
   });
 }
 
 (async () => {
-  await request(startUrl, options);
+  // INITIATE EXCHANGE
+  console.log("initiating exchange");
+  const initiateOptions = {
+    method: "POST",
+  };
+  const initiateResult = await request(startUrl, initiateOptions);
+  const challenge = initiateResult.vpRequest.challenge;
+  const continueUrl =
+    initiateResult.vpRequest.interact.service[0].serviceEndpoint.replace(
+      "http://localhost:3000",
+      "https://web.ev-dashboard.energyweb.org"
+    );
+
+  // PROVE PRESENTATION
+  console.log("prove presentation");
+  const proveUrl =
+    "https://web.ev-dashboard.energyweb.org/vc-api/presentations/prove";
+  const proveBody = JSON.stringify({
+    presentation,
+    options: {
+      verificationMethod: holderDIDDoc.verificationMethod[0].id,
+      proofPurpose: "authentication",
+      challenge,
+    },
+  });
+  const proveOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(proveBody),
+    },
+  };
+  const proveResponse = await request(proveUrl, proveOptions, proveBody);
+  console.log(proveResponse);
+
+  // CONTINUE EXCHANGE
+  const continueBody = JSON.stringify(proveResponse);
+  const continueOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(continueBody),
+    },
+  };
+  const continueResult = await request(
+    continueUrl,
+    continueOptions,
+    continueBody
+  );
+  console.log(continueResult);
+
   console.log("done");
 })();
