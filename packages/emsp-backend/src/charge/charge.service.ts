@@ -166,7 +166,8 @@ export class ChargeService {
     const ocnOcpiBaseUrl = this.config.get<string>('OCN_OCPI_SERVER_BASE_URL');
     const OcpiResponseUrl = `${ocnOcpiBaseUrl}/ocpi/sender/2.2/commands`;
     const session = await this.SessionRepository.findOneOrFail({
-      session_token: args.id,
+      id: args.id,
+      session_token: args.token,
     });
     const recipient: IOcpiParty = {
       country_code: session.country_code,
