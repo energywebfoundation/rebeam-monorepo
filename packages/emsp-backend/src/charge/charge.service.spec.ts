@@ -291,7 +291,7 @@ describe('ChargeService', () => {
         'c2402e36-0cca-4eb9-b5cd-32eed50ebf63'
       );
       const mockFormattedResult = {
-        formattedEndTime: 'March 8th, 2022 11:30pm',
+        formattedEndTime: 'March 8th, 2022 10:30pm',
         formattedCost: '8,00 €',
         sessionToken: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
         id: 'c2402e36-0cca-4eb9-b5cd-32eed50ebf63',
