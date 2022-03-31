@@ -1,5 +1,10 @@
+/// DESCRIPTION/INSTRUCTIONS:
+
+// Just fill in "startUrl" with the "url" from presentation invitation then run with node.js
+// Tested with node v16 but probably works with others
+
 const startUrl =
-  "https://web.ev-dashboard.energyweb.org/vc-api/exchanges/did:ethr:blxm-dev:0x566aB7DE9E4aA7F89413c659084fc9C0fA911cE9";
+  "https://web.ev-dashboard.energyweb.org/vc-api/exchanges/did:ethr:blxm-dev:0x31Cb811b2F448EAc7AaBec9c0BcF707322De0D21";
 
 /////////////////
 
