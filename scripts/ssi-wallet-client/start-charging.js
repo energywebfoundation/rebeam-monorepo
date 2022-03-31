@@ -1,14 +1,17 @@
 /// DESCRIPTION/INSTRUCTIONS:
 
-// Just fill in "startUrl" with the "url" from presentation invitation then run with node.js
+// Prompts for base64 encoded switchboard url
 // Tested with node v16 but probably works with others
-
-const startUrl =
-  "https://web.ev-dashboard.energyweb.org/vc-api/exchanges/did:ethr:blxm-dev:0x31Cb811b2F448EAc7AaBec9c0BcF707322De0D21";
 
 /////////////////
 
+const { realpath } = require("fs");
 const https = require("https");
+
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 // Created using POST /did
 const holderDIDDoc = {
@@ -129,6 +132,17 @@ async function request(url, options, postData) {
 }
 
 (async () => {
+
+  // e.g. https://switchboard-staging.energyweb.org/?_oob=eyJwcmVzZW50YXRpb25MaW5rIjp7InR5cGUiOiJ2Yy1hcGktZXhjaGFuZ2UiLCJ1cmwiOiJodHRwczovL3dlYi5ldi1kYXNoYm9hcmQuZW5lcmd5d2ViLm9yZy92Yy1hcGkvZXhjaGFuZ2VzL2RpZDpldGhyOmJseG0tZGV2OjB4YkYwMUFFMkM4NDNiRWM4NDE5MWFBMzlkQjVGOTMxODUzZWJBM2Q3MCIsInNzaVNlc3Npb24iOiIifSwib2NwaVRva2VuVUlEIjoiMGIyYjdhOWEtNWIxMi00MDc5LWEyNmItNmM1NjExMmJiMTU1In0=
+  const switchboardUrl = await new Promise(resolve => {
+    readline.question("Enter base64 encoded Switchboard URL:", resolve)
+  });
+
+  const buff = Buffer.from(switchboardUrl.split('oob=')[1], 'base64');
+  const startUrl = JSON.parse(buff.toString('ascii')).presentationLink.url;
+
+  console.log(`Calling startUrl at: ${startUrl}`);
+
   // INITIATE EXCHANGE
   console.log("initiating exchange");
   const initiateOptions = {
