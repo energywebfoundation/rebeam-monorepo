@@ -54,8 +54,7 @@ async function request(url, options, postData) {
 
   const buff = Buffer.from(switchboardUrl.split("oob=")[1], "base64");
   const decoded = buff.toString("ascii");
-  const trimmed = decoded.substring(0, decoded.length - 1); //string has extra char for some reason
-  const startUrl = JSON.parse(trimmed).presentationLink.url;
+  const startUrl = JSON.parse(decoded).presentationLink.url;
 
   console.log(`Calling startUrl at: ${startUrl}`);
 
