@@ -8,6 +8,7 @@ import {
 } from '@energyweb/ocn-bridge';
 import { LoggerService } from '../../logger/logger.service';
 import { OcnDbService } from './ocn-db.service';
+import { formatSessionforDb } from '../utils';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {
@@ -34,12 +35,7 @@ export class OcnApiService implements IPluggableAPI {
     receiver: {
       // TODO: implement PUT method (save sessions in database)
       update: async (session: ISession): Promise<void> => {
-        const {
-          cdr_token: { uid },
-        } = session;
-        const sessionFormatted = Object.assign({}, session, {
-          session_token: uid,
-        });
+        const sessionFormatted = formatSessionforDb(session);
         this.logger.log(
           `[PUT session FORMATTED] ${JSON.stringify(
             sessionFormatted,
@@ -51,7 +47,20 @@ export class OcnApiService implements IPluggableAPI {
         await this.dbService.insertSession(sessionFormatted);
         return;
       },
-      // TODO: patch needs to be implemented in OCN-BRIDGE
+      patch: async (session: ISession) => {
+        const sessionFormatted = formatSessionforDb(session);
+          this.logger.log(
+            `[PUT session FORMATTED from patch] ${JSON.stringify(
+              sessionFormatted,
+              null,
+              2
+            )}`,
+            OcnApiService.name
+          );
+          await this.dbService.insertSession(sessionFormatted);
+          return;
+
+      }
     },
   };
 
