@@ -19,13 +19,14 @@ import {
 import { Providers } from '../types/symbols';
 import { CacheModule } from '@nestjs/common';
 import { ChargeService } from './charge.service';
-import { Session } from 'inspector';
+import { Session } from '../ocn/schemas/session.schema';
 import { Auth } from '../ocn/schemas/auth.schema';
 import { Endpoint } from '../ocn/schemas/endpoint.schema';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/common';
 import { ChargeDetailRecord } from '../ocn/schemas/cdr.schema';
 import { ChargeDbService } from './charge-db.service';
+import { mockSessionDbData } from '../session/spec-data/session-mock-data';
 
 describe('ChargeService', () => {
   let chargeService: ChargeService;
@@ -33,6 +34,7 @@ describe('ChargeService', () => {
   let ocnDbService: OcnDbService;
   let cache: Cache;
   let chargeDbService: ChargeDbService;
+  let sessionDb: Repository<Session>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -87,6 +89,7 @@ describe('ChargeService', () => {
     ocnDbService = module.get<OcnDbService>(OcnDbService);
     cache = module.get<Cache>(CACHE_MANAGER);
     chargeDbService = module.get<ChargeDbService>(ChargeDbService);
+    sessionDb = module.get<Repository<Session>>(getRepositoryToken(Session));
   });
 
   afterEach(async () => {
@@ -197,6 +200,9 @@ describe('ChargeService', () => {
         status_code: '1000',
         timestamp: '2022-03-08T22:00:32.719Z',
       };
+      jest
+        .spyOn(sessionDb, 'findOneOrFail')
+        .mockResolvedValue(mockSessionDbData[0]);
       jest
         .spyOn(bridge.requests, 'stopSession')
         .mockResolvedValue(mockResultData as IOcpiResponse<undefined>);
