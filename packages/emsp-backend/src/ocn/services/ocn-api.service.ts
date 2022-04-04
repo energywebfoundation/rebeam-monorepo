@@ -49,18 +49,17 @@ export class OcnApiService implements IPluggableAPI {
       },
       patch: async (session: ISession) => {
         const sessionFormatted = formatSessionforDb(session);
-          this.logger.log(
-            `[PUT session FORMATTED from patch] ${JSON.stringify(
-              sessionFormatted,
-              null,
-              2
-            )}`,
-            OcnApiService.name
-          );
-          await this.dbService.insertSession(sessionFormatted);
-          return;
-
-      }
+        this.logger.log(
+          `[PATCH session FORMATTED] ${JSON.stringify(
+            sessionFormatted,
+            null,
+            2
+          )}`,
+          OcnApiService.name
+        );
+        await this.dbService.insertSession(sessionFormatted);
+        return;
+      },
     },
   };
 

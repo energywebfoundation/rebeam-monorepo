@@ -1,7 +1,4 @@
-import {
-
-    ISession,
-  } from '@energyweb/ocn-bridge';
+import { ISession } from '@energyweb/ocn-bridge';
 
 export class ColumnNumericTransformer {
   to(data: number): number {
@@ -13,10 +10,10 @@ export class ColumnNumericTransformer {
 }
 
 export const formatSessionforDb = (session: ISession) => {
-    const {
-        cdr_token: { uid },
-      } = session;
-      return Object.assign({}, session, {
-        session_token: uid,
-      });
-}
+  const {
+    cdr_token: { uid },
+  } = session;
+  return Object.assign({}, session, {
+    session_token: uid,
+  });
+};
