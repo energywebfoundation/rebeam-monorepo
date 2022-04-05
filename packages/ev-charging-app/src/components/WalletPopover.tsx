@@ -52,6 +52,7 @@ interface IWalletPopoverProps {
   presentationDataEncoded: string;
   setSupplierModal: (x: boolean) => void;
   handleWalletSelect: () => void;
+  handleDismiss: () => void;
 }
 
 export interface IPresentationData {
@@ -59,13 +60,13 @@ export interface IPresentationData {
 }
 
 const WalletPopover = (props: IWalletPopoverProps) => {
-  const { isOpen, setSupplierModal, handleWalletSelect } = props;
+  const { isOpen, setSupplierModal, handleWalletSelect, handleDismiss } = props;
   return (
     <>
       <IonPopover
         isOpen={isOpen}
         showBackdrop={true}
-        onDidDismiss={() => setSupplierModal(false)}
+        onDidDismiss={handleDismiss}
       >
         <IonContent>
           <IonList

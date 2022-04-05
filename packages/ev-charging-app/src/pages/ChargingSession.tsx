@@ -92,6 +92,11 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
     }, 5000);
   };
 
+  const handleWalletPopoverDismiss = () => {
+      setSupplierModalOpen(false);
+      setChargeProcessLoading(false);
+  }
+
   return (
     <IonPage>
       <IonContent>
@@ -149,6 +154,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
               presentationDataEncoded={presentation}
               setSupplierModal={setSupplierModalOpen}
               handleWalletSelect={handleSelectSwitchboard}
+              handleDismiss={handleWalletPopoverDismiss}
             />
           )}
         </IonGrid>
