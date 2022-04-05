@@ -60,10 +60,10 @@ export class PresentationController {
     try {
       const cachedData = await this.service.fetchPresentation(id);
       if (cachedData) {
-          await this.service.clearPresentationCache(id);
-          return {
-            presentationLinkEncoded: cachedData,
-          }
+        await this.service.clearPresentationCache(id);
+        return {
+          presentationLinkEncoded: cachedData,
+        };
       }
       return null;
     } catch (err) {
