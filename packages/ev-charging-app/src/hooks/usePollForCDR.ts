@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ICdrData } from '../pages/ChargingSession';
+import { ICdrData} from '../pages/ChargingSession';
 
 /*
     Hook to retrieve CDR data. 
 */
-const usePollForCDR = (sessionEnded: boolean) => {
+const usePollForCDR = (stopChargeRequested: boolean, endSession: (x: boolean) => void, sessionEnded: boolean) => {
     const [cdrData, setcdrData] = useState<ICdrData | undefined>(undefined);
     useEffect(() => {
-        (async () => {
-            if (sessionEnded && !cdrData) {
+            if (stopChargeRequested && !sessionEnded) {
                 const poll = setInterval(async () => {
                   const id = localStorage.getItem('ocpiToken');
                   const results = await axios.get(
@@ -18,13 +17,13 @@ const usePollForCDR = (sessionEnded: boolean) => {
                   if (results?.data) {
                     const data = results.data;
                     setcdrData(data);
+                    endSession(true);
                     clearInterval(poll);
                   }
-                }, 500);
+                }, 3000);
                 return () => clearInterval(poll);
               }
-        })();
-    }, [sessionEnded, cdrData]);
+    }, [stopChargeRequested, cdrData, sessionEnded]);
     return { cdrData };
 };
 
