@@ -51,7 +51,6 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
   const { kwh, formattedStartTime } = chargeSessionData;
   return (
     <div>
-      <IonGrid>
         <IonRow>
           <IonCol size="6">
             <IonGrid>
@@ -101,7 +100,6 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
             <CarImg src={BMWIcon} />
           </IonCol>
         </IonRow>
-      </IonGrid>
     </div>
   );
 };

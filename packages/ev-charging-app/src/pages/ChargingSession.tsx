@@ -98,7 +98,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
             </IonCol>
             <IonCol size="1" className=" ion-align-items-center"></IonCol>
           </IonRow>
-        </IonGrid>
+       
         {isAuthorized && !sessionData && <ChargeAuthorized />}
         <IonLoading
           isOpen={!isAuthorized}
@@ -106,7 +106,6 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
         />
         {isAuthorized && sessionData && (
           <>
-            <IonGrid></IonGrid>
             <ChargingStatus chargeSessionData={sessionData} cdrData={cdrData} />
             <StopCharge
               handleStopCharge={handleStopSessionClick}
@@ -114,6 +113,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
             />
           </>
         )}
+         </IonGrid>
       </IonContent>
     </IonPage>
   );
