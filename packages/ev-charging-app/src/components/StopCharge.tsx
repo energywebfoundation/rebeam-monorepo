@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
+import { IonRow, IonCol, IonButton } from '@ionic/react';
 import strings from '../constants/strings.json';
 
 const StopButton = styled(IonButton)`
