@@ -31,7 +31,7 @@ const MapContainer = styled.div`
 `;
 
 const Map = (props: MapProps) => {
-const history = useHistory();
+  const history = useHistory();
   const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
     props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
@@ -87,12 +87,10 @@ const history = useHistory();
   };
 
   const handleSelectSwitchboard = () => {
-    window.open(
-      `${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`
-    );
+    window.open(`${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`);
 
     setTimeout(() => {
-    setSupplierModalOpen(false);
+      setSupplierModalOpen(false);
       setShowChargeStationModal(false);
       history.push('/charge');
     }, 5000);

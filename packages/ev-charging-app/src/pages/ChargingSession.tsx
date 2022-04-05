@@ -7,7 +7,7 @@ import {
   IonRow,
   IonCol,
   IonLoading,
-  IonProgressBar
+  IonProgressBar,
 } from '@ionic/react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -54,18 +54,22 @@ export interface IPresentationData {
 }
 
 const ChargingSession: React.FC<IChargingSessionProps> = () => {
-const [supplierModalOpen, setSupplierModalOpen] = useState(false);
+  const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
   const [sessionEnded, endSession] = useState(false);
-  const [stopChargeRequested, setStopChargeRequested] = useState(false)
+  const [stopChargeRequested, setStopChargeRequested] = useState(false);
   const history = useHistory();
 
-usePollForSessionAuth(isAuthorized, setIsAuthorized);
+  usePollForSessionAuth(isAuthorized, setIsAuthorized);
   usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
   const { presentation, chargeProcessLoading, setChargeProcessLoading } =
-  usePollForPresentationData(setSupplierModalOpen);
-  const { cdrData } = usePollForCDR(stopChargeRequested, endSession, sessionEnded);
+    usePollForPresentationData(setSupplierModalOpen);
+  const { cdrData } = usePollForCDR(
+    stopChargeRequested,
+    endSession,
+    sessionEnded
+  );
   const handleStopSessionClick = async () => {
     const requestStopBody = {
       token: localStorage.getItem('ocpiToken'),
@@ -76,24 +80,22 @@ usePollForSessionAuth(isAuthorized, setIsAuthorized);
       requestStopBody
     );
     if (result.status === 200) {
-        setChargeProcessLoading(true);
+      setChargeProcessLoading(true);
     }
   };
 
   const handleSelectSwitchboard = () => {
-    window.open(
-      `${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`
-    );
+    window.open(`${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`);
     setTimeout(() => {
-    setSupplierModalOpen(false);
-    setStopChargeRequested(true)
+      setSupplierModalOpen(false);
+      setStopChargeRequested(true);
     }, 5000);
   };
 
   return (
     <IonPage>
       <IonContent>
-      <IonLoading
+        <IonLoading
           isOpen={chargeProcessLoading}
           message={strings.requestStopCharging}
           onDidDismiss={() => setChargeProcessLoading(false)}
@@ -103,13 +105,10 @@ usePollForSessionAuth(isAuthorized, setIsAuthorized);
           message={strings.retrievingSessionData}
         />
         <IonLoading
-            isOpen={isAuthorized && !sessionData}
-            message={strings.chargeAuthorized}
-          />
-          <IonLoading
-            isOpen={!isAuthorized}
-            message={strings.requestingAuth}
-          />
+          isOpen={isAuthorized && !sessionData}
+          message={strings.chargeAuthorized}
+        />
+        <IonLoading isOpen={!isAuthorized} message={strings.requestingAuth} />
         <IonGrid>
           <IonRow>
             <IonCol
@@ -117,7 +116,9 @@ usePollForSessionAuth(isAuthorized, setIsAuthorized);
               className=" ion-align-items-center ion-align-self-center"
             >
               <IonIcon
-                onClick={() => {history.push('/map')}}
+                onClick={() => {
+                  history.push('/map');
+                }}
                 icon={chevronBackOutline}
                 className="ion-align-self-center"
               ></IonIcon>
@@ -134,7 +135,7 @@ usePollForSessionAuth(isAuthorized, setIsAuthorized);
                 cdrData={cdrData}
               />
               {!sessionEnded && (
-                  <IonProgressBar type="indeterminate"></IonProgressBar>
+                <IonProgressBar type="indeterminate"></IonProgressBar>
               )}
               <StopCharge
                 handleStopCharge={handleStopSessionClick}
@@ -142,7 +143,7 @@ usePollForSessionAuth(isAuthorized, setIsAuthorized);
               />
             </>
           )}
-             {presentation && (
+          {presentation && (
             <WalletPopover
               isOpen={supplierModalOpen}
               presentationDataEncoded={presentation}

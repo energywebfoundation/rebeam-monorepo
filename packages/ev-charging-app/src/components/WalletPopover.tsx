@@ -59,12 +59,8 @@ export interface IPresentationData {
 }
 
 const WalletPopover = (props: IWalletPopoverProps) => {
-  const {
-    isOpen,
-    setSupplierModal,
-    handleWalletSelect,
-  } = props;
-return (
+  const { isOpen, setSupplierModal, handleWalletSelect } = props;
+  return (
     <>
       <IonPopover
         isOpen={isOpen}
@@ -92,7 +88,9 @@ return (
                     style={{
                       width: '16.33px',
                     }}
-                    onClick={() => {setSupplierModal(false)}}
+                    onClick={() => {
+                      setSupplierModal(false);
+                    }}
                   ></IonIcon>
                 </IonCol>
                 <IonCol className="ion-align-items-center ion-justify-content-start">
