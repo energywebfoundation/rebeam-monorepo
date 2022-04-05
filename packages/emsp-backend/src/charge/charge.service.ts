@@ -74,7 +74,7 @@ export class ChargeService {
   }
 
   async fetchSessionData(sessionId: string): Promise<ClientSessionDTO | null> {
-    const sessionData: Session[] = await this.dbService.getSession(sessionId);
+    const sessionData: Session[] = await this.dbService.getSessionByToken(sessionId);
     let mostRecentSession: Session;
     if (Array.isArray(sessionData) && sessionData.length) {
       mostRecentSession = sessionData.reduce((acc, curr, index) =>

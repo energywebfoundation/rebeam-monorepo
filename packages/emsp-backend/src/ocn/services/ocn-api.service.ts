@@ -9,6 +9,7 @@ import {
 import { LoggerService } from '../../logger/logger.service';
 import { OcnDbService } from './ocn-db.service';
 import { formatSessionforDb } from '../utils';
+import { Session } from '../schemas/session.schema';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {
@@ -47,8 +48,15 @@ export class OcnApiService implements IPluggableAPI {
         await this.dbService.insertSession(sessionFormatted);
         return;
       },
-      patch: async (session: ISession) => {
-        const sessionFormatted = formatSessionforDb(session);
+      patch: async (sessionPatch: Partial<ISession>, sessionId: string) => {
+        const sessions = await this.dbService.getSessionById(sessionId);
+        let mostRecentSession: Session;
+        if (Array.isArray(sessions) && sessions.length) {
+          mostRecentSession = sessions.reduce((acc, curr, index) =>
+            curr.last_updated > acc.last_updated && index ? curr : acc
+          );
+        }
+        const sessionFormatted = Object.assign(mostRecentSession, sessionPatch)
         this.logger.log(
           `[PATCH session FORMATTED] ${JSON.stringify(
             sessionFormatted,
