@@ -59,11 +59,13 @@ export class PresentationController {
   ): Promise<PresentationEncodedDTO | null> {
     try {
       const cachedData = await this.service.fetchPresentation(id);
-      return cachedData
-        ? {
+      if (cachedData) {
+          await this.service.clearPresentationCache(id);
+          return {
             presentationLinkEncoded: cachedData,
           }
-        : null;
+      }
+      return null;
     } catch (err) {
       this.logger.error(
         `Cannot fetch cached presentation data for ${id}: ${err.message}`

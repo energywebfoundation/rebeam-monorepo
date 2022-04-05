@@ -29,4 +29,9 @@ export class PresentationService {
     }
     return transformedData;
   }
+
+  async clearPresentationCache(id: string): Promise<void> {
+    await this.cacheManager.del(`${id}-present`);
+    return;
+  }
 }
