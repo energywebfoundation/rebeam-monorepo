@@ -12,6 +12,7 @@ import WalletPopover from '../components/WalletPopover';
 import axios from 'axios';
 import usePollForPresentationData from '../hooks/usePollForPresentationData';
 import { LocationProperties } from '../hooks/getChargingPoints';
+import { useHistory } from 'react-router-dom';
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
@@ -30,6 +31,7 @@ const MapContainer = styled.div`
 `;
 
 const Map = (props: MapProps) => {
+const history = useHistory();
   const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
     props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
@@ -82,6 +84,18 @@ const Map = (props: MapProps) => {
     } else {
       setSupplierModalOpen(true);
     }
+  };
+
+  const handleSelectSwitchboard = () => {
+    window.open(
+      `${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`
+    );
+
+    setTimeout(() => {
+    setSupplierModalOpen(false);
+      setShowChargeStationModal(false);
+      history.push('/charge');
+    }, 5000);
   };
 
   const handleMarkerClick = (properties: LocationProperties) => {
@@ -157,7 +171,7 @@ const Map = (props: MapProps) => {
               isOpen={supplierModalOpen}
               presentationDataEncoded={presentation}
               setSupplierModal={setSupplierModalOpen}
-              setShowChargeStationModal={setShowChargeStationModal}
+              handleWalletSelect={handleSelectSwitchboard}
             />
           )}
         </MapContainer>

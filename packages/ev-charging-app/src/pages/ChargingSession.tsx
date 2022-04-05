@@ -7,6 +7,7 @@ import {
   IonRow,
   IonCol,
   IonLoading,
+  IonProgressBar
 } from '@ionic/react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -15,9 +16,10 @@ import { chevronBackOutline } from 'ionicons/icons';
 import ChargingStatus from '../components/ChargingStatus';
 import StopCharge from '../components/StopCharge';
 import { useHistory } from 'react-router-dom';
-import ChargeAuthorized from '../components/ChargeAuthorized';
 import usePollForSessionAuth from '../hooks/usePollForSessionAuthorization';
 import usePollForSessionUpdates from '../hooks/usePollForSessionUpdates';
+import usePollForPresentationData from '../hooks/usePollForPresentationData';
+import WalletPopover from '../components/WalletPopover';
 import usePollForCDR from '../hooks/usePollForCDR';
 const ChargingHeader = styled.h1`
   font-size: 21px;
@@ -52,19 +54,18 @@ export interface IPresentationData {
 }
 
 const ChargingSession: React.FC<IChargingSessionProps> = () => {
+const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
   const [sessionEnded, endSession] = useState(false);
+  const [stopChargeRequested, setStopChargeRequested] = useState(false)
   const history = useHistory();
 
-  const handleBackClick = () => {
-    history.push('/map');
-  };
-
-  usePollForSessionAuth(isAuthorized, setIsAuthorized);
+usePollForSessionAuth(isAuthorized, setIsAuthorized);
   usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
-  const { cdrData } = usePollForCDR(sessionEnded);
-
+  const { presentation, chargeProcessLoading, setChargeProcessLoading } =
+  usePollForPresentationData(setSupplierModalOpen);
+  const { cdrData } = usePollForCDR(stopChargeRequested, endSession, sessionEnded);
   const handleStopSessionClick = async () => {
     const requestStopBody = {
       token: localStorage.getItem('ocpiToken'),
@@ -75,12 +76,40 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
-      endSession(true);
+        setChargeProcessLoading(true);
     }
   };
+
+  const handleSelectSwitchboard = () => {
+    window.open(
+      `${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`
+    );
+    setTimeout(() => {
+    setSupplierModalOpen(false);
+    setStopChargeRequested(true)
+    }, 5000);
+  };
+
   return (
     <IonPage>
       <IonContent>
+      <IonLoading
+          isOpen={chargeProcessLoading}
+          message={strings.requestStopCharging}
+          onDidDismiss={() => setChargeProcessLoading(false)}
+        />
+        <IonLoading
+          isOpen={stopChargeRequested && !cdrData}
+          message={strings.retrievingSessionData}
+        />
+        <IonLoading
+            isOpen={isAuthorized && !sessionData}
+            message={strings.chargeAuthorized}
+          />
+          <IonLoading
+            isOpen={!isAuthorized}
+            message={strings.requestingAuth}
+          />
         <IonGrid>
           <IonRow>
             <IonCol
@@ -88,7 +117,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
               className=" ion-align-items-center ion-align-self-center"
             >
               <IonIcon
-                onClick={handleBackClick}
+                onClick={() => {history.push('/map')}}
                 icon={chevronBackOutline}
                 className="ion-align-self-center"
               ></IonIcon>
@@ -98,23 +127,28 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
             </IonCol>
             <IonCol size="1" className=" ion-align-items-center"></IonCol>
           </IonRow>
-
-          {isAuthorized && !sessionData && <ChargeAuthorized />}
-          <IonLoading
-            isOpen={!isAuthorized}
-            message={strings.requestingChargeLoader}
-          />
           {isAuthorized && sessionData && (
             <>
               <ChargingStatus
                 chargeSessionData={sessionData}
                 cdrData={cdrData}
               />
+              {!sessionEnded && (
+                  <IonProgressBar type="indeterminate"></IonProgressBar>
+              )}
               <StopCharge
                 handleStopCharge={handleStopSessionClick}
                 sessionEnded={sessionEnded}
               />
             </>
+          )}
+             {presentation && (
+            <WalletPopover
+              isOpen={supplierModalOpen}
+              presentationDataEncoded={presentation}
+              setSupplierModal={setSupplierModalOpen}
+              handleWalletSelect={handleSelectSwitchboard}
+            />
           )}
         </IonGrid>
       </IonContent>
