@@ -145,7 +145,9 @@ describe('ChargeService', () => {
     };
 
     it('should fetch session data for a given session id and format data', async () => {
-      jest.spyOn(ocnDbService, 'getSessionByToken').mockResolvedValue([mockSession]);
+      jest
+        .spyOn(ocnDbService, 'getSessionByToken')
+        .mockResolvedValue([mockSession]);
       const result = {
         start_date_time: mockDate,
         kwh: 0.73,

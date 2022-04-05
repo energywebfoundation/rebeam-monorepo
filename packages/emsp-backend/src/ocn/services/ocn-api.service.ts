@@ -56,7 +56,7 @@ export class OcnApiService implements IPluggableAPI {
             curr.last_updated > acc.last_updated && index ? curr : acc
           );
         }
-        const sessionFormatted = Object.assign(mostRecentSession, sessionPatch)
+        const sessionFormatted = Object.assign(mostRecentSession, sessionPatch);
         this.logger.log(
           `[PATCH session FORMATTED] ${JSON.stringify(
             sessionFormatted,
