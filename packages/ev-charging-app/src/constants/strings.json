@@ -1,5 +1,6 @@
 {
     "charging": "Charging",
+    "chargeAuthorized": "Charge Authorized. \n Your charging session will begin momentarily",
     "chooseSupplierMsg": "Choose your supplier from your SSI wallet",
     "connectToMeteMask": "Connect To MetaMask",
     "contine": "Continue",
@@ -9,6 +10,7 @@
     "googleMaps": "Google Maps",
     "maps": "Maps",
     "requestingChargeLoader": "Requesting Charge...",
+    "retrievingSessionData": "Retrieving Session Data",
     "scanQrCode": "Scan QR Code",
     "selectAProvider": "Select a Provider",
     "selectSupplier": "Select Supplier",
@@ -17,7 +19,9 @@
     "supplier": "Supplier",
     "suppliers": "Suppliers",
     "switchboard": "Switchboard",
+    "requestingAuth": "Requesting Authorization",
     "requestStartCharging": "Request to Start Charging",
+    "requestStopCharging": "Requesting Stop Charge",
     "totalKwH": "Total Kwh",
     "waze": "Waze"   
 }
