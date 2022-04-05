@@ -23,18 +23,18 @@ export const StopCharge = (props: IStopChargeProps) => {
   const { handleStopCharge, sessionEnded } = props;
   return (
     <div>
-        <IonRow class="ion-justify-content-end" className="ion-padding">
-          <IonCol>
-            <StopButton
-              color="danger"
-              expand="block"
-              onClick={handleStopCharge}
-              disabled={sessionEnded}
-            >
-              {strings.stopCharging}
-            </StopButton>
-          </IonCol>
-        </IonRow>
+      <IonRow class="ion-justify-content-end" className="ion-padding">
+        <IonCol>
+          <StopButton
+            color="danger"
+            expand="block"
+            onClick={handleStopCharge}
+            disabled={sessionEnded}
+          >
+            {strings.stopCharging}
+          </StopButton>
+        </IonCol>
+      </IonRow>
     </div>
   );
 };
