@@ -63,7 +63,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   usePollForSessionAuth(isAuthorized, setIsAuthorized);
   usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
-  const { presentation, chargeProcessLoading, setChargeProcessLoading } =
+  const { presentation, pollingForPresentationData, setpollingForPresentationData } =
     usePollForPresentationData(setSupplierModalOpen);
   const { cdrData } = usePollForCDR(
     stopChargeRequested,
@@ -80,7 +80,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
-      setChargeProcessLoading(true);
+        setpollingForPresentationData(true);
     }
   };
 
@@ -94,16 +94,16 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   const handleWalletPopoverDismiss = () => {
     setSupplierModalOpen(false);
-    setChargeProcessLoading(false);
+    setpollingForPresentationData(false);
   };
 
   return (
     <IonPage>
       <IonContent>
         <IonLoading
-          isOpen={chargeProcessLoading}
+          isOpen={pollingForPresentationData}
           message={strings.requestStopCharging}
-          onDidDismiss={() => setChargeProcessLoading(false)}
+          onDidDismiss={() => setpollingForPresentationData(false)}
         />
         <IonLoading
           isOpen={stopChargeRequested && !cdrData}

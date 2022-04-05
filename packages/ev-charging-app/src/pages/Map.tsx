@@ -48,7 +48,7 @@ const Map = (props: MapProps) => {
   const { chargePoints, loadingChargePoints, setLoadingChargePoints } =
     getChargingPoints();
   const mapRef = useRef<MapRef>(null);
-  const { presentation, chargeProcessLoading, setChargeProcessLoading } =
+  const { presentation, pollingForPresentationData, setpollingForPresentationData } =
     usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
@@ -76,7 +76,7 @@ const Map = (props: MapProps) => {
           //Save data to local storage:
           localStorage.setItem('ocpiToken', ocpiToken);
           //Start loading indicator:
-          setChargeProcessLoading(true);
+          setpollingForPresentationData(true);
         }
       } else {
         throw new Error('NO EVSE FOR SELECTED LOCATION');
@@ -115,9 +115,9 @@ const Map = (props: MapProps) => {
     <IonPage>
       <IonContent>
         <IonLoading
-          isOpen={chargeProcessLoading}
+          isOpen={pollingForPresentationData}
           message={strings.requestingChargeLoader}
-          onDidDismiss={() => setChargeProcessLoading(false)}
+          onDidDismiss={() => setpollingForPresentationData(false)}
         />
         <IonLoading
           isOpen={loadingChargePoints}
