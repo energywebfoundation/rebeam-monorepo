@@ -87,8 +87,8 @@ const Map = (props: MapProps) => {
   };
 
   const handleDismissWalletPopover = () => {
-      setSupplierModalOpen(false)
-  }
+    setSupplierModalOpen(false);
+  };
 
   const handleSelectSwitchboard = () => {
     window.open(`${process.env.REACT_APP_SWITCHBOARD_URL}${presentation}`);

@@ -93,9 +93,9 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   };
 
   const handleWalletPopoverDismiss = () => {
-      setSupplierModalOpen(false);
-      setChargeProcessLoading(false);
-  }
+    setSupplierModalOpen(false);
+    setChargeProcessLoading(false);
+  };
 
   return (
     <IonPage>
