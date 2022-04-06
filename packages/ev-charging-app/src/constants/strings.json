@@ -13,12 +13,11 @@
     "selectAProvider": "Select a Provider",
     "selectSupplier": "Select Supplier",
     "sessionEndTime": "Session End Time",
-    "stopCharging": "Stop Charging",
+    "stopCharging": "Request to Stop Charging",
     "supplier": "Supplier",
     "suppliers": "Suppliers",
     "switchboard": "Switchboard",
     "requestStartCharging": "Request to Start Charging",
-    "stopChargingMessage": "You can stop charging from App or by disconnecting charge head from your vehicle",
     "totalKwH": "Total Kwh",
     "waze": "Waze"   
 }
