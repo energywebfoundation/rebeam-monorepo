@@ -63,8 +63,11 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   usePollForSessionAuth(isAuthorized, setIsAuthorized);
   usePollForSessionUpdates(isAuthorized, setSessionData, sessionEnded);
-  const { presentation, pollingForPresentationData, setpollingForPresentationData } =
-    usePollForPresentationData(setSupplierModalOpen);
+  const {
+    presentation,
+    pollingForPresentationData,
+    setpollingForPresentationData,
+  } = usePollForPresentationData(setSupplierModalOpen);
   const { cdrData } = usePollForCDR(
     stopChargeRequested,
     endSession,
@@ -80,7 +83,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
       requestStopBody
     );
     if (result.status === 200) {
-        setpollingForPresentationData(true);
+      setpollingForPresentationData(true);
     }
   };
 
