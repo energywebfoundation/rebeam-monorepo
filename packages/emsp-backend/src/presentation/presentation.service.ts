@@ -20,11 +20,15 @@ export class PresentationService {
   }
 
   async fetchPresentation(id: string): Promise<string | null> {
-    const fetchedData: PresentationDTO = await this.cacheManager.get(`${id}-present`);
+    const fetchedData: PresentationDTO = await this.cacheManager.get(
+      `${id}-present`
+    );
     let transformedData = null;
     if (fetchedData) {
-      this.logger.debug(`Presentation data fetched for ${id}: ${JSON.stringify(fetchedData)}`);
-      const {presentationLink} = fetchedData;
+      this.logger.debug(
+        `Presentation data fetched for ${id}: ${JSON.stringify(fetchedData)}`
+      );
+      const { presentationLink } = fetchedData;
       const dataToString = JSON.stringify(presentationLink);
       transformedData = Buffer.from(dataToString).toString('base64');
     }
