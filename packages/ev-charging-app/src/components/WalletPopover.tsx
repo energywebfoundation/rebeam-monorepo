@@ -57,7 +57,6 @@ export interface IPresentationData {
 }
 
 const WalletPopover = (props: IWalletPopoverProps) => {
-
   const { isOpen, handleWalletSelect, handleDismiss } = props;
   return (
     <>
@@ -74,10 +73,7 @@ const WalletPopover = (props: IWalletPopoverProps) => {
           >
             <StyledHeaderGrid>
               <IonRow className="ion-padding">
-                <IonCol
-                  size="1"
-                  className="ion-align-self-center"
-                >
+                <IonCol size="1" className="ion-align-self-center">
                   <IonIcon
                     icon={closeOutline}
                     style={{
