@@ -48,18 +48,27 @@ export class OcnApiService implements IPluggableAPI {
         await this.dbService.insertSession(sessionFormatted);
         return;
       },
-      patch: async (sessionPatch: Partial<ISession>, sessionId: string, countryCode: string, partyId: string) => {
+      patch: async (
+        sessionPatch: Partial<ISession>,
+        sessionId: string,
+        countryCode: string,
+        partyId: string
+      ) => {
         this.logger.debug(
           `[RECEIVING PATCH UPDATE] ${JSON.stringify(sessionPatch, null, 2)}`,
           OcnApiService.name
         );
-        const sessions = await this.dbService.getSessionById(sessionId, countryCode, partyId);
+        const sessions = await this.dbService.getSessionById(
+          sessionId,
+          countryCode,
+          partyId
+        );
         let mostRecentSession: Session;
         if (Array.isArray(sessions) && sessions?.length) {
-            this.logger.debug(
-                `Session found for patch update`,
-                OcnApiService.name
-              );
+          this.logger.debug(
+            `Session found for patch update`,
+            OcnApiService.name
+          );
           mostRecentSession = sessions.reduce((acc, curr, index) =>
             curr.last_updated > acc.last_updated && index ? curr : acc
           );
