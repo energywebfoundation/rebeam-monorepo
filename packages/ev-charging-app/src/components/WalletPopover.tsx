@@ -52,7 +52,6 @@ interface IWalletPopoverProps {
   handleWalletSelect: () => void;
   handleDismiss: () => void;
 }
-
 export interface IPresentationData {
   prentationLinkEncoded: string;
 }

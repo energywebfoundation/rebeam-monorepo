@@ -32,12 +32,11 @@ const Map = (props: MapProps) => {
   const history = useHistory();
   const { setSelectedChargePoint, selectedChargePoint } =
     props;
-    //const [presentation, setPresentation] = useState<string | undefined>(undefined); 
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [viewport, setViewport] = useState({
-    latitude: 52.54154,
-    longitude: 13.38588,
+    latitude: 48.7400511,
+    longitude: 9.0963999,
     zoom: 15,
     minZoom: 2.1,
     bearing: 0,
@@ -55,7 +54,6 @@ const Map = (props: MapProps) => {
   } = usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
-      console.log("IN HANDLE START CHARGE")
       let evseParsed;
       if (selectedChargePoint?.evses) {
         const { countryCode, partyId } = selectedChargePoint;

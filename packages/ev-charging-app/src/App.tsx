@@ -56,7 +56,7 @@ const App: React.FC = () => {
             ></Map>
           </Route>
           <Route exact path="/charge">
-            <ChargingSession/>
+            <ChargingSession />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

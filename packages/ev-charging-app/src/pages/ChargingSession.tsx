@@ -29,7 +29,6 @@ const ChargingHeader = styled.h1`
   margin: 10px 0;
 `;
 
-
 export interface ISessionData {
   kwh?: number;
   formattedCost?: string;
@@ -150,13 +149,13 @@ const ChargingSession = () => {
               />
             </>
           )}
-      
-            <WalletPopover
-              isOpen={supplierModalOpen && !!presentation}
-              presentationDataEncoded={presentation}
-              handleWalletSelect={handleSelectSwitchboard}
-              handleDismiss={handleWalletPopoverDismiss}
-            />
+
+          <WalletPopover
+            isOpen={supplierModalOpen && !!presentation}
+            presentationDataEncoded={presentation}
+            handleWalletSelect={handleSelectSwitchboard}
+            handleDismiss={handleWalletPopoverDismiss}
+          />
         </IonGrid>
       </IonContent>
     </IonPage>
