@@ -42,7 +42,6 @@ const App: React.FC = () => {
   const [selectedChargePoint, setSelectedChargePoint] = useState<
     ChargePoint | undefined
   >(undefined);
-  const [ocpiToken, setOcpiToken] = useState<string>('');
   return (
     <IonApp>
       <IonReactRouter>
@@ -54,12 +53,10 @@ const App: React.FC = () => {
             <Map
               setSelectedChargePoint={setSelectedChargePoint}
               selectedChargePoint={selectedChargePoint}
-              setToken={setOcpiToken}
-              token={ocpiToken}
             ></Map>
           </Route>
           <Route exact path="/charge">
-            <ChargingSession token={ocpiToken} />
+            <ChargingSession/>
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

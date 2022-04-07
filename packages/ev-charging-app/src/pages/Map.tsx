@@ -16,8 +16,6 @@ import { useHistory } from 'react-router-dom';
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
-  setToken: (x: string) => void;
-  token?: string;
 }
 
 export interface IPresentationData {
@@ -32,13 +30,14 @@ const MapContainer = styled.div`
 
 const Map = (props: MapProps) => {
   const history = useHistory();
-  const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
+  const { setSelectedChargePoint, selectedChargePoint } =
     props;
+    //const [presentation, setPresentation] = useState<string | undefined>(undefined); 
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [viewport, setViewport] = useState({
-    latitude: 48.7400511,
-    longitude: 9.0963999,
+    latitude: 52.54154,
+    longitude: 13.38588,
     zoom: 15,
     minZoom: 2.1,
     bearing: 0,
@@ -52,10 +51,11 @@ const Map = (props: MapProps) => {
     presentation,
     pollingForPresentationData,
     setpollingForPresentationData,
+    setPresentation
   } = usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
-    if (!token) {
+      console.log("IN HANDLE START CHARGE")
       let evseParsed;
       if (selectedChargePoint?.evses) {
         const { countryCode, partyId } = selectedChargePoint;
@@ -74,23 +74,17 @@ const Map = (props: MapProps) => {
         const { ocpiToken } = data;
         if (ocpiToken) {
           console.log(ocpiToken, 'post this to swagger');
-          //Set the token to state:
-          setToken(ocpiToken);
-          //Save data to local storage:
           localStorage.setItem('ocpiToken', ocpiToken);
-          //Start loading indicator:
           setpollingForPresentationData(true);
         }
       } else {
         throw new Error('NO EVSE FOR SELECTED LOCATION');
       }
-    } else {
-      setSupplierModalOpen(true);
-    }
   };
 
   const handleDismissWalletPopover = () => {
     setSupplierModalOpen(false);
+    setPresentation(undefined); 
   };
 
   const handleSelectSwitchboard = () => {
@@ -167,19 +161,15 @@ const Map = (props: MapProps) => {
               isOpen={showChargeStationModal}
               handleStartCharge={handleStartCharge}
               showModal={setShowChargeStationModal}
-              setToken={setToken}
               setSelectedChargePoint={setSelectedChargePoint}
             />
           )}
-          {presentation && (
             <WalletPopover
-              isOpen={supplierModalOpen}
+              isOpen={supplierModalOpen && !!presentation}
               presentationDataEncoded={presentation}
-              setSupplierModal={setSupplierModalOpen}
               handleWalletSelect={handleSelectSwitchboard}
               handleDismiss={handleDismissWalletPopover}
             />
-          )}
         </MapContainer>
       </IonContent>
     </IonPage>

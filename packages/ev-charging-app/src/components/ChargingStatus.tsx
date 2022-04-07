@@ -41,6 +41,10 @@ const PaddedRow = styled(IonRow)`
   margin-bottom: 40px;
 `;
 
+const ChargeDataRow = styled(IonRow)`
+margin-top: 20%;
+`
+
 interface IChargingStatusProps {
   chargeSessionData: ISessionData;
   cdrData?: ICdrData;
@@ -50,8 +54,7 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
   const { chargeSessionData, cdrData } = props;
   const { kwh, formattedStartTime } = chargeSessionData;
   return (
-    <div>
-      <IonRow>
+      <ChargeDataRow className="ion-padding">
         <IonCol size="6">
           <IonGrid>
             <IonRow>
@@ -99,8 +102,7 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
         <IonCol size="6" className="ion-align-self-center">
           <CarImg src={BMWIcon} />
         </IonCol>
-      </IonRow>
-    </div>
+      </ChargeDataRow>
   );
 };
 
