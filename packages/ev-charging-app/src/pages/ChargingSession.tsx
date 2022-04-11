@@ -29,10 +29,6 @@ const ChargingHeader = styled.h1`
   margin: 10px 0;
 `;
 
-interface IChargingSessionProps {
-  token: string;
-}
-
 export interface ISessionData {
   kwh?: number;
   formattedCost?: string;
@@ -53,7 +49,7 @@ export interface IPresentationData {
   prentationLinkEncoded: string;
 }
 
-const ChargingSession: React.FC<IChargingSessionProps> = () => {
+const ChargingSession = () => {
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sessionData, setSessionData] = useState<ISessionData | null>(null);
@@ -66,6 +62,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
   const {
     presentation,
     pollingForPresentationData,
+    setPresentation,
     setpollingForPresentationData,
   } = usePollForPresentationData(setSupplierModalOpen);
   const { cdrData } = usePollForCDR(
@@ -97,6 +94,7 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
 
   const handleWalletPopoverDismiss = () => {
     setSupplierModalOpen(false);
+    setPresentation(undefined);
     setpollingForPresentationData(false);
   };
 
@@ -151,15 +149,13 @@ const ChargingSession: React.FC<IChargingSessionProps> = () => {
               />
             </>
           )}
-          {presentation && (
-            <WalletPopover
-              isOpen={supplierModalOpen}
-              presentationDataEncoded={presentation}
-              setSupplierModal={setSupplierModalOpen}
-              handleWalletSelect={handleSelectSwitchboard}
-              handleDismiss={handleWalletPopoverDismiss}
-            />
-          )}
+
+          <WalletPopover
+            isOpen={supplierModalOpen && !!presentation}
+            presentationDataEncoded={presentation}
+            handleWalletSelect={handleSelectSwitchboard}
+            handleDismiss={handleWalletPopoverDismiss}
+          />
         </IonGrid>
       </IonContent>
     </IonPage>

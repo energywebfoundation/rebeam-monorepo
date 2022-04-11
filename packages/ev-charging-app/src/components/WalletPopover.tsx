@@ -28,7 +28,6 @@ const StyledHeader = styled(IonHeader)`
 `;
 
 const SupplierHeader = styled(IonHeader)`
-  margin: 20px 0;
   font-weight: normal;
   font-size: 21px;
   line-height: 25px;
@@ -49,18 +48,16 @@ const RetailerLogoImg = styled(IonImg)`
 `;
 interface IWalletPopoverProps {
   isOpen: boolean;
-  presentationDataEncoded: string;
-  setSupplierModal: (x: boolean) => void;
+  presentationDataEncoded?: string;
   handleWalletSelect: () => void;
   handleDismiss: () => void;
 }
-
 export interface IPresentationData {
   prentationLinkEncoded: string;
 }
 
 const WalletPopover = (props: IWalletPopoverProps) => {
-  const { isOpen, setSupplierModal, handleWalletSelect, handleDismiss } = props;
+  const { isOpen, handleWalletSelect, handleDismiss } = props;
   return (
     <>
       <IonPopover
@@ -75,26 +72,17 @@ const WalletPopover = (props: IWalletPopoverProps) => {
             }}
           >
             <StyledHeaderGrid>
-              <IonRow
-                style={{
-                  marginLeft: '10px',
-                }}
-              >
-                <IonCol
-                  size="1"
-                  className="ion-align-items-center ion-align-self-center"
-                >
+              <IonRow className="ion-padding">
+                <IonCol size="1" className="ion-align-self-center">
                   <IonIcon
                     icon={closeOutline}
                     style={{
                       width: '16.33px',
                     }}
-                    onClick={() => {
-                      setSupplierModal(false);
-                    }}
+                    onClick={handleDismiss}
                   ></IonIcon>
                 </IonCol>
-                <IonCol className="ion-align-items-center ion-justify-content-start">
+                <IonCol className="ion-align-self-center">
                   <SupplierHeader>{strings.supplier}</SupplierHeader>
                 </IonCol>
               </IonRow>

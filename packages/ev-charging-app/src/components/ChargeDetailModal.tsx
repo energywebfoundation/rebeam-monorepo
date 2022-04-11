@@ -24,7 +24,6 @@ export interface DetailModalProps {
   isOpen: boolean;
   handleStartCharge: () => void;
   showModal: (x: boolean) => void;
-  setToken: (x: string) => void;
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
 }
 

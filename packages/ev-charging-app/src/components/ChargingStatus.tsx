@@ -41,6 +41,10 @@ const PaddedRow = styled(IonRow)`
   margin-bottom: 40px;
 `;
 
+const ChargeDataRow = styled(IonRow)`
+  margin-top: 20%;
+`;
+
 interface IChargingStatusProps {
   chargeSessionData: ISessionData;
   cdrData?: ICdrData;
@@ -50,57 +54,55 @@ export const ChargingStatus = (props: IChargingStatusProps) => {
   const { chargeSessionData, cdrData } = props;
   const { kwh, formattedStartTime } = chargeSessionData;
   return (
-    <div>
-      <IonRow>
-        <IonCol size="6">
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <StartTime>{formattedStartTime}</StartTime>
-              </IonCol>
-            </IonRow>
-            <PaddedRow>
-              <IonCol>
-                <DataType>{strings.duration}</DataType>
-              </IonCol>
-            </PaddedRow>
-            <IonRow>
-              <IonCol>
-                <DataValue>{kwh || '...'}</DataValue>
-              </IonCol>
-            </IonRow>
-            <PaddedRow>
-              <IonCol>
-                <DataType>{strings.totalKwH}</DataType>
-              </IonCol>
-            </PaddedRow>
-            <IonRow>
-              <IonCol>
-                <DataValue>{cdrData?.formattedCost || '...'}</DataValue>
-              </IonCol>
-            </IonRow>
-            <PaddedRow>
-              <IonCol>
-                <DataType>{strings.cost}</DataType>
-              </IonCol>
-            </PaddedRow>
-            <IonRow>
-              <IonCol>
-                <StartTime>{cdrData?.formattedEndTime || '...'}</StartTime>
-              </IonCol>
-            </IonRow>
-            <PaddedRow>
-              <IonCol>
-                <DataType>{strings.sessionEndTime}</DataType>
-              </IonCol>
-            </PaddedRow>
-          </IonGrid>
-        </IonCol>
-        <IonCol size="6" className="ion-align-self-center">
-          <CarImg src={BMWIcon} />
-        </IonCol>
-      </IonRow>
-    </div>
+    <ChargeDataRow className="ion-padding">
+      <IonCol size="6">
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <StartTime>{formattedStartTime}</StartTime>
+            </IonCol>
+          </IonRow>
+          <PaddedRow>
+            <IonCol>
+              <DataType>{strings.duration}</DataType>
+            </IonCol>
+          </PaddedRow>
+          <IonRow>
+            <IonCol>
+              <DataValue>{kwh || '...'}</DataValue>
+            </IonCol>
+          </IonRow>
+          <PaddedRow>
+            <IonCol>
+              <DataType>{strings.totalKwH}</DataType>
+            </IonCol>
+          </PaddedRow>
+          <IonRow>
+            <IonCol>
+              <DataValue>{cdrData?.formattedCost || '...'}</DataValue>
+            </IonCol>
+          </IonRow>
+          <PaddedRow>
+            <IonCol>
+              <DataType>{strings.cost}</DataType>
+            </IonCol>
+          </PaddedRow>
+          <IonRow>
+            <IonCol>
+              <StartTime>{cdrData?.formattedEndTime || '...'}</StartTime>
+            </IonCol>
+          </IonRow>
+          <PaddedRow>
+            <IonCol>
+              <DataType>{strings.sessionEndTime}</DataType>
+            </IonCol>
+          </PaddedRow>
+        </IonGrid>
+      </IonCol>
+      <IonCol size="6" className="ion-align-self-center">
+        <CarImg src={BMWIcon} />
+      </IonCol>
+    </ChargeDataRow>
   );
 };
 

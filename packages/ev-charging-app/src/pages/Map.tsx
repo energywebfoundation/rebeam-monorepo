@@ -16,8 +16,6 @@ import { useHistory } from 'react-router-dom';
 interface MapProps {
   setSelectedChargePoint: (x: ChargePoint | undefined) => void;
   selectedChargePoint?: ChargePoint;
-  setToken: (x: string) => void;
-  token?: string;
 }
 
 export interface IPresentationData {
@@ -32,8 +30,7 @@ const MapContainer = styled.div`
 
 const Map = (props: MapProps) => {
   const history = useHistory();
-  const { setSelectedChargePoint, selectedChargePoint, setToken, token } =
-    props;
+  const { setSelectedChargePoint, selectedChargePoint } = props;
   const [supplierModalOpen, setSupplierModalOpen] = useState(false);
   const [showChargeStationModal, setShowChargeStationModal] = useState(false);
   const [viewport, setViewport] = useState({
@@ -52,45 +49,39 @@ const Map = (props: MapProps) => {
     presentation,
     pollingForPresentationData,
     setpollingForPresentationData,
+    setPresentation,
   } = usePollForPresentationData(setSupplierModalOpen);
 
   const handleStartCharge = async () => {
-    if (!token) {
-      let evseParsed;
-      if (selectedChargePoint?.evses) {
-        const { countryCode, partyId } = selectedChargePoint;
-        evseParsed = JSON.parse(selectedChargePoint?.evses);
-        const selectedChargePointData = {
-          locationId: selectedChargePoint?.id,
-          countryCode,
-          partyId,
-          evseId: evseParsed[0].uid,
-        };
-        const result = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}charge/initiate`,
-          selectedChargePointData
-        );
-        const { data } = result;
-        const { ocpiToken } = data;
-        if (ocpiToken) {
-          console.log(ocpiToken, 'post this to swagger');
-          //Set the token to state:
-          setToken(ocpiToken);
-          //Save data to local storage:
-          localStorage.setItem('ocpiToken', ocpiToken);
-          //Start loading indicator:
-          setpollingForPresentationData(true);
-        }
-      } else {
-        throw new Error('NO EVSE FOR SELECTED LOCATION');
+    let evseParsed;
+    if (selectedChargePoint?.evses) {
+      const { countryCode, partyId } = selectedChargePoint;
+      evseParsed = JSON.parse(selectedChargePoint?.evses);
+      const selectedChargePointData = {
+        locationId: selectedChargePoint?.id,
+        countryCode,
+        partyId,
+        evseId: evseParsed[0].uid,
+      };
+      const result = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}charge/initiate`,
+        selectedChargePointData
+      );
+      const { data } = result;
+      const { ocpiToken } = data;
+      if (ocpiToken) {
+        console.log(ocpiToken, 'post this to swagger');
+        localStorage.setItem('ocpiToken', ocpiToken);
+        setpollingForPresentationData(true);
       }
     } else {
-      setSupplierModalOpen(true);
+      throw new Error('NO EVSE FOR SELECTED LOCATION');
     }
   };
 
   const handleDismissWalletPopover = () => {
     setSupplierModalOpen(false);
+    setPresentation(undefined);
   };
 
   const handleSelectSwitchboard = () => {
@@ -167,19 +158,15 @@ const Map = (props: MapProps) => {
               isOpen={showChargeStationModal}
               handleStartCharge={handleStartCharge}
               showModal={setShowChargeStationModal}
-              setToken={setToken}
               setSelectedChargePoint={setSelectedChargePoint}
             />
           )}
-          {presentation && (
-            <WalletPopover
-              isOpen={supplierModalOpen}
-              presentationDataEncoded={presentation}
-              setSupplierModal={setSupplierModalOpen}
-              handleWalletSelect={handleSelectSwitchboard}
-              handleDismiss={handleDismissWalletPopover}
-            />
-          )}
+          <WalletPopover
+            isOpen={supplierModalOpen && !!presentation}
+            presentationDataEncoded={presentation}
+            handleWalletSelect={handleSelectSwitchboard}
+            handleDismiss={handleDismissWalletPopover}
+          />
         </MapContainer>
       </IonContent>
     </IonPage>
