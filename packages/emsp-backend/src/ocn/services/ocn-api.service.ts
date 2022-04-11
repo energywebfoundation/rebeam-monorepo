@@ -8,6 +8,8 @@ import {
 } from '@energyweb/ocn-bridge';
 import { LoggerService } from '../../logger/logger.service';
 import { OcnDbService } from './ocn-db.service';
+import { formatSessionforDb } from '../utils';
+import { Session } from '../schemas/session.schema';
 
 @Injectable()
 export class OcnApiService implements IPluggableAPI {
@@ -34,12 +36,7 @@ export class OcnApiService implements IPluggableAPI {
     receiver: {
       // TODO: implement PUT method (save sessions in database)
       update: async (session: ISession): Promise<void> => {
-        const {
-          cdr_token: { uid },
-        } = session;
-        const sessionFormatted = Object.assign({}, session, {
-          session_token: uid,
-        });
+        const sessionFormatted = formatSessionforDb(session);
         this.logger.log(
           `[PUT session FORMATTED] ${JSON.stringify(
             sessionFormatted,
@@ -51,7 +48,43 @@ export class OcnApiService implements IPluggableAPI {
         await this.dbService.insertSession(sessionFormatted);
         return;
       },
-      // TODO: patch needs to be implemented in OCN-BRIDGE
+      patch: async (
+        sessionPatch: Partial<ISession>,
+        sessionId: string,
+        countryCode: string,
+        partyId: string
+      ) => {
+        this.logger.debug(
+          `[RECEIVING PATCH UPDATE] ${JSON.stringify(sessionPatch, null, 2)}`,
+          OcnApiService.name
+        );
+        const sessions = await this.dbService.getSessionById(
+          sessionId,
+          countryCode,
+          partyId
+        );
+        let mostRecentSession: Session;
+        if (Array.isArray(sessions) && sessions?.length) {
+          this.logger.debug(
+            `Session found for patch update`,
+            OcnApiService.name
+          );
+          mostRecentSession = sessions.reduce((acc, curr, index) =>
+            curr.last_updated > acc.last_updated && index ? curr : acc
+          );
+        }
+        const sessionFormatted = Object.assign(mostRecentSession, sessionPatch);
+        this.logger.log(
+          `[PATCH session FORMATTED] ${JSON.stringify(
+            sessionFormatted,
+            null,
+            2
+          )}`,
+          OcnApiService.name
+        );
+        await this.dbService.insertSession(sessionFormatted);
+        return;
+      },
     },
   };
 
