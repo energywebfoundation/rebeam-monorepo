@@ -54,7 +54,7 @@ async function request(url, options, postData) {
 
   const buff = Buffer.from(switchboardUrl.split("oob=")[1], "base64");
   const decoded = buff.toString("ascii");
-  const startUrl = JSON.parse(decoded).presentationLink.url;
+  const startUrl = JSON.parse(decoded).url;
 
   console.log(`Calling startUrl at: ${startUrl}`);
 
