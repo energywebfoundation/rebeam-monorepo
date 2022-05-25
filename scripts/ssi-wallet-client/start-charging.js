@@ -5,36 +5,41 @@
 
 /////////////////
 
-const { realpath } = require("fs");
-const https = require("https");
+const { realpath } = require('fs');
+const https = require('https');
 
-const readline = require("readline").createInterface({
+const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const baseUrl = "https://web.ev-dashboard.energyweb.org";
+const querystring = require('querystring');
+
+const {
+  chargingDataCredential,
+  energyContractCredential,
+} = require('./credentials');
+
+const vcApiUrl = 'https://vc-api-dev.energyweb.org';
 
 //https://nodejs.org/api/http.html#httprequestoptions-callback
 async function request(url, options, postData) {
   return new Promise((resolve, reject) => {
-    let data;
+    let data = '';
     const req = https.request(url, options, (res) => {
       console.log(`STATUS: ${res.statusCode}`);
-      // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-      res.setEncoding("utf8");
-      res.on("data", (chunk) => {
-        console.log(`BODY: ${chunk}`);
-        data = chunk;
+      res.setEncoding('utf8');
+      res.on('data', (chunk) => {
+        data = `${data}${chunk}`;
       });
-      res.on("end", () => {
-        console.log("No more data in response.");
+      res.on('end', () => {
+        console.dir(JSON.parse(data), { depth: 20, colors: true });
         resolve(JSON.parse(data));
       });
     });
 
-    req.on("error", (e) => {
-      console.error(`problem with request: ${e.message}`);
+    req.on('error', (e) => {
+      console.dir(JSON.parse(e), { depth: 10, colors: true });
       reject();
     });
 
@@ -48,27 +53,43 @@ async function request(url, options, postData) {
 
 (async () => {
   // e.g. https://switchboard-staging.energyweb.org/?_oob=eyJwcmVzZW50YXRpb25MaW5rIjp7InR5cGUiOiJ2Yy1hcGktZXhjaGFuZ2UiLCJ1cmwiOiJodHRwczovL3dlYi5ldi1kYXNoYm9hcmQuZW5lcmd5d2ViLm9yZy92Yy1hcGkvZXhjaGFuZ2VzL2RpZDpldGhyOmJseG0tZGV2OjB4YkYwMUFFMkM4NDNiRWM4NDE5MWFBMzlkQjVGOTMxODUzZWJBM2Q3MCIsInNzaVNlc3Npb24iOiIifSwib2NwaVRva2VuVUlEIjoiMGIyYjdhOWEtNWIxMi00MDc5LWEyNmItNmM1NjExMmJiMTU1In0=
-  const switchboardUrl = await new Promise((resolve) => {
-    readline.question("Enter base64 encoded Switchboard URL:", resolve);
-  });
+  const switchboardUrl = new URL(
+    await new Promise((resolve) => {
+      readline.question('Enter base64 encoded Switchboard URL:', resolve);
+    })
+  );
 
-  const buff = Buffer.from(switchboardUrl.split("oob=")[1], "base64");
-  const decoded = buff.toString("ascii");
-  const startUrl = JSON.parse(decoded).presentationLink.url;
+  const buff = Buffer.from(switchboardUrl.searchParams.get('_oob'), 'base64');
+  const decoded = buff.toString('ascii');
+  console.dir(decoded, { depth: 20, colors: true });
+  const exchangeUrl = JSON.parse(decoded).url;
 
-  console.log(`Calling startUrl at: ${startUrl}`);
+  console.log(`Calling startUrl at: ${exchangeUrl}`);
+
+  // INITIATE EXCHANGE
+  console.log('initiating exchange');
+  const initiateOptions = {
+    method: 'POST',
+  };
+  const initiateResult = await request(exchangeUrl, initiateOptions);
+  const challenge = initiateResult.vpRequest.challenge;
+  const continueUrl =
+    initiateResult.vpRequest.interact.service[0].serviceEndpoint.replace(
+      'http://localhost:3000',
+      vcApiUrl
+    );
 
   // CREATE DIDs
-  console.log("create DIDs");
-  const createDidUrl = `${baseUrl}/did`;
+  console.log('create DIDs');
+  const createDidUrl = `${vcApiUrl}/did`;
   const createDidBody = JSON.stringify({
-    method: "key",
+    method: 'key',
   });
   const createDidOptions = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(createDidBody),
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(createDidBody),
     },
   };
   const issuerDIDDoc = await request(
@@ -83,107 +104,95 @@ async function request(url, options, postData) {
   );
 
   // ISSUE CREDENTIAL FROM SUPPLIER TO CUSTOMER
-  const issueCredentialUrl = `${baseUrl}/vc-api/credentials/issue`;
-  const issuerCredentialBody = JSON.stringify({
-    credential: {
-      "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        {
-          issuerFields: {
-            "@id": "ew:issuerFields",
-            "@type": "ew:IssuerFields",
-          },
-          namespace: "ew:namespace",
-          role: {
-            "@id": "ew:role",
-            "@type": "ew:Role",
-          },
-          ew: "https://energyweb.org/ld-context-2022#",
-          version: "ew:version",
-          EWFRole: "ew:EWFRole",
-        },
-      ],
-      id: "urn:uuid:7f94d397-3e70-4a43-945e-1a13069e636f",
-      type: ["VerifiableCredential", "EWFRole"],
-      credentialSubject: {
-        id: holderDIDDoc.id,
-        issuerFields: [],
-        role: {
-          namespace: "customer.roles.rebeam.apps.eliagroup.iam.ewc",
-          version: "1",
-        },
-      },
-      issuer: issuerDIDDoc.id,
-      issuanceDate: "2022-03-18T08:57:32.477Z",
-    },
+  const issueCredentialUrl = `${vcApiUrl}/vc-api/credentials/issue`;
+  const issueEWFRoleCredentialBody = JSON.stringify({
+    credential: energyContractCredential(holderDIDDoc.id, issuerDIDDoc.id),
     options: {
       verificationMethod: issuerDIDDoc.verificationMethod[0].id,
-      proofPurpose: "assertionMethod",
+      proofPurpose: 'assertionMethod',
     },
   });
-  const issueCredentialOptions = {
-    method: "POST",
+  const issueEWFRoleCredentialOptions = {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(issuerCredentialBody),
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(issueEWFRoleCredentialBody),
     },
   };
-  const vc = await request(
+  const EWFRoleVc = await request(
     issueCredentialUrl,
-    issueCredentialOptions,
-    issuerCredentialBody
+    issueEWFRoleCredentialOptions,
+    issueEWFRoleCredentialBody
   );
 
-  // INITIATE EXCHANGE
-  console.log("initiating exchange");
-  const initiateOptions = {
-    method: "POST",
+  // ISSUE CHARGING DATA CREDENTIAL
+  const chargingDataConstraints =
+    initiateResult.vpRequest.query[0].credentialQuery[0].presentationDefinition.input_descriptors.find(
+      (d) => d.id === 'charging_data'
+    ).constraints;
+  const contractDID = chargingDataConstraints.fields.find((f) =>
+    f.path.includes('$.credentialSubject.chargingData.contractDID')
+  ).filter.const;
+  const timeStamp = chargingDataConstraints.fields.find((f) =>
+    f.path.includes('$.credentialSubject.chargingData.timeStamp')
+  ).filter.const;
+  const issueChargingDataCredentialBody = JSON.stringify({
+    credential: chargingDataCredential(holderDIDDoc.id, contractDID, timeStamp),
+    options: {
+      verificationMethod: holderDIDDoc.verificationMethod[0].id,
+      proofPurpose: 'assertionMethod',
+    },
+  });
+  const issueChargingDataCredentialOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(issueChargingDataCredentialBody),
+    },
   };
-  const initiateResult = await request(startUrl, initiateOptions);
-  const challenge = initiateResult.vpRequest.challenge;
-  const continueUrl =
-    initiateResult.vpRequest.interact.service[0].serviceEndpoint.replace(
-      "http://localhost:3000",
-      baseUrl
-    );
+  const chargingDataVc = await request(
+    issueCredentialUrl,
+    issueChargingDataCredentialOptions,
+    issueChargingDataCredentialBody
+  );
 
   // PROVE PRESENTATION
-  console.log("prove presentation");
-  const proveUrl = `${baseUrl}/vc-api/presentations/prove`;
+  console.log('prove presentation');
+  const proveUrl = `${vcApiUrl}/vc-api/presentations/prove`;
   const proveBody = JSON.stringify({
     presentation: {
-      "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "https://www.w3.org/2018/credentials/examples/v1",
+      '@context': [
+        'https://www.w3.org/2018/credentials/v1',
+        'https://www.w3.org/2018/credentials/examples/v1',
       ],
-      type: ["VerifiablePresentation"],
-      verifiableCredential: [vc],
+      type: ['VerifiablePresentation'],
+      verifiableCredential: [EWFRoleVc, chargingDataVc],
       holder: holderDIDDoc.id,
     },
     options: {
       verificationMethod: holderDIDDoc.verificationMethod[0].id,
-      proofPurpose: "authentication",
+      proofPurpose: 'authentication',
       challenge,
     },
   });
   const proveOptions = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(proveBody),
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(proveBody),
     },
   };
   const proveResponse = await request(proveUrl, proveOptions, proveBody);
-  console.log(proveResponse);
+  // console.log(proveResponse);
 
   // CONTINUE EXCHANGE
-  console.log("continue exchange");
+  console.log('continue exchange');
   const continueBody = JSON.stringify(proveResponse);
   const continueOptions = {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": Buffer.byteLength(continueBody),
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(continueBody),
     },
   };
   const continueResult = await request(
@@ -193,5 +202,5 @@ async function request(url, options, postData) {
   );
   console.log(continueResult);
 
-  console.log("done");
+  console.log('done');
 })();
