@@ -20,30 +20,39 @@ const energyContractCredential = (subjectDID, issuerDID) => ({
   issuanceDate: '2022-03-18T08:57:32.477Z',
 });
 
-const chargingDataCredential = (subjectDID, contractDID, timeStamp) => ({
-  '@context': [
-    'https://www.w3.org/2018/credentials/v1',
-    {
-      timeStamp: 'ew:timeStamp',
-      chargingData: { '@id': 'ew:chargingData', '@type': 'ew:chargingData' },
-      ChargingData: 'ew:ChargingData',
-      contractDID: 'ew:contractDID',
-      evseId: 'ew:evseId',
-      ew: 'https://energyweb.org/ld-context-2022#',
+const chargingDataCredential = (
+  subjectDID,
+  /**contractDID, timeStamp, kwh?*/ chargingData
+) => {
+  console.dir(chargingData);
+  return {
+    '@context': [
+      'https://www.w3.org/2018/credentials/v1',
+      {
+        timeStamp: 'ew:timeStamp',
+        chargingData: { '@id': 'ew:chargingData', '@type': 'ew:chargingData' },
+        ChargingData: 'ew:ChargingData',
+        contractDID: 'ew:contractDID',
+        evseId: 'ew:evseId',
+        kwh: 'ew:kwh',
+        ew: 'https://energyweb.org/ld-context-2022#',
+      },
+    ],
+    id: 'urn:uuid:a6032135-75d6-4019-b59d-420168c7cd85',
+    type: ['VerifiableCredential', 'ChargingData'],
+    credentialSubject: {
+      id: subjectDID,
+      chargingData,
+      // : {
+      //   contractDID,
+      //   evseId: '892',
+      //   timeStamp,
+      //   kwh,
+      // }
     },
-  ],
-  id: 'urn:uuid:a6032135-75d6-4019-b59d-420168c7cd85',
-  type: ['VerifiableCredential', 'ChargingData'],
-  credentialSubject: {
-    id: subjectDID,
-    chargingData: {
-      contractDID,
-      evseId: '892',
-      timeStamp,
-    },
-  },
-  issuer: subjectDID,
-  issuanceDate: '2022-03-18T08:57:32.477Z',
-});
+    issuer: subjectDID,
+    issuanceDate: '2022-03-18T08:57:32.477Z',
+  };
+};
 
 module.exports = { energyContractCredential, chargingDataCredential };

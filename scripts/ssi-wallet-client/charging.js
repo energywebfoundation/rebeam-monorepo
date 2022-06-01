@@ -17,10 +17,10 @@ const {
 const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
 
 (async () => {
-  // e.g. to start charging https://switchboard-staging.energyweb.org/?_oob=eyJwcmVzZW50YXRpb25MaW5rIjp7InR5cGUiOiJ2Yy1hcGktZXhjaGFuZ2UiLCJ1cmwiOiJodHRwczovL3dlYi5ldi1kYXNoYm9hcmQuZW5lcmd5d2ViLm9yZy92Yy1hcGkvZXhjaGFuZ2VzL2RpZDpldGhyOmJseG0tZGV2OjB4YkYwMUFFMkM4NDNiRWM4NDE5MWFBMzlkQjVGOTMxODUzZWJBM2Q3MCIsInNzaVNlc3Npb24iOiIifSwib2NwaVRva2VuVUlEIjoiMGIyYjdhOWEtNWIxMi00MDc5LWEyNmItNmM1NjExMmJiMTU1In0=
-  // to stop charging https://switchboard-staging.energyweb.org/dashboard?_oob=eyJ0eXBlIjoidmMtYXBpLWV4Y2hhbmdlIiwidXJsIjoiaHR0cHM6Ly92Yy1hcGktZGV2LmVuZXJneXdlYi5vcmcvdmMtYXBpL2V4Y2hhbmdlcy9kaWQ6ZXRocjpibHhtLWRldjoweDVGMUQwNUY0YjYxMUU4ZjZCY2E5NzZGMjY4RGQ1ZGNGMTJkYThjZUVlbmQiLCJzc2lTZXNzaW9uIjoiIn0%3D
-  // issuerDID did:key:z6MknCoaq62sFwAVNo8GwSnVkGqiFiuBd3hkdimU6DeoJh7b
-  // holderDID did:key:z6MknCoaq62sFwAVNo8GwSnVkGqiFiuBd3hkdimU6DeoJh7b
+  // e.g. to start charging https://switchboard-staging.energyweb.org/dashboard?_oob=eyJ0eXBlIjoidmMtYXBpLWV4Y2hhbmdlIiwidXJsIjoiaHR0cHM6Ly92Yy1hcGktZGV2LmVuZXJneXdlYi5vcmcvdmMtYXBpL2V4Y2hhbmdlcy9kaWQ6ZXRocjpibHhtLWRldjoweDc4ZWRCMTU0MDdFMUJiMEM2ODJlQjUwZTY4OTJlMUM0NDk0RkQzNzYiLCJzc2lTZXNzaW9uIjoiIn0%3D
+  // to stop charging https://switchboard-staging.energyweb.org/dashboard?_oob=eyJ0eXBlIjoidmMtYXBpLWV4Y2hhbmdlIiwidXJsIjoiaHR0cHM6Ly92Yy1hcGktZGV2LmVuZXJneXdlYi5vcmcvdmMtYXBpL2V4Y2hhbmdlcy9kaWQ6ZXRocjpibHhtLWRldjoweDc4ZWRCMTU0MDdFMUJiMEM2ODJlQjUwZTY4OTJlMUM0NDk0RkQzNzZlbmQiLCJzc2lTZXNzaW9uIjoiIn0%3D
+  // issuerDID did:key:z6MkfzF7NHeDFXjZDAXVPrG1NaRcvGX8oioSKWJ8pHzLpVki
+  // holderDID did:key:z6Mkr7qGV2ThNgzR4W2u8We2ye2bFwDiP1n14VGU2A7ck5J4
   const switchboardUrl = new URL(
     await new Promise((resolve) =>
       readline.question('Enter base64 encoded Switchboard URL:', resolve)
@@ -85,12 +85,12 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
         'Content-Length': Buffer.byteLength(issueEWFRoleCredentialBody),
       },
     };
-    const EWFRoleVc = await request(
+    const ewfRoleVc = await request(
       issueCredentialUrl,
       issueEWFRoleCredentialOptions,
       issueEWFRoleCredentialBody
     );
-    verifiableCredential.push(EWFRoleVc);
+    verifiableCredential.push(ewfRoleVc);
   }
 
   // ISSUE CHARGING DATA CREDENTIAL
@@ -101,15 +101,22 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
     const contractDID = chargingDataConstraints.fields.find((f) =>
       f.path.includes('$.credentialSubject.chargingData.contractDID')
     ).filter.const;
+    const evseId = chargingDataConstraints.fields.find((f) =>
+      f.path.includes('$.credentialSubject.chargingData.evseId')
+    ).filter.const;
     const timeStamp = chargingDataConstraints.fields.find((f) =>
       f.path.includes('$.credentialSubject.chargingData.timeStamp')
     ).filter.const;
+    const kwh = chargingDataConstraints.fields.find((f) =>
+      f.path.includes('$.credentialSubject.chargingData.kwh')
+    )?.filter.const;
     const issueChargingDataCredentialBody = JSON.stringify({
-      credential: chargingDataCredential(
-        holderDIDDoc.id,
+      credential: chargingDataCredential(holderDIDDoc.id, {
         contractDID,
-        timeStamp
-      ),
+        evseId,
+        timeStamp,
+        kwh,
+      }),
       options: {
         verificationMethod: holderDIDDoc.verificationMethod[0].id,
         proofPurpose: 'assertionMethod',
