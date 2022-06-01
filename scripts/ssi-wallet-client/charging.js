@@ -59,7 +59,7 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
   // CREATE DIDs
   console.log('create DIDs');
   const issuerDIDDoc = issuerDID ? await getDID(issuerDID) : await createDID();
-  const holderDIDDoc = holderDID ? await getDID(issuerDID) : await createDID();
+  const holderDIDDoc = holderDID ? await getDID(holderDID) : await createDID();
 
   // ISSUE CREDENTIALS
   const verifiableCredential = [];
