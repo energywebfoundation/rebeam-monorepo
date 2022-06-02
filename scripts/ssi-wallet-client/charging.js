@@ -2,6 +2,9 @@
 
 // Prompts for base64 encoded switchboard url. Starts or stops charging depending on exchange id contained in url
 // Tested with node v16 but probably works with others
+// For start-charging issuerDID and holderDID can be omitted
+// For stop-charging issuerDID should be taken from issuer property of Rebeam credential
+// and holderDID is credentialSubject.id
 
 /////////////////
 
@@ -10,6 +13,7 @@ const readline = require('readline').createInterface({
   output: process.stdout,
 });
 
+const { inspect } = require('util');
 const {
   chargingDataCredential,
   energyContractCredential,
@@ -35,7 +39,6 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
 
   const buff = Buffer.from(switchboardUrl.searchParams.get('_oob'), 'base64');
   const decoded = buff.toString('ascii');
-  console.dir(decoded, { depth: 20, colors: true });
   const exchangeUrl = JSON.parse(decoded).url;
 
   console.log(`Calling startUrl at: ${exchangeUrl}`);
@@ -90,6 +93,10 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
       issueEWFRoleCredentialOptions,
       issueEWFRoleCredentialBody
     );
+    console.log(
+      'Issued Rebeam customer credential:',
+      inspect(ewfRoleVc, { depth: 10 })
+    );
     verifiableCredential.push(ewfRoleVc);
   }
 
@@ -133,6 +140,10 @@ const { vcApiUrl, request, createDID, getDID } = require('./vc-api');
       issueCredentialUrl,
       issueChargingDataCredentialOptions,
       issueChargingDataCredentialBody
+    );
+    console.log(
+      'Issued charging data credential:',
+      inspect(chargingDataVc, { depth: 10 })
     );
     verifiableCredential.push(chargingDataVc);
   }

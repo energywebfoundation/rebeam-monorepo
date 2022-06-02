@@ -7,19 +7,19 @@ async function request(url, options, postData) {
   return new Promise((resolve, reject) => {
     let data = '';
     const req = https.request(url, options, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
+      // console.log(`STATUS: ${res.statusCode}`);
       res.setEncoding('utf8');
       res.on('data', (chunk) => {
         data = `${data}${chunk}`;
       });
       res.on('end', () => {
-        console.dir(JSON.parse(data), { depth: 20, colors: true });
+        // console.dir(JSON.parse(data), { depth: 20, colors: true });
         resolve(JSON.parse(data));
       });
     });
 
     req.on('error', (e) => {
-      console.dir(JSON.parse(e), { depth: 10, colors: true });
+      // console.dir(JSON.parse(e), { depth: 10, colors: true });
       reject();
     });
 
