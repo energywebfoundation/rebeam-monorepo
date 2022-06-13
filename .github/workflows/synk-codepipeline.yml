@@ -39,8 +39,8 @@ jobs:
         run: |
           docker build -t rebeam:latest -f packages/emsp-backend/Dockerfile packages/emsp-backend
           snyk container monitor rebeam:latest --file=packages/emsp-backend/Dockerfile
-      - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
-        run: |
-          docker build -t ocnnode:latest -f docker/Dockerfile ./docker
-          snyk container monitor ocnnode:latest --file=docker/Dockerfile
+      # - name: Snyk Container # Rename your image, for testing and failing please add snyk container test before snyk container monitor
+      #   run: |
+      #     docker build -t ocnnode:latest -f docker/Dockerfile ./docker
+      #     snyk container monitor ocnnode:latest --file=docker/Dockerfile
 
