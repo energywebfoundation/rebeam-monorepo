@@ -26,7 +26,6 @@ jobs:
       # Run Snyk Code
       - name: Run Snyk Code
         run: |
-          pip install -r requirements.txt
           snyk test
         continue-on-error: true
       - name: Run Snyk fix
