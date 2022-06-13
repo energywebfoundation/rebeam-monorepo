@@ -2,9 +2,9 @@ name: Snyk SCA, Code, IaC and Container CLI monitor example
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ DOI-1973_snyk_scan ]
   pull_request:
-    branches: [ develop ]
+    branches: [ DOI-1973_snyk_scan ]
 
 jobs:
   build:
@@ -31,11 +31,6 @@ jobs:
           npm install snyk -g
           npm install snyk-to-html -g
           snyk auth ${{secrets.SNYK_AUTH}}
-      - name: Snyk Open Source # For testing and failing please add snyk test before snyk monitor
-        run: |
-          snyl test
-          snyk monitor
-    # For a list of additional available flags/options see: https://docs.snyk.io/snyk-cli/commands
 
       - name: Snyk Code # Remove || true to fail if there are vulnerabilities
         run: |
@@ -44,6 +39,4 @@ jobs:
         run: |
           docker build . -t rebeam:latest
           snyk container monitor rebeam:latest --file=Dockerfile
-      # - name: Snyk IaC # Remove || true to fail if there are vulnerabilities
-      #   run: |
-      #     snyk iac test || true
+
