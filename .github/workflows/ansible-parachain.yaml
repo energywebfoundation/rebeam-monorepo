@@ -1,0 +1,71 @@
+name: Ansible parachain playbook
+
+on:
+  workflow_dispatch:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: choice
+        description: environment to run ansible
+        options:
+          - testnet
+          - mainnet
+
+concurrency:
+  group: ansible-parachain
+  cancel-in-progress: true
+
+jobs:
+  configure:
+    name: Get Environment
+    runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: ${{ github.event.inputs.ENVIRONMENT }}
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - id: configure
+        run: |
+              if [ "${{ github.event.inputs.ENVIRONMENT }}" = "testnet" ]; then
+                echo "ENVIRONMENT=testnet" >> $GITHUB_OUTPUT
+              elif [ "${{ github.event.inputs.ENVIRONMENT }}" = "mainnet" ]; then
+                echo "ENVIRONMENT=mainnet" >> $GITHUB_OUTPUT
+              else
+                echo "${{ github.event.inputs.ENVIRONMENT }}" not configured"
+                exit 1
+              fi
+  ansible-parachain-playbook:
+    runs-on: ubuntu-latest
+    container: cytopia/ansible:2.13-infra
+    needs: [configure]
+    environment:
+      name: ${{ github.event.inputs.ENVIRONMENT }}
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      ANSIBLE_HOST_KEY_CHECKING: False
+    steps:
+      - name: Add SSH Key
+        run: |
+          mkdir -p /home/runner/.ssh
+          # DOKKU_SSH_KEY is the name of the repository secret
+          echo "${{ secrets.SSH_ANSIBLE_PARACHAIN }}" > /home/runner/.ssh/github_actions
+          cat /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+          ssh-add -L
+
+      - name: Download ansible_inventory
+        run: |
+          cd ansible
+          cat ${{ secrets.ANSIBLE_BUCKET }}
+
+      - name: Run Playbook
+        run: |
+          cd ansible
+          cat ${{ github.event.inputs.ENVIRONMENT }}
+          cat ${{ secrets.ETHEREUM_NODE_URL }}
+          cat ${{ secrets.ANSIBLE_BUCKET }}
+          cat ${{ secrets.SSH_ANSIBLE_PARACHAIN }}
+
