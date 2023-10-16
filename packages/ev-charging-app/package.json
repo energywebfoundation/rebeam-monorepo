@@ -1,7 +1,8 @@
 {
   "name": "ev-charging-app",
   "version": "0.0.1",
-  "private": true,
+  "author": "Energy Web",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.4.3",
