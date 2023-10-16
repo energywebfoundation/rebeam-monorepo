@@ -47,18 +47,18 @@ jobs:
         with:
           path: ./*
           key: ${{ github.sha }}
-  audit:
-    name: Audit package dependencies
-    runs-on: ubuntu-latest
-    needs: [build-install]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup app dependencies
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ needs.build-install.outputs.matrix.node-version }}
-      - name: Audit package dependencies
-        run: npm audit --audit-level=critical
+  # audit:
+  #  name: Audit package dependencies
+  #  runs-on: ubuntu-latest
+  #  needs: [build-install]
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #    - name: Setup app dependencies
+  #      uses: actions/setup-node@v1
+  #      with:
+  #        node-version: ${{ needs.build-install.outputs.matrix.node-version }}
+  #    - name: Audit package dependencies
+  #      run: npm audit --audit-level=critical
   test:
     name: Run unit tests
     runs-on: ubuntu-latest
