@@ -2,9 +2,8 @@
   "name": "emsp-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "author": "Energy Web",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "init": "cp .env.defaults .env.new",
     "prebuild": "rimraf dist",
