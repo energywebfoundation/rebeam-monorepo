@@ -1,4 +1,4 @@
-ARG IMAGE=node:14.18-alpine
+ARG IMAGE=node:14.21.2-alpine
 ARG NODE_ENV=production
 
 FROM $IMAGE as build
