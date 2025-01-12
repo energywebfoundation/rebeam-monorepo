@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: styfle/cancel-workflow-action@0.9.1
+      - uses: styfle/cancel-workflow-action@0.12.1
         with:
           access_token: ${{ github.token }}
   unique_id:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Bump version and push tag
         id: tag_version
-        uses: mathieudutour/github-tag-action@v6.0
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: develop,DOI-1680_rebeam_cicd
@@ -93,14 +93,14 @@ jobs:
         run: docker logout ${{ steps.login-ecr.outputs.registry }}
 
       - name: ArgoCD login
-        uses: clowdhaus/argo-cd-action/@v1.10.0
+        uses: clowdhaus/argo-cd-action/@v1.17.0
         id: argocd_login
         with:
           command: login ${{ steps.env_vars.outputs.argocd_url }}
           options: --insecure --password ${{ steps.env_vars.outputs.argocd_password }} --username ${{ steps.env_vars.outputs.argocd_username }}
 
       - name: ArgoCD overvrite values.yaml
-        uses: clowdhaus/argo-cd-action/@v1.10.0
+        uses: clowdhaus/argo-cd-action/@v1.17.0
         id: argocd_image_tag_overwrite
         with:
           command: app set rebeam
