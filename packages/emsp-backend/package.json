@@ -24,7 +24,7 @@
   "dependencies": {
     "@energyweb/ocn-bridge": "file:./energyweb-ocn-bridge-4.0.0.tgz",
     "@ethersproject/wallet": "^5.5.0",
-    "@nestjs/common": "^8.0.0",
+    "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
