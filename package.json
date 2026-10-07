@@ -1,25 +1,23 @@
-{
-  "name": "root",
-  "private": true,
-  "scripts": {
-    "init": "lerna bootstrap && lerna run --stream init",
-    "update": "lerna bootstrap",
-    "build": "lerna run --stream --parallel build",
-    "start:dev": "docker-compose up",
-    "stop:dev": "docker-compose down",
-    "format": "lerna run --stream  --parallel format",
-    "lint": "lerna run --stream --parallel lint",
-    "test": "lerna run --stream --parallel test",
-    "prepare": "husky install"
-  },
-  "devDependencies": {
-    "lerna": "^4.0.0",
-    "husky": "^7.0.4",
-    "ethers": "^5.5.4",
-    "axios": "^0.26.0"
-  },
-  "engines": {
-    "node": "^14.8.3",
-    "npm": "^8.3.2"
+[
+  {
+    "name": "rebeam-monorepo",
+    "private": true,
+    "workspaces": [
+      "apps/*",
+      "packages/*"
+    ],
+    "scripts": {
+      "dev": "turbo run dev",
+      "build": "turbo run build",
+      "lint": "turbo run lint",
+      "test": "turbo run test",
+      "clean": "turbo run clean && rm -rf node_modules"
+    },
+    "devDependencies": {
+      "turbo": "^1.11.3"
+    },
+    "engines": {
+      "node": ">=18.0.0"
+    }
   }
-}
+]
